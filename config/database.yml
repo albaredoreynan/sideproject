@@ -1,0 +1,25 @@
+development:
+  adapter: postgresql
+  database: case2_development
+  pool: 5
+  timeout: 5000
+  username: postgres
+  password: admin
+  host: localhost
+  port: 5432
+
+test:
+  adapter: postgresql
+  database: case2_test
+  pool: 5
+  timeout: 5000
+  username: postgres
+  password: admin
+
+production:
+  adapter: postgresql
+  database: case2_production
+  pool: 5
+  timeout: 5000
+  username: postgres
+  password: admin

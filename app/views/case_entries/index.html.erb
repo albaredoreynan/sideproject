@@ -1,0 +1,49 @@
+<%- model_class = CaseEntry -%>
+<div class="page-header">
+  <h1>Time Summary</h1>
+</div>
+<div class="pull-right" width="100%">
+  <%= link_to case_entries_path(params.merge(format: 'pdf')), :class => "btn btn-mini", :rel => "tooltip", :title => "Download To PDF" do %>
+                              <li class="icon-download-alt"></li>
+                          <% end %> 
+                        </div>
+<table class="table table-hover" id="case_entries">
+  <thead>
+    <tr>
+      <th>Entry Date</th>
+      <th>Time Spent From</th>
+      <th>Time Spent To</th>
+      <th>Client</th>
+      <th>Matter / File No.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @case_entries.each do |case_entry| %>
+      <tr>
+        <td data-title=""><%= case_entry.entry_date %></td>
+        <td><%= case_entry.time_spent_from %></td>
+        <td><%= case_entry.time_spent_to %></td>
+        <% @client = Client.find(:all, :conditions => { :id => case_entry.client_id} ) %>
+        <td><% @client.each do |x| %>
+              <%= x.name %>
+            <% end %>
+        </td>
+        <td><%= case_entry.file_matter_case %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_case_entry_path(case_entry), :class => 'btn btn-mini' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      case_entry_path(case_entry),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-mini btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_case_entry_path,
+            :class => 'btn btn-primary' %>
+            

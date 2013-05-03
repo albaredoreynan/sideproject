@@ -1,0 +1,2 @@
+module CaseEntriesHelper
+end
