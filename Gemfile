@@ -12,6 +12,10 @@ gem 'jquery-ui-rails'
 gem 'prawn'
 gem 'chosen-rails'
 gem 'jquery-datatables-rails', github: 'rweng/jquery-datatables-rails'
+gem 'will_paginate', '~> 3.0.0'
+gem "cocoon"
+gem 'friendly_id'
+gem 'cancan'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 

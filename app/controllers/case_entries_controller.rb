@@ -7,8 +7,9 @@ class CaseEntriesController < ApplicationController
     @lawyer = current_user.name
     respond_to do |format|
       format.html # index.html.erb
-      # format.json { render json: @case_entries }
+      format.json { render json: @case_entries }
       # format.csv  { render :csv => @case_entries, :except => [:id] }
+      
       format.pdf do 
         pdf = CaseEntriesPdf.new(@case_entries, @lawyer)
         send_data pdf.render, filename: "Case Entry " + Date.today.to_s + ".pdf", disposition: "inline"
@@ -31,7 +32,7 @@ class CaseEntriesController < ApplicationController
   # GET /case_entries/new.json
   def new
     @case_entry = CaseEntry.new
-    @file_matters = FileMatter.all
+    @file_matters = FileMatter.find(:all, :group => "file_code, id")
     @lawyers = Lawyer.all
     @clients = Client.all
 

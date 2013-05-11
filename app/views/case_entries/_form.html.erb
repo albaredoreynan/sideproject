@@ -33,9 +33,6 @@
 
   		<div class="span3">
   			<div class="span2">	
-				<%#= f.input :file_matter_case, :label => "File Case #" %>
-				<%#= f.input :client_id, :collection => @clients.map {|u| [u.name, u.id] },  :include_blank => false %>
-				<%#= f.input :lawyer_id, :collection => @lawyers.map {|u| ["#{u.first_name+" "+u.middle_name+" "+u.last_name}", u.id] },  :include_blank => false %>
 				<%= f.label :client_id, "Client:"%>
 				<%= f.collection_select(:client_id, @clients, :id, :name,  { :id => 'client_id', :required => true} ) %>
 
@@ -46,7 +43,7 @@
 				<%= f.text_field :file_matter_case %>
 				
 				<%= f.label :lawyer_id, "Assigned Lawyer:"%>
-				<%= f.collection_select(:lawyer_id, @lawyers, :id, :first_name,  { :id => 'lawyer_id', :required => true} ) %>
+				<%= f.collection_select(:lawyer_id, @lawyers, :id, :full_name,  { :id => 'lawyer_id', :required => true} ) %>
 			</div>
   		</div>
 

@@ -4,7 +4,7 @@
 </div>
 <div class="row">
   <div class="span12 well">
-    <table class="table table-striped">
+    <table class="table table-striped" id="filematters">
       <thead>
         <tr>
           <th>File Code</th>
@@ -37,3 +37,14 @@
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_file_matter_path,
             :class => 'btn btn-primary' %>
+<script>
+  $('#filematters').dataTable( {
+    "aoColumns": [
+      { "bSearchable": true, "bSortable": true },
+      { "bSearchable": true, "bSortable": true },
+      { "bSearchable": true, "bSortable": true },
+      { "bSearchable": false, "bSortable": false }
+    ],
+    "sPaginationType": "bootstrap"
+  } );
+</script>

@@ -19,18 +19,19 @@
         </a>
         <a class="brand" href="#">Time Entry</a>
         <div class="nav-collapse">
-          <ul class="nav">
-            <% if current_user.role != 'User' %>
-              <li><%= link_to "Case Entry", new_case_entry_path %></li>
-              <li><%= link_to "Clients", clients_path %></li>
-              <li><%= link_to "Lawyers", lawyers_path %></li>
-              <li><%= link_to "File/Matters", file_matters_path %></li>
-              <li>
-                <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
-              </li>
-            <% end %>
-          </ul>
           <% if user_signed_in? %>
+            <ul class="nav">
+              <% if current_user.role != 'User' %>
+                <li><%= link_to "Case Entries", case_entries_path %></li>
+                <li><%= link_to "Clients", clients_path %></li>
+                <li><%= link_to "Lawyers", lawyers_path %></li>
+                <li><%= link_to "File/Matters", file_matters_path %></li>
+                <li><%= link_to "Reports", admin_side_index_path %></li>
+              <% else %>
+              <% end %>
+
+            </ul>
+          
             <ul class="nav pull-right">
               <li>
                 <%= link_to current_user.name %>

@@ -1,4 +1,3 @@
-$('#case_entry_file_matter_case').val("<%= escape_javascript(@file_matters.case_number)%>")
-$('#case_entry_case_title').val("<%= escape_javascript(@file_matters.title)%>")
+$('.case_entry_file_matter_id').html("<%= escape_javascript(options_for_select(@file_matters)) %>")
 $('#case_entry_client_id').html("<%= escape_javascript(options_for_select(@my_clients)) %>")
 $('#case_entry_lawyer_id').html("<%= escape_javascript(options_for_select(@my_lawyers)) %>")

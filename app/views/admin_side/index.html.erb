@@ -1,0 +1,41 @@
+<div class="page-header">
+  <h3>Case Reports</h3>
+</div>
+<div class="row">
+	<div class="span12 ">
+		<%= simple_form_for admin_side_search_path, :method => 'get' do |f| %>
+			<table class="table well" >
+				<tr>
+					<th>Clients:</th>
+					<th>Lawyers:</th>
+					<th>Date From:</th>
+					<th>Date To:</th>
+				</tr>
+				<tr>
+					<td><%= select_tag(:client_id, options_from_collection_for_select(@clients, :id, :name, params[:client_id]), {:id => 'client_id', :prompt => "Select a Client"})%></td>
+					<td><%= select_tag(:lawyer_id, options_from_collection_for_select(@lawyers, :id, :full_name, params[:lawyer_id]), {:id => 'lawyer_id', :prompt => "Select a Lawyer"})%></td>
+					<td><%= text_field_tag :beginning_date, params[:beginning_date], :id => "datepicker_beg", :readonly => true,  :required => true%></td>
+					<td><%= text_field_tag :ending_date, params[:ending_date], :id => "datepicker_end", :readonly => true,  :required => true%></td>
+				</tr>
+				<tr><td colspan="4"><div class="pull-right"><%= submit_tag "Search"%></div></td></tr>
+			</table>
+		<% end %>
+	</div>
+</div>
+<div class="row">
+	<div class="span12 ">
+			
+	</div>
+</div>
+<script>
+	$(function() {
+  		$('#datepicker_beg').datepicker({format: 'yyyy-mm-dd'});
+  		$('#datepicker_end').datepicker({format: 'yyyy-mm-dd'});
+  	});
+</script>
+										
+										
+											  
+
+											
+											 

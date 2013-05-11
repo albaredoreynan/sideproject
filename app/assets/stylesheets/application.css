@@ -14,5 +14,7 @@
  *= require bootstrap-timepicker
  *= require chosen
  *= require dataTables/jquery.dataTables.bootstrap
+ *= require dataTables/extras/TableTools
+ *= require dataTables/extras/TableTools_JUI
  *= require_tree .
  */
