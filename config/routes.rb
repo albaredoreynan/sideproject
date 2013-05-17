@@ -11,6 +11,7 @@ Case2::Application.routes.draw do
   resources :admin_side
   
   root :to => 'case_entries#new'
+  
   # ajax
   get 'pages/update_songs', :as => 'update_songs'
   get 'pages/update_songs2', :as => 'update_songs2'

@@ -4,7 +4,6 @@ gem 'rails', '3.2.9'
 gem 'pg'
 gem 'simple_form'
 gem 'bootstrap-datepicker-rails'
-gem 'bootstrap-timepicker-rails'
 gem 'devise'
 gem 'rails3-jquery-autocomplete'
 gem 'nifty-generators'
@@ -16,6 +15,9 @@ gem 'will_paginate', '~> 3.0.0'
 gem "cocoon"
 gem 'friendly_id'
 gem 'cancan'
+gem 'twitter-bootstrap-rails'
+gem 'therubyracer'
+gem 'less-rails'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
@@ -32,9 +34,7 @@ group :assets do
   # gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
-  gem 'twitter-bootstrap-rails'
-  gem 'therubyracer'
-  gem 'less-rails'
+  
 end
 
 gem 'jquery-rails'
