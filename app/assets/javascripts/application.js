@@ -128,6 +128,7 @@
                         +    '                                <a class="ptTimeSelectHr ui-state-default" href="javascript: void(0);">12</a>'
                         +    '                                <br style="clear: left;" /><div></div>'
                         +    '                            </div>'
+                        
                         +    '                            <div class="ptTimeSelectHrAmPmCntr">'
                         +    '                                <a class="ptTimeSelectHr bg-color" href="javascript: void(0);" '
                         +    '                                        style="display: block; width: 45%; float: left;">AM</a>'
