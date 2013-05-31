@@ -14,10 +14,10 @@
     <thead>
       <tr>
         <th>Entry Date</th>
-        <th>Time Spent From</th>
-        <th>Time Spent To</th>
         <th>Client</th>
-        <th>Matter / File No.</th>
+        <th>Matter File No.</th>
+        <th>Start Time</th>
+        <th>End Time</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -25,14 +25,14 @@
       <% @case_entries.each do |case_entry| %>
         <tr>
           <td data-title=""><%= case_entry.entry_date %></td>
-          <td><%= case_entry.time_spent_from %></td>
-          <td><%= case_entry.time_spent_to %></td>
           <% @client = Client.find(:all, :conditions => { :id => case_entry.client_id} ) %>
           <td><% @client.each do |x| %>
                 <%= x.name %>
               <% end %>
-          </td>
+          </td>    
           <td><%= case_entry.file_matter_case %></td>
+          <td><%= case_entry.time_spent_from %></td>
+          <td><%= case_entry.time_spent_to %></td>
           <td>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
                         edit_case_entry_path(case_entry), :class => 'btn btn-mini' %>
@@ -49,7 +49,7 @@
   <br>
   <br>
 </div>
-<%= link_to t('.new', :default => t("helpers.links.new")),
+<%= link_to "Create Entry",
             new_case_entry_path,
             :class => 'btn btn-primary' %>
 <script>

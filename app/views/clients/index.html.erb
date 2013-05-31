@@ -7,18 +7,22 @@
     <table class="table table-striped" id="clients">
       <thead>
         <tr>
-          <th><%= model_class.human_attribute_name(:name) %></th>
-          <th><%= model_class.human_attribute_name(:email) %></th>
-          <th><%= model_class.human_attribute_name(:contact_number) %></th>
-          <th><%=t '.actions', :default => t("helpers.actions") %></th>
+          <th>Name</th>
+          <th>Contact Person</th>
+          <th>Position</th>
+          <th>Contact Number</th>
+          <th>Email</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
         <% @clients.each do |client| %>
           <tr>
             <td><%= client.name %></td>
-            <td><%= client.email %></td>
+            <td><%= client.contact_person %></td>
+            <td><%= client.position %></td>
             <td><%= client.contact_number %></td>
+            <td><%= client.email %></td>
             <td>
               <%= link_to t('.edit', :default => t("helpers.links.edit")),
                           edit_client_path(client), :class => 'btn btn-mini' %>
@@ -34,12 +38,14 @@
     </table>
   </div>
 </div>
-<%= link_to t('.new', :default => t("helpers.links.new")),
+<%= link_to "Create Entry",
             new_client_path,
             :class => 'btn btn-primary' %>
 <script>
   $('#clients').dataTable( {
     "aoColumns": [
+      { "bSearchable": true, "bSortable": true },
+      { "bSearchable": true, "bSortable": true },
       { "bSearchable": true, "bSortable": true },
       { "bSearchable": true, "bSortable": true },
       { "bSearchable": true, "bSortable": true },

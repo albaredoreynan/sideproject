@@ -17,6 +17,7 @@ Case2::Application.routes.draw do
   get 'pages/update_songs2', :as => 'update_songs2'
 
   # search
-  match '/admin_side/search' => 'admin_side#search'
-
+  match '/admin_side/search' => 'case_entries#index'
+  match '/case_entries/searching' => 'case_entries#searching'
+  
 end

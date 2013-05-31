@@ -2,8 +2,12 @@
   	
   	
   		<%= f.input :name, :label => 'Name / Company' %>	
-		<%= f.input :email %>
-		<%= f.input :contact_number %>
+		<%= f.input :position, :label => 'Position' %>
+		<%= f.input :contact_number, :label => 'Contact Number' %>
+		<%= f.input :email, :label => 'Email' %>
+		<%= f.input :contact_person, :label => 'Contact Person' %>
+		<%= f.input :address, :as => :text, :label => 'Address',  :input_html => { :cols => 50, :rows => 3 } %>
+		
 		
 	  <div class="form-actions">
 	    <%= f.button :submit, :class => 'btn btn-primary' %>

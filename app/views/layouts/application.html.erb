@@ -24,7 +24,10 @@
                 <li><%= link_to "Clients", clients_path %></li>
                 <li><%= link_to "Lawyers", lawyers_path %></li>
                 <li><%= link_to "File/Matters", file_matters_path %></li>
-                <li><%= link_to "Reports", admin_side_index_path %></li>
+                <li>
+                  <%= link_to "Reports", admin_side_index_path %>
+                  <%#= link_to "Reports", case_entries_searching_path %>
+                </li>
               <% else %>
               <% end %>
 

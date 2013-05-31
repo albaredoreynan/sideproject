@@ -8,19 +8,21 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th><%= model_class.human_attribute_name(:mobile_number) %></th>
-          <th><%= model_class.human_attribute_name(:position) %></th>
-          <th><%= model_class.human_attribute_name(:email) %></th>
-          <th><%=t '.actions', :default => t("helpers.actions") %></th>
+          <th>Initial</th>
+          <th>Position</th>
+          <th>Email</th>
+          <th>Mobile</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <% @lawyers.each do |lawyer| %>
           <tr>
             <td><%= lawyer.first_name+" "+lawyer.middle_name+" "+lawyer.last_name %> </td>
-            <td><%= lawyer.mobile_number %></td>
+            <td><%= lawyer.initials %></td>
             <td><%= lawyer.position %></td>
             <td><%= lawyer.email %></td>
+            <td><%= lawyer.mobile_number %></td>
             <td>
               <%= link_to t('.edit', :default => t("helpers.links.edit")),
                           edit_lawyer_path(lawyer), :class => 'btn btn-mini' %>
@@ -37,17 +39,20 @@
   </div>
 </div>
 
-<%= link_to t('.new', :default => t("helpers.links.new")),
+<%= link_to "Create Entry",
             new_lawyer_path,
             :class => 'btn btn-primary' %>
+<br/>
+<br/>
 <script>
   $('#lawyers').dataTable( {
     "aoColumns": [
       { "bSearchable": true, "bSortable": true },
-      null,
       { "bSearchable": true, "bSortable": true },
       { "bSearchable": true, "bSortable": true },
-      null
+      { "bSearchable": true, "bSortable": true },
+      { "bSearchable": true, "bSortable": true },
+      { "bSearchable": false, "bSortable": false },
     ],
     "sPaginationType": "bootstrap"
   } );

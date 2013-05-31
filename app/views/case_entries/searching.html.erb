@@ -1,0 +1,60 @@
+<div class="page-header">
+  <h3>Case Reports</h3>
+</div>
+<div class="row">
+	<div class="span12 ">
+		<%= simple_form_for admin_side_search_path, :method => 'get' do %>
+			<table class="table well" >
+				<tr>
+					<th>Clients:</th>
+					<th>Lawyers:</th>
+					<th>Date From:</th>
+					<th>Date To:</th>
+				</tr>
+				<tr>
+					<td><%= select_tag(:client_id, options_from_collection_for_select(@clients, :id, :name, params[:client_id]), {:id => 'client_id', :prompt => "Select a Client"})%></td>
+					<td><%= select_tag(:lawyer_id, options_from_collection_for_select(@lawyers, :id, :full_name, params[:lawyer_id]), {:id => 'lawyer_id', :prompt => "Select a Lawyer"})%></td>
+					<td><%= text_field_tag :beginning_date, params[:beginning_date], :id => "datepicker_beg" %></td>
+					<td><%= text_field_tag :ending_date, params[:ending_date], :id => "datepicker_end" %></td>
+				</tr>
+				<tr><td colspan="4"><div class="pull-right"><%= submit_tag "Search"%></div></td></tr>
+			</table>
+		<% end %>
+	</div>
+</div>
+<div class="row">
+	<div class="span12 ">
+		<table class="table">
+			<% if @case_listing.count != 0 %>
+				<thead>
+        			<tr>
+			          	<th>Client</th>
+			          	<th>Lawyer</th>
+			          	<th>Entry Date</th>
+		        	</tr>
+		      	</thead>
+		      	<% @case_listing.each do |cl| %>
+					<tr>
+			            <td><%= cl.client_id %> </td>
+			            <td><%= cl.lawyer_id %></td>
+			            <td><%= cl.entry_date %></td>
+					</tr>	
+				<% end %>
+			<% else %>
+				<tr><td>No Records Found.</td></tr>
+			<% end %>
+		</table>		
+	</div>
+</div>
+<script>
+	$(function() {
+  		$('#datepicker_beg').datepicker({format: 'yyyy-mm-dd'});
+  		$('#datepicker_end').datepicker({format: 'yyyy-mm-dd'});
+  	});
+</script>
+										
+										
+											  
+
+											
+											 

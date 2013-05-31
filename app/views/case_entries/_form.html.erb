@@ -13,16 +13,16 @@
 				<%= f.text_field :entry_date, :value => Date.today, :id => 'datepicker123', :class => "entry_date" %>	
 			</div>
 			<div class="span3">
-				<div class="input-append">
-					<%= f.label :time_spent_from, "Start Time:"%>
-					<%= f.text_field :time_spent_from, :class => "input-small"  %>
-					<span class="add-on"><i class="icon-time"></i></span>
+				<div class="input-append" style="padding-left: 10px;">
+					<%= f.label :time_spent_from, "Start Time:" %>
+					<%= f.text_field :time_spent_from, :class => "input-small" %>
+					<!-- <span class="add-on"><i class="icon-time"></i></span> -->
 				</div>
 
-				<div class="input-append">
-					<%= f.label :time_spent_to, "End Time:"%>
+				<div class="input-append" style="padding-left: 30px;">
+					<%= f.label :time_spent_to, "End Time:" %>
 					<%= f.text_field :time_spent_to, :class => "input-small" %>
-					<span class="add-on"><i class="icon-time"></i></span>
+					<!-- <span class="add-on"><i class="icon-time"></i></span> -->
 				</div>
 			</div>
 			<div class="span8">
