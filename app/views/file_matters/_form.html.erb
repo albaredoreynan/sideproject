@@ -3,7 +3,9 @@
 		<%= f.input :client_id, :collection => @clients.map {|u| [u.name, u.id] },  :include_blank => false %>
 		<%= f.input :title %>
 		<%= f.input :case_number %>
-		<%= f.input :lawyer_id, :collection => @lawyers.map {|u| ["#{u.first_name+" "+u.middle_name+" "+u.last_name}", u.id] },  :include_blank => false %>
+		<%=  f.fields_for :assigned_lawyers do |fl| %>
+			<%= fl.input :lawyer_id, :collection => @lawyers.map {|u| ["#{u.first_name+" "+u.middle_name+" "+u.last_name}", u.id] },  :include_blank => true %>
+		<% end %>
 		<%= f.label "Date Open" %>
 		<%= f.text_field :case_date, :id => 'datepicker123', :class => "case_date" %>
 		
@@ -17,6 +19,6 @@
 
 <script>
 	$(function() {
-  		$('#datepicker123').datepicker({format: 'yyyy-mm-dd'});
+  		$('#datepicker123').datepicker({format: 'mm/dd/yy'});
   	});
 </script>

@@ -27,6 +27,11 @@ class FileMattersController < ApplicationController
     @file_matter = FileMatter.new
     @clients = Client.find(:all)
     @lawyers = Lawyer.find(:all)
+
+
+    5.times {
+      @file_matter.assigned_lawyers.build
+    }
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @file_matter }
@@ -37,6 +42,9 @@ class FileMattersController < ApplicationController
     @file_matter = FileMatter.find(params[:id])
     @clients = Client.find(:all)
     @lawyers = Lawyer.find(:all)
+    # 5.times {
+    #   @file_matter.assigned_lawyers.build
+    # }
     
   end
 
