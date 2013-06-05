@@ -11,7 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130531005240) do
+ActiveRecord::Schema.define(:version => 20130605074804) do
+
+  create_table "assigned_lawyers", :force => true do |t|
+    t.integer  "lawyer_id"
+    t.integer  "file_matter_id"
+    t.integer  "client_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
 
   create_table "case_entries", :force => true do |t|
     t.date     "entry_date"
@@ -25,6 +33,7 @@ ActiveRecord::Schema.define(:version => 20130531005240) do
     t.string   "file_matter_case"
     t.integer  "lawyer_id"
     t.string   "case_title"
+    t.integer  "user_id"
   end
 
   create_table "clients", :force => true do |t|

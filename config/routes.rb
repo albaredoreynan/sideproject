@@ -5,7 +5,12 @@ Case2::Application.routes.draw do
   resources :lawyers
   resources :file_matters
   resources :case_entries do
-  	get :autocomplete_file_matter_file_code, :on => :collection
+  	# get :autocomplete_file_matter_file_code, :on => :collection
+    collection do 
+      get "autocomplete_file_matter_file_code"
+      get "autocomplete_file_matter_case_number"
+    end
+      
   end
 
   resources :admin_side

@@ -1,9 +1,14 @@
 class CaseEntriesController < ApplicationController
   
   autocomplete :file_matter, :file_code, :full => true
+  autocomplete :file_matter, :case_number, :full => true
 
   def index
-    @case_entries = CaseEntry.all
+    if current_user.role == 'Administrator'
+      @case_entries = CaseEntry.all
+    else
+      @case_entries = CaseEntry.find(:all, :conditions => { :user_id => current_user.id } )
+    end
     @lawyer = current_user.name
     respond_to do |format|
       format.html # index.html.erb
@@ -33,6 +38,7 @@ class CaseEntriesController < ApplicationController
   def new
     @case_entry = CaseEntry.new
     @file_matters = FileMatter.find(:all, :group => "file_code, id")
+    @file_matter_case = FileMatter.find(:all, :group => "case_number, id")
     @lawyers = Lawyer.all
     @clients = Client.all
 
@@ -73,7 +79,7 @@ class CaseEntriesController < ApplicationController
 
     respond_to do |format|
       if @case_entry.update_attributes(params[:case_entry])
-        format.html { redirect_to @case_entry, notice: 'Case entry was successfully updated.' }
+        format.html { redirect_to case_entries_path, notice: 'Case entry was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -94,7 +100,13 @@ class CaseEntriesController < ApplicationController
     end
   end
 
-  def searching
-
+  def autocomplete_file_matter_file_code
+    render json: FileMatter.select("distinct file_code as value").where("file_code ILIKE ?", "%#{params[:term]}%")
+    # render json: AnnualProcurementPlan.select("distinct version as value").where("version ILIKE ?", "%#{params[:term]}%").where(:agency_id => current_user.agency.id)
   end
+
+  def autocomplete_file_matter_case_number
+    render json: FileMatter.select("distinct case_number as value").where("case_number ILIKE ?", "%#{params[:term]}%")
+    # render json: AnnualProcurementPlan.select("distinct version as value").where("version ILIKE ?", "%#{params[:term]}%").where(:agency_id => current_user.agency.id)
+  end    
 end

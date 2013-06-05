@@ -131,9 +131,9 @@
                         
                         +    '                            <div class="ptTimeSelectHrAmPmCntr">'
                         +    '                                <a class="ptTimeSelectHr bg-color" href="javascript: void(0);" '
-                        +    '                                        style="display: block; width: 45%; float: left;">AM</a>'
+                        +    '                                        style="display: block; width: 45%; float: left; color: #FFF; ">AM</a>'
                         +    '                                <a class="ptTimeSelectHr bg-color" href="javascript: void(0);" '
-                        +    '                                        style="display: block; width: 45%; float: left;">PM</a>'
+                        +    '                                        style="display: block; width: 45%; float: left; color: #FFF; ">PM</a>'
                         +    '                                <br style="clear: left;" /><div></div>'
                         +    '                            </div>'                        
                         +    '                        </div>'
