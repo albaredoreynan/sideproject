@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130605074804) do
+ActiveRecord::Schema.define(:version => 20130611022858) do
 
   create_table "assigned_lawyers", :force => true do |t|
     t.integer  "lawyer_id"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(:version => 20130605074804) do
     t.date     "entry_date"
     t.text     "work_particulars"
     t.integer  "client_id"
-    t.integer  "file_matter_id"
+    t.string   "file_matter_id"
     t.string   "time_spent_from"
     t.string   "time_spent_to"
     t.datetime "created_at",       :null => false
@@ -48,16 +48,14 @@ ActiveRecord::Schema.define(:version => 20130605074804) do
   end
 
   create_table "file_matters", :force => true do |t|
-    t.string   "year"
-    t.string   "file_code"
-    t.string   "volume"
-    t.string   "client_id"
-    t.string   "title"
-    t.string   "case_number"
-    t.string   "lawyer_id"
-    t.string   "case_date"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.string "year"
+    t.string "file_code"
+    t.string "volume"
+    t.string "client_id"
+    t.string "title"
+    t.string "case_number"
+    t.string "lawyer_id"
+    t.string "case_date"
   end
 
   create_table "lawyers", :force => true do |t|
