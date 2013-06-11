@@ -20,7 +20,7 @@
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap
 //= require dataTables/extras/TableTools 
-//= requrie cocoon
+//= require cocoon
 //= require_tree .
 
 (function($){
