@@ -1,0 +1,11 @@
+:ruby
+  require 'csv'
+  csv_output = CSV.generate do |csv| 
+    csv << ["LAWYERS TIMESHEET"]
+    @file_matter_info.each do |fmi|
+      csv << ["Matter :", fmi.title]
+      csv << ["", fmi.case_number]
+      csv << ["", fmi.file_code]  
+    end
+  end
+  puts csv_output

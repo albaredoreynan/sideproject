@@ -3,22 +3,27 @@
 </div>
 <div class="row">
 	<div class="span12 ">
-		<%= simple_form_for admin_side_search_path, :method => 'get' do %>
+		<%= simple_form_for admin_side_search_path, :method => 'get' do |f|%>
 			<table class="table well" >
 			  <thead>		
 				<tr>
-					<td>Reference No.:</td>
-					<td><%= select_tag(:file_matter_case, options_from_collection_for_select(@file_matters, :case_number, :case_number, params[:file_matter_case]), {:id => 'file_matter_case', :prompt => "Select From List"})%></td>	
-					<td>Case Title/Matter:</td>
-					<td><%= select_tag(:case_title, options_from_collection_for_select(@file_matters, :title, :title, params[:case_title]), {:id => 'case_title', :prompt => "Select From List"})%></td>
+					<td>
+						<%= f.input :file_matter_id, :url => autocomplete_file_matter_file_code_case_entries_path, :as => :autocomplete, :required => false, :label => "File Reference No.:" %>
+						<%#= select_tag(:file_matter_case, options_from_collection_for_select(@file_matters, :case_number, :case_number, params[:file_matter_case]), {:id => 'file_matter_case', :prompt => "Select From List"})%>
+					</td>	
+					<td><%= f.input :case_number, :url => autocomplete_file_matter_case_number_case_entries_path, :as => :autocomplete, :required => false, :label => "Case Number:" %></td>
+					<td>
+						<%= f.label "Date From:" %>
+						<%= f.text_field :beginning_date,  :id => "datepicker_beg"%>
+					</td>
+					<td>
+						<%= f.label "Date To:" %>
+						<%= f.text_field :ending_date,  :id => "datepicker_end"%>
+					</td>
 				</tr>
-				<tr>	
-					<td>Date From:</td>
-					<td><%= text_field_tag :beginning_date, params[:beginning_date], :id => "datepicker_beg" %></td>
-					<td>Date To:</td>
-					<td><%= text_field_tag :ending_date, params[:ending_date], :id => "datepicker_end" %></td>
-				</tr>
-				<tr><td colspan="4"><div class="pull-right"><%= submit_tag "Search"%></div></td></tr>
+				<tr><td colspan="4"><div class="pull-right">
+					    <%= submit_tag "Search" %>
+				</div></td></tr>
 			  </thead>		
 			</table>
 		<% end %>
@@ -28,119 +33,20 @@
 
 <div class="row">
 	<div class="pull-right" width="100%">
-  <%= link_to admin_side_index_path(params.merge(format: 'pdf')), :class => "btn btn-mini", :rel => "tooltip", :title => "Download To PDF" do %>
-                              <li class="icon-download-alt"></li>
-                          <% end %> 
-                        </div>
+  		<%= link_to admin_side_index_path(params.merge(format: 'pdf')), :class => "btn btn-mini", :rel => "tooltip", :title => "Download To PDF" do %>
+          	<li class="icon-download-alt"></li>
+      	<% end %> 
+    </div>
 	<div class="span12">
-		
-		<% if @case_listing.count != 0 %>
-			<div class="span11 well">
-				<% @file_entries.each do |fe| %>
-					<table class="span11">
-						<thead>
-							<tr><td colspan="2" align="center"><h3>LAWYERS' TIMESHEETS</h3></td></tr>
-							<tr><td colspan="2" align="center">For the period <%= Date.strptime(params[:beginning_date], '%Y-%m-%d') %> to <%= Date.strptime(params[:ending_date], '%Y-%m-%d') %></td></tr>
-							<tr><td colspan="2">&nbsp;</td></tr>
-							<tr>
-								<td align="left" valign="top">Matter: </td>
-								<td align="left">
-									<%= fe.title%><br/>
-									<%= fe.case_number%><br/>
-									<%= fe.file_code%>
-								</td>
-							</tr>
-							<tr>
-								<td align="left">Client: </td>
-								<td align="left">
-									<% Client.where("id = ?", fe.client_id).each do |cl| %>
-										<%= cl.name %>
-									<% end %>
-									<br/>
-								</td>
-							</tr>
-							<tr><td colspan="2">&nbsp;</td></tr>
-							<% @assigned_lawyer = Lawyer.find(fe.lawyer_id) %>
-								<tr>
-									<td colspan="2" align="left" ><div style="padding-left: 40px;" >ATTORNEY: <%= @assigned_lawyer.full_name %>, <%= @assigned_lawyer.position %></div></td>
-								</tr>
-								<tr><td colspan="2">&nbsp;</td></tr>
-								<tr>
-									<td colspan="2" align="center">
-										<table class="span10 table table-hover">
-											<tr>
-												<th align="center">Date</th>
-												<th align="center">Work Particulars</th>
-												<th align="center">Time Spent</th>
-											</tr>
-												<% @total_hours = Array.new %>
-												<% @case_enrty = CaseEntry.find(:all, :conditions => { :lawyer_id => @assigned_lawyer.id, :file_matter_case => fe.case_number, :entry_date => params[:beginning_date]..params[:ending_date] } ) %> 
-												<% @case_enrty.each do |entry| %>
-													<tr>
-														<td align="center"><%= entry.entry_date %></td>
-														<td align="left"><%= entry.work_particulars %></td>
-														<td align="center">
-															<% @start_time = Time.strptime(entry.time_spent_from, '%I:%M %P') %>
-															<% @end_time = Time.strptime(entry.time_spent_to, '%I:%M %P') %>
-															<% @time_spent = @end_time - @start_time %>
-															<%= @value = Time.at(@time_spent).utc.strftime('%I.%M') %>
-															<% @total_hours << @value.to_f %>
-														</td>
-													</tr>
-												<% end %>
-												<tr>
-													<td colspan="2" style="font-weight: bold;">Total Hours Spent:</td>
-													<td align="center" style="font-weight: bold;"><%= @total_hours.inject(:+) %></td>
-												</tr>	
-										</table>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2" align="center">
-										<table class="span10 table table-hover">
-											<tr>
-												<td colspan="4" align="center">SUMMARY OF HOURS AND TIME CHARGES</td>
-											</tr>
-											<tr>
-												<td align="center">LAWYER</td>
-												<td align="center">HOURS</td>
-												<td align="center">RATE PER HOUR</td>
-												<td align="center">TOTAL CHARGES</td>
-											</tr>
-
-											<% @lawyers_charge = FileMatter.find(:all, :conditions => { :case_number => fe.case_number } ).each do |lc| %>
-												<% @totals_all = Array.new %>
-												<% @lawyers = Lawyer.find(:all, :conditions => { :id => lc.lawyer_id } ).each do |lawyer| %>
-													<tr>
-													  <td><%=  lawyer.full_name %></td>
-													  <td><%=  @total_actual_hours = @total_hours.inject(:+) %></td>
-													  <td><%=  number_to_currency( lawyer.rate, :unit => "Php 	") %></td>
-													  <td>
-													  	<%  @total_hours_final = @total_actual_hours * lawyer.rate.to_f %>
-													  	<%=  number_to_currency( @total_hours_final, :unit => "Php 	") %>	
-													  </td>
-													</tr>
-													<% @totals_all << @total_hours_final.to_f %>
-												<% end %>
-												<tr>
-													<td colspan="3" align="right">Total</td>
-													<td><%= number_to_currency( @totals_all.inject(:+).to_f, :unit => "Php ") %></td>
-												</tr>
-											<% end %>
-										</table>	
-									</td>
-								</tr>
-						</thead>
-					</table>
-				<% end %>			
-			</div>
-
+		<%= params[:file_matter_id] %>
+		<%= params[:case_number] %>
+		<%= params[:beginning_date] %>
+		<%= @case_listings %>
+		<% if !@case_listings.blank? %>
+			<h2>Records Found.</h2>
 		<% else %>
-			<table class="table">
-				<tr><td>No Records Found.</td></tr>
-			</table>
-		<% end %>
-				
+			<h2>No Records Found.</h2>
+		<% end %>		
 	</div>
 </div>
 <script>

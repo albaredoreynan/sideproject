@@ -1,29 +1,41 @@
 class AdminSideController < ApplicationController
+	autocomplete :file_matter, :file_code, :full => true
+  	autocomplete :file_matter, :case_number, :full => true
 
 	def index
-		@clients = Client.all
-		@lawyers = Lawyer.all
-		@file_matters = FileMatter.all
-
+		# @clients = Client.all
+		# @lawyers = Lawyer.all
+		# @file_matters = FileMatter.all
+		
 		args = {}
-	    args.merge!(lawyer_id: params[:lawyer_id]) unless params[:lawyer_id].blank?
-	    args.merge!(client_id: params[:client_id]) unless params[:client_id].blank?
-	    args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
-	    args.merge!(file_matter_case: params[:file_matter_case]) unless params[:file_matter_case].blank?
-	    args.merge!(case_title: params[:case_title]) unless params[:case_title].blank?
+    	args.merge!(file_matter_id: params[:file_matter_id]) unless params[:file_matter_id].blank?
+    	args.merge!(case_number: params[:case_number]) unless params[:case_number].blank?
+    	args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
+    	@case_listings = CaseEntry.where(args).count
 
-	    if params[:lawyer_id] || params[:client_id] || params[:beginning_date] || params[:ending_date] || params[:file_matter_case] || params[:case_title]
-	    	@case_listing = CaseEntry.where(args)
-	    	args2 = {}
-	    	args2.merge!(case_number: params[:file_matter_case]) unless params[:file_matter_case].blank?
-	    	args2.merge!(title: params[:case_title]) unless params[:case_title].blank?
-	    	@file_entries = FileMatter.where(args2)
-	    else
-	    	@case_listing = CaseEntry.find(:all, :conditions => { :entry_date => Date.today } )
-	    end
-	    
-	    @start_date = params[:beginning_date]
-	    @end_date = params[:ending_date]
+	    # if !params[:file_matter_id].blank? || !params[:case_number].blank? || !params[:beginning_date].blank? || !params[:ending_date].blank? 
+	    # 	args2 = {}
+	    # 	year = params[:file_matter_id].to_s.split("-")[0]
+	    # 	code = params[:file_matter_id].to_s.split("-")[1]
+	    # 	args2.merge!(year: year.to_int) unless year.blank?
+	    # 	args2.merge!(code: code.to_int) unless code.blank?
+	    # 	args2.merge!(case_number: params[:case_number]) unless params[:case_number].blank?
+	    # 	args2.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
+	    	
+	    # 	args = {}
+	    # 	args.merge!(file_matter_id: params[:file_matter_id]) unless params[:file_matter_id].blank?
+	    # 	args.merge!(case_number: params[:case_number]) unless params[:case_number].blank?
+	    # 	args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
+	    # 	@case_listings = CaseEntry.where(args)
+
+	    # 	puts ">>>>"
+	    # 	puts @case_listings
+	    # 	puts ">>>>"
+
+	    # else
+	    # 	@case_listings = CaseEntry.find(:all, :conditions => { :entry_date => Date.today })
+	    # end
+
 	    respond_to do |format|
 	    	format.html
 	      	format.pdf do 
@@ -33,7 +45,13 @@ class AdminSideController < ApplicationController
     	end
 	end
 
-	# def show
+	def autocomplete_file_matter_file_code
+	    render json: FileMatter.select("distinct file_code as value").where("file_code ILIKE ?", "%#{params[:term]}%")
+	    # render json: AnnualProcurementPlan.select("distinct version as value").where("version ILIKE ?", "%#{params[:term]}%").where(:agency_id => current_user.agency.id)
+	end
 
-	# end
+	def autocomplete_file_matter_case_number
+		render json: FileMatter.select("distinct case_number as value").where("case_number ILIKE ?", "%#{params[:term]}%")
+	    # render json: AnnualProcurementPlan.select("distinct version as value").where("version ILIKE ?", "%#{params[:term]}%").where(:agency_id => current_user.agency.id)
+	end
 end
