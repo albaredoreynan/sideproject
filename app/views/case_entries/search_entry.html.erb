@@ -1,0 +1,197 @@
+<div class="page-header">
+  <h3>Case Reports</h3>
+</div>
+<div class="row">
+	<div class="span12 ">
+		<%= form_for case_entries_search_path, :method => 'get' do %>
+			<table class="table well" >
+			  <thead>		
+				<tr>
+					<td>
+						<%#= text_field :file_matter_id, :url => autocomplete_file_matter_file_code_case_entries_path, :as => :autocomplete, :required => false, :label => "File Reference No.:" %>
+						<%#= select_tag(:file_matter_case, options_from_collection_for_select(@file_matters, :case_number, :case_number, params[:file_matter_case]), {:id => 'file_matter_case', :prompt => "Select From List"})%>
+						<%= label :file_matter_id,  "File Reference No. :" %>
+						<%= autocomplete_field_tag :file_matter_id, nil, autocomplete_file_matter_file_code_case_entries_path, :required => false %>
+					</td>	
+					<td>
+						<%#= text_field :case_number, :url => autocomplete_file_matter_case_number_case_entries_path, :as => :autocomplete, :required => false, :label => "Case Number:" %>
+						<%= label :case_number,  "Case Number:" %>
+						<%= autocomplete_field_tag :case_number, nil, autocomplete_file_matter_case_number_case_entries_path, :required => false %>
+					</td>
+					<td>
+						<%= label :beginning_date,  "Date From:" %>
+						<%= text_field_tag :beginning_date, nil,  :id => "datepicker_beg"%>
+					</td>
+					<td>
+						<%= label :ending_date, "Date To:" %>
+						<%= text_field_tag :ending_date, nil,  :id => "datepicker_end"%>
+					</td>
+				</tr>
+				<tr><td colspan="4"><div class="pull-right">
+					    <%= submit_tag "Search" %>
+				</div></td></tr>
+			  </thead>		
+			</table>
+		<% end %>
+	</div>
+</div>
+<div class="clearfix"></div>
+
+<div class="row">
+	
+	<div class="span12">
+		<% if !@case_listings.nil? %>
+
+			<div class="pull-right" width="100%">
+		  		<%= link_to "Download as PDF <i class='icon-download-alt'></i>".html_safe, search_entry_path(params.merge(format: 'pdf')), :class => "btn btn-primary" %> 	
+		  		<%#= link_to "Download as CSV <i class='icon-download-alt'></i>".html_safe, search_entry_path(params.merge(format: 'csv')), :class => "btn btn-primary" %>
+		    	<br/>
+		    </div>
+			<div class="clearfix"></div>
+			<% @file_matter_info.each do |fmi| %>
+			<table class="table" width="90%">
+				<tr>
+					<td colspan="2"><center><h3>Lawyers Timesheet</h3></center></td>
+				</tr>
+				<tr>
+					<td width="10%">Matter :</td>
+					<td width="80%">
+						<%= fmi.title %><br/>
+						<%= fmi.case_number %><br/>
+						<%= fmi.file_code %>
+					</td>
+				</tr>
+				<tr>
+					<td width="10%">Client :</td>
+					<% @client_name = Client.find(fmi.client_id)%>
+					<td width="80%"><%= @client_name.name %></td>
+				</tr>
+				<% @assigned_lawyers = AssignedLawyer.find(:all, :conditions => { :file_matter_id => fmi.id } ) %>
+				<% @assigned_lawyers.each do |al| %>
+					<tr>
+						<td colspan="2">
+							<br/>
+							<table style="border: 0px;" width="100%">
+								<tr>
+									<td width="10%"><center>Attorney : </center></td>
+									<td width="70%"><strong><%= al.lawyer.full_name %></strong>, <italic><%= al.lawyer.position %></italic></td>
+								</tr>
+							</table>
+							<br/>
+
+							<table class="table table-condensed" width="90%">
+								<thead>
+									<tr class="success">
+										<th width="15%"><center>DATE</center></th>
+										<th width="65%"><center>WORK PARTICULARS</center></th>
+										<th width="10%"><center>TIME SPENT</center></th>
+									</tr>
+								</thead>
+								<tbody>
+									<% @total_hours = Array.new %>
+									
+									<% if params[:file_matter_id].blank? && params[:case_number].blank? %>
+										<% @case_entries = CaseEntry.find(:all, :conditions => { :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
+									<% elsif !params[:file_matter_id].blank? && params[:case_number].blank? %>
+										<% @case_entries = CaseEntry.find(:all, :conditions => { :file_matter_id => params[:file_matter_id], :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
+									<% elsif params[:file_matter_id].blank? && !params[:case_number].blank? %>
+										<% @case_entries = CaseEntry.find(:all, :conditions => { :file_matter_case => params[:case_number], :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
+									<% else%>
+										<% @case_entries = CaseEntry.find(:all, :conditions => { :file_matter_id => params[:file_matter_id], :file_matter_case => params[:case_number], :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
+									<% end%>
+
+									<% @case_entries.each do |ce| %>
+										<tr class="info">
+											<td width="15%"><center><%= ce.entry_date %></center></td>
+											<td width="65%"><%= ce.work_particulars %></td>
+											<% @start_time = Time.strptime(ce.time_spent_from, '%I:%M %P') %>
+											<% @end_time = Time.strptime(ce.time_spent_to, '%I:%M %P') %>
+											<% @time_spent = @end_time - @start_time %>
+											<% @value = Time.at(@time_spent).utc.strftime('%I.%M') %>
+											<% @total_hours << @value.to_f %>
+											<td width="10%"><center><%= @value %></center></td>
+										</tr>
+									<% end %>
+									<tr class="success">
+										<td colspan="2" width="80%" align="right"><strong>TOTAL HOURS SPENT : </strong></td>
+										<td width="10%"><center><strong><%= number_with_precision(@total_hours.inject(:+).to_f, :precision => 2, :delimiter => ',') %></strong></center></td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				<% end %>
+				<tr>
+					<td colspan="2">
+						<table class="table table-borderless" width="90%">
+							<tr>
+								<td colspan="4"><center><h4>SUMMARY OF HOURS AND TIME CHARGES</h4></center></td>
+							</tr>
+							<tr>
+								<th width="40%"><center>LAWYER</center></th>
+								<th width="10%"><center>HOURS</center></th>
+								<th width="20%"><center>RATE PER HOUR</center></th>
+								<th width="20%"><center>TOTAL CHARGES</center></th>
+							</tr>
+							<% @totals_all = Array.new %>
+							<% @assigned_lawyers_list = AssignedLawyer.find(:all, :conditions => { :file_matter_id => fmi.id } ) %>
+							<% @assigned_lawyers_list.each do |laws| %>
+								<% @total_hours2 = Array.new %>
+								
+								<%# @case_entries2 = CaseEntry.find(:all, :conditions => { :file_matter_id => params[:file_matter_id], :file_matter_case => params[:case_number], :lawyer_id => laws.lawyer_id, :entry_date => params[:beginning_date]..params[:ending_date] }  )%>
+								<% if params[:file_matter_id].blank? && params[:case_number].blank? %>
+									<% @case_entries2 = CaseEntry.find(:all, :conditions => { :lawyer_id => laws.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
+								<% elsif !params[:file_matter_id].blank? && params[:case_number].blank? %>
+									<% @case_entries2 = CaseEntry.find(:all, :conditions => { :file_matter_id => params[:file_matter_id], :lawyer_id => laws.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
+								<% elsif params[:file_matter_id].blank? && !params[:case_number].blank? %>
+									<% @case_entries2 = CaseEntry.find(:all, :conditions => { :file_matter_case => params[:case_number], :lawyer_id => laws.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
+								<% else%>
+									<% @case_entries2 = CaseEntry.find(:all, :conditions => { :file_matter_id => params[:file_matter_id], :file_matter_case => params[:case_number], :lawyer_id => laws.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
+								<% end%>
+
+								<% @case_entries2.each do |ce| %>
+									<% @start_time2 = Time.strptime(ce.time_spent_from, '%I:%M %P') %>
+									<% @end_time2 = Time.strptime(ce.time_spent_to, '%I:%M %P') %>
+									<% @time_spent2 = @end_time2 - @start_time2 %>
+									<% @value2 = Time.at(@time_spent2).utc.strftime('%I.%M') %>
+									<% @total_hours2 << @value2.to_f %>
+								<% end %>
+								<tr class="info">
+								  <td width="40%"><center><%=  laws.lawyer.full_name %></center></td>
+								  <% @total_actual_hours = @total_hours2.inject(:+) %>
+								  <td width="10%"><center><%=  number_with_precision(@total_actual_hours, :precision => 2, :delimiter => ',') %></center></td>
+								  <td width="20%"><center><%=  number_to_currency( laws.lawyer.rate, :unit => "Php 	") %></center></td>
+								  <td width="20%"><center>
+								  	<%  @total_hours_final = @total_actual_hours * laws.lawyer.rate.to_f %>
+								  	<%=  number_to_currency( @total_hours_final, :unit => "Php 	") %></center>	
+								  </td>
+								</tr>
+								<% @totals_all << @total_hours_final.to_f %>
+							<% end %>
+							<tr class="success">
+								<td colspan="3"><strong>TOTAL :</strong></td>
+								<td><center><strong><%= number_to_currency( @totals_all.inject(:+).to_f, :unit => "Php ") %></strong></center></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+
+			<% end %>
+		<% else %>
+			<h2>No Records Found.</h2>
+		<% end %>		
+	</div>
+</div>
+<script>
+	$(function() {
+  		$('#datepicker_beg').datepicker({format: 'yyyy-mm-dd'});
+  		$('#datepicker_end').datepicker({format: 'yyyy-mm-dd'});
+  	});
+</script>
+										
+										
+											  
+
+											
+											 

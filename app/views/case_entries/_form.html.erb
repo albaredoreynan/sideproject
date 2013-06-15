@@ -60,7 +60,7 @@
 		<br/>
 		<div class="span11">	
 		  <div class="form-actions">	
-		  	<%= f.hidden_field :user_id, :value => current_user.id %>
+		  	<%= f.hidden_field :user_id, value: current_user.id %>
 		    <%= f.submit "Submit Entry", :class => 'btn btn-primary' %>
 		  	<%= link_to 'View Time Summary', case_entries_path, :class => 'btn' %>
 		  </div>

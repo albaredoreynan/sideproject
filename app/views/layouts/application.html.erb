@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Case2</title>
+  <title>Time Entry System</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
-</head>
+  <%= favicon_link_tag 'favicon.ico' %>
 <body>
   <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
@@ -24,9 +24,11 @@
                 <li><%= link_to "Clients", clients_path %></li>
                 <li><%= link_to "Lawyers", lawyers_path %></li>
                 <li><%= link_to "File/Matters", file_matters_path %></li>
-                <li>
-                  <%= link_to "Reports", admin_side_index_path %>
-                  <%#= link_to "Reports", case_entries_searching_path %>
+                <!-- <li>
+                  <%#= link_to "Reports", admin_side_index_path %>
+                </li> -->
+                <li>  
+                  <%= link_to "Reports", search_entry_path %>
                 </li>
               <% else %>
               <% end %>

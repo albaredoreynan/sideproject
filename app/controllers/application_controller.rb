@@ -2,6 +2,20 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :authenticate_user!
 
+  def render_csv(filename = nil)
+    filename += '.csv'
+
+    if request.env['HTTP_USER_AGENT'] =~ /msie/i
+      headers['Pragma'] = 'public'
+      headers['Content-Type'] = 'text/plain'
+      headers['Cache-Control'] = 'no-cache, must-revalidate, post-check=0, pre-check=0'
+      headers['Expires'] = "0"
+    end
+    headers['Content-Disposition'] = "attachment; filename=\"#{filename}\""
+
+    render :layout => false
+  end
+
   private
 
   def after_sign_in_path_for(user)
@@ -17,4 +31,5 @@ class ApplicationController < ActionController::Base
 	send(:"new_#{scope}_session_path")
   end
   
+
 end

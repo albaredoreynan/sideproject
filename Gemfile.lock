@@ -1,4 +1,15 @@
 GIT
+  remote: git://github.com/prawnpdf/prawn
+  revision: 8028ca0cd2aae8c72df9fc4bf16388948423bcb2
+  branch: master
+  specs:
+    prawn (1.0.0.rc2)
+      afm
+      pdf-reader (~> 1.2)
+      ruby-rc4
+      ttfunk (~> 1.0.3)
+
+GIT
   remote: git://github.com/rweng/jquery-datatables-rails.git
   revision: 494f752b8eb8350f33841c822a67d014c869219f
   specs:
@@ -98,9 +109,6 @@ GEM
       ttfunk
     pg (0.15.1)
     polyglot (0.3.3)
-    prawn (0.12.0)
-      pdf-reader (>= 0.9.0)
-      ttfunk (~> 1.0.2)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -181,7 +189,7 @@ DEPENDENCIES
   less-rails
   nifty-generators
   pg
-  prawn
+  prawn!
   rails (= 3.2.9)
   rails3-jquery-autocomplete
   sass-rails (~> 3.2.3)

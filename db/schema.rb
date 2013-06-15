@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130611022858) do
+ActiveRecord::Schema.define(:version => 20130612040101) do
 
   create_table "assigned_lawyers", :force => true do |t|
     t.integer  "lawyer_id"
@@ -48,14 +48,16 @@ ActiveRecord::Schema.define(:version => 20130611022858) do
   end
 
   create_table "file_matters", :force => true do |t|
-    t.string "year"
-    t.string "file_code"
-    t.string "volume"
-    t.string "client_id"
-    t.string "title"
-    t.string "case_number"
-    t.string "lawyer_id"
-    t.string "case_date"
+    t.string   "year"
+    t.string   "file_code"
+    t.string   "volume"
+    t.string   "client_id"
+    t.string   "title"
+    t.string   "case_number"
+    t.string   "lawyer_id"
+    t.string   "case_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "lawyers", :force => true do |t|

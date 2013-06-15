@@ -108,5 +108,70 @@ class CaseEntriesController < ApplicationController
   def autocomplete_file_matter_case_number
     render json: FileMatter.select("distinct case_number as value").where("case_number ILIKE ?", "%#{params[:term]}%")
     # render json: AnnualProcurementPlan.select("distinct version as value").where("version ILIKE ?", "%#{params[:term]}%").where(:agency_id => current_user.agency.id)
+  end
+
+  def search_entry
+      # args = {}
+      # args.merge!(file_matter_id: params[:file_matter_id]) unless params[:file_matter_id].blank?
+      # args.merge!(case_number: params[:case_number]) unless params[:case_number].blank?
+      # args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
+      # @case_listings = CaseEntry.where(args)
+
+      # if !params[:file_matter_id].blank? || !params[:case_number].blank? || !params[:beginning_date].blank? || !params[:ending_date].blank? 
+        args2 = {}
+        year = params[:file_matter_id].to_s.split("-")[0]
+        code = params[:file_matter_id].to_s.split("-")[1]
+        #args2.merge!(year: year) unless year.blank?
+        args2.merge!(file_code: params[:file_matter_id]) unless params[:file_matter_id].blank?
+        args2.merge!(case_number: params[:case_number]) unless params[:case_number].blank?
+        #args2.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
+        
+        args = {}
+        args.merge!(file_matter_id: params[:file_matter_id]) unless params[:file_matter_id].blank?
+        args.merge!(file_matter_case: params[:case_number]) unless params[:case_number].blank?
+        args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
+        if params[:file_matter_id].blank? && params[:case_number].blank? && params[:beginning_date].blank? && params[:ending_date].blank?
+          @case_listings = nil
+        else
+          @case_listings = CaseEntry.where(args)
+        end
+        
+        @file_matter_info = FileMatter.where(args2)
+        # if !params[:file_matter_id].nil? && !params[:case_number].nil?
+        #   @file_matter_info = FileMatter.find(:all, :conditions => { :year => year, :file_code => code, :case_number => params[:case_number] } )
+        #   @case_listings = CaseEntry.where(args)
+        # elsif !params[:case_number].nil? && params[:case_number].nil?
+        #   @file_matter_info = FileMatter.find(:all, :conditions => { :year => year, :file_code => code } )
+        #   @case_listings = CaseEntry.where(args)
+        # elsif params[:case_number].nil? && !params[:case_number].nil?
+        #   @file_matter_info = FileMatter.find(:all, :conditions => { :case_number => params[:case_number] } )
+        #   @case_listings = CaseEntry.where(args)
+        # else
+        #   @file_matter_info = nil
+        #   @case_listings = nil
+        # end
+          
+        @start_date = params[:beginning_date]
+        @end_date = params[:ending_date]
+        @file_matter_id = params[:file_matter_id]
+        @case_number = params[:case_number]
+
+      # else
+      #   @case_listings = CaseEntry.find(:all, :conditions => { :entry_date => Date.today })
+      # end
+
+      respond_to do |format|
+          format.html
+
+          format.pdf do 
+            pdf = CaseReportsPdf.new(@case_listings, @file_matter_info, @start_date, @end_date, @file_matter_id, @case_number)
+            send_data pdf.render, filename: "Case Reports " + Date.today.to_s + ".pdf", disposition: "inline"
+          end
+
+          format.csv do
+            filename = "Case EntryReports"
+            render_csv(filename)
+          end
+      end
   end    
 end
