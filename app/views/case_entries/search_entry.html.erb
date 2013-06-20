@@ -100,6 +100,23 @@
 										<% @case_entries = CaseEntry.find(:all, :conditions => { :file_matter_id => params[:file_matter_id], :file_matter_case => params[:case_number], :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
 									<% end%>
 
+									<!-- regular -->
+									<%# @x_reg = labor_hours_list.regular %>
+									<%# @x_reg = @x_reg.to_s %>
+									<%# @x_reg = @x_reg.split(".") %>
+									<%# @hours_reg << @x_reg[0].to_i %>
+									<%# @minutes_reg << @x_reg[1].to_i %>
+									<%# @hr_reg = @hours_reg.inject(:+) %>
+									<%# @min_reg = @minutes_reg.inject(:+) %>
+									<%# if @min_reg >= 60 %>
+										<%# @hr_reg = (@min_reg / 60) + @hr_reg %>
+										<%# @min_reg = @min_reg % 60 %>
+									<%# end %>
+
+
+
+									<% @hours = Array.new %>
+									<% @minutes = Array.new %>
 									<% @case_entries.each do |ce| %>
 										<tr class="info">
 											<td width="15%"><center><%= ce.entry_date %></center></td>
@@ -107,14 +124,34 @@
 											<% @start_time = Time.strptime(ce.time_spent_from, '%I:%M %P') %>
 											<% @end_time = Time.strptime(ce.time_spent_to, '%I:%M %P') %>
 											<% @time_spent = @end_time - @start_time %>
-											<% @value = Time.at(@time_spent).utc.strftime('%I.%M') %>
+											<% @hh = Time.at(@time_spent).utc.strftime('%I') %>
+											<% if @hh == '12' %>
+												<% @hh = '00' %>
+											<% else %>
+												<% @hh = @hh %>
+											<% end%>
+											<% @mm = Time.at(@time_spent).utc.strftime('%M') %>
+											<% @value = @hh+"."+@mm %>
 											<% @total_hours << @value.to_f %>
+											<% @x = @value.to_s %><br/>
+											<% @xx = @x.split(".") %>
+											<% @hours << @xx[0].to_i %>
+											<% @minutes << @xx[1].to_i %>
+											<% @hr_reg = @hours.inject(:+) %>
+											<% @min_reg = @minutes.inject(:+) %>
+											<% if @min_reg >= 60 %>
+												<% @hr_reg = (@min_reg / 60) + @hr_reg %>
+												<% @min_reg = @min_reg % 60 %>
+											<% end %>
 											<td width="10%"><center><%= @value %></center></td>
 										</tr>
 									<% end %>
 									<tr class="success">
 										<td colspan="2" width="80%" align="right"><strong>TOTAL HOURS SPENT : </strong></td>
-										<td width="10%"><center><strong><%= number_with_precision(@total_hours.inject(:+).to_f, :precision => 2, :delimiter => ',') %></strong></center></td>
+										<td width="10%"><center><strong>
+												<%= @total_hours = @hr_reg.to_s+"."+@min_reg.to_s %>
+												<%#= number_with_precision(@total_hours.inject(:+).to_f, :precision => 2, :delimiter => ',') %>
+											</strong></center></td>
 									</tr>
 								</tbody>
 							</table>
@@ -137,7 +174,8 @@
 							<% @assigned_lawyers_list = AssignedLawyer.find(:all, :conditions => { :file_matter_id => fmi.id } ) %>
 							<% @assigned_lawyers_list.each do |laws| %>
 								<% @total_hours2 = Array.new %>
-								
+								<% @hours2 = Array.new %>
+								<% @minutes2 = Array.new %>
 								<%# @case_entries2 = CaseEntry.find(:all, :conditions => { :file_matter_id => params[:file_matter_id], :file_matter_case => params[:case_number], :lawyer_id => laws.lawyer_id, :entry_date => params[:beginning_date]..params[:ending_date] }  )%>
 								<% if params[:file_matter_id].blank? && params[:case_number].blank? %>
 									<% @case_entries2 = CaseEntry.find(:all, :conditions => { :lawyer_id => laws.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
@@ -148,21 +186,43 @@
 								<% else%>
 									<% @case_entries2 = CaseEntry.find(:all, :conditions => { :file_matter_id => params[:file_matter_id], :file_matter_case => params[:case_number], :lawyer_id => laws.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
 								<% end%>
-
+									
 								<% @case_entries2.each do |ce| %>
 									<% @start_time2 = Time.strptime(ce.time_spent_from, '%I:%M %P') %>
 									<% @end_time2 = Time.strptime(ce.time_spent_to, '%I:%M %P') %>
 									<% @time_spent2 = @end_time2 - @start_time2 %>
-									<% @value2 = Time.at(@time_spent2).utc.strftime('%I.%M') %>
+									<%# @value2 = Time.at(@time_spent2).utc.strftime('%I.%M') %>
+									<%# @total_hours2 << @value2.to_f %>
+									<% @hh2 = Time.at(@time_spent2).utc.strftime('%I') %>
+									<% if @hh2 == '12' %>
+										<% @hh2 = '00' %>
+									<% else %>
+										<% @hh2 = @hh2 %>
+									<% end%>
+									<% @mm2 = Time.at(@time_spent2).utc.strftime('%M') %>
+									<% @value2 = @hh2+"."+@mm2 %>
 									<% @total_hours2 << @value2.to_f %>
+									<% @x2 = @value2.to_s %><br/>
+									<% @xx2 = @x2.split(".") %>
+									<% @hours2 << @xx2[0].to_i %>
+									<% @minutes2 << @xx2[1].to_i %>
+									<% @hr_reg2 = @hours2.inject(:+) %>
+									<% @min_reg2 = @minutes2.inject(:+) %>
+									<% if @min_reg2 >= 60 %>
+										<% @hr_reg2 = (@min_reg2 / 60) + @hr_reg2 %>
+										<% @min_reg2 = @min_reg2 % 60 %>
+									<% end %>
 								<% end %>
 								<tr class="info">
 								  <td width="40%"><center><%=  laws.lawyer.full_name %></center></td>
-								  <% @total_actual_hours = @total_hours2.inject(:+) %>
-								  <td width="10%"><center><%=  number_with_precision(@total_actual_hours, :precision => 2, :delimiter => ',') %></center></td>
+								  <%# @total_actual_hours = @total_hours2.inject(:+) %>
+								  <% @total_actual_hours =  @hr_reg2.to_s+"."+@min_reg2.to_s %>
+								  <%= @multiplier_hours =  ( @min_reg2.to_f / 60 ).round(2) %>
+								  <%= @total_multi = @hr_reg2 + @multiplier_hours %>
+								  <td width="10%"><center><%=  number_with_precision(@total_actual_hours.to_f, :precision => 2, :delimiter => ',') %></center></td>
 								  <td width="20%"><center><%=  number_to_currency( laws.lawyer.rate, :unit => "Php 	") %></center></td>
 								  <td width="20%"><center>
-								  	<%  @total_hours_final = @total_actual_hours * laws.lawyer.rate.to_f %>
+								  	<%  @total_hours_final = @total_multi * laws.lawyer.rate.to_f %>
 								  	<%=  number_to_currency( @total_hours_final, :unit => "Php 	") %></center>	
 								  </td>
 								</tr>
