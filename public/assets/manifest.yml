@@ -1,10 +1,14 @@
 ---
+b_icon.jpg: b_icon-9ef4adf04367408071832886c82f9937.jpg
+b_icon/index.jpg: b_icon-9ef4adf04367408071832886c82f9937.jpg
+favicon.ico: favicon-0ed403784abafede962cba66880381a0.ico
+favicon/index.ico: favicon-0ed403784abafede962cba66880381a0.ico
 rails.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
 rails/index.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
-application.js: application-c3d01545778ee7f0fd693bd6bf3023f2.js
-application/index.js: application-c3d01545778ee7f0fd693bd6bf3023f2.js
-application.css: application-35252797f6aad7820ac97c6e799ce082.css
-application/index.css: application-35252797f6aad7820ac97c6e799ce082.css
+application.js: application-c05fc97191348d4448823d02c1c0bb20.js
+application/index.js: application-c05fc97191348d4448823d02c1c0bb20.js
+application.css: application-fdb22798c0387711ed45f38bc18ecdcb.css
+application/index.css: application-fdb22798c0387711ed45f38bc18ecdcb.css
 jquery.min.map: jquery.min-6c267bfd2b3f36e6edccb2e584934c1c.map
 jquery/index.min.map: jquery.min-6c267bfd2b3f36e6edccb2e584934c1c.map
 fontawesome-webfont.eot: fontawesome-webfont-635909f146e208b3509acdf3b154bf0d.eot
