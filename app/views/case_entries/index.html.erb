@@ -14,6 +14,7 @@
     <thead>
       <tr>
         <th>Entry Date</th>
+        <th>File Reference No.</th>
         <th>Client</th>
         <th>Matter File No.</th>
         <th>Start Time</th>
@@ -25,6 +26,7 @@
       <% @case_entries.each do |case_entry| %>
         <tr>
           <td data-title=""><%= case_entry.entry_date %></td>
+          <td data-title=""><%= case_entry.file_matter_id %></td>
           <% @client = Client.find(:all, :conditions => { :id => case_entry.client_id} ) %>
           <td><% @client.each do |x| %>
                 <%= x.name %>
@@ -55,6 +57,7 @@
 <script>
   $('#case_entries').dataTable( {
     "aoColumns": [
+      { "bSearchable": true, "bSortable": true },
       { "bSearchable": true, "bSortable": true },
       { "bSearchable": false, "bSortable": true },
       { "bSearchable": false, "bSortable": true },
