@@ -188,10 +188,5 @@ class CaseReportsPdf < Prawn::Document
 			self.row_colors = ["FFFFFF", "FFFFFF"]
 			self.header = false
 		end
-
-		# table(row2, :width => 720, :cell_style => {:size => 9, :border_color => "e0e0e0" } ) do
-		# 	self.row_colors = ["FFFFFF", "FFFFFF"]
-		# 	self.header = false
-		# end
 	end
 end
