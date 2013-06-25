@@ -1,0 +1,54 @@
+<%- model_class = User -%>
+<div class="page-header">
+  <h1>System Users</h1>
+</div>
+<br/>
+<div class="span12 well">                        
+  <table class="table table-striped" id="user_list">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Assigned To Lawyer</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @user_list.each do |user_list| %>
+        <tr>
+          <td><%= user_list.name %></td>
+          <td><%= user_list.username %></td>
+          <td><%= user_list.email %></td>
+          <td><%= user_list.lawyer_id %></td>
+          <td>
+            <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                        edit_case_entry_path(user_list), :class => 'btn btn-mini' %>
+            <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                        case_entry_path(user_list),
+                        :method => :delete,
+                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                        :class => 'btn btn-mini btn-danger' %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <br>
+  <br>
+</div>
+<%#= link_to "Create Entry",
+            new_case_entry_path,
+            :class => 'btn btn-primary' %>
+<script>
+  $('#user_list').dataTable( {
+    "aoColumns": [
+      { "bSearchable": true, "bSortable": true },
+      { "bSearchable": true, "bSortable": true },
+      { "bSearchable": false, "bSortable": true },
+      { "bSearchable": false, "bSortable": true },
+      { "bSearchable": false, "bSortable": false }
+    ],
+    "sPaginationType": "bootstrap"
+  } );
+</script>            

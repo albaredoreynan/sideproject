@@ -7,7 +7,7 @@ class CaseEntriesController < ApplicationController
     if current_user.role == 'Administrator'
       @case_entries = CaseEntry.all
     else
-      @case_entries = CaseEntry.find(:all, :conditions => { :user_id => current_user.id } )
+      @case_entries = CaseEntry.find(:all, :conditions => { :lawyer_id => current_user.lawyer_id } )
     end
     @lawyer = current_user.name
     respond_to do |format|
@@ -59,17 +59,54 @@ class CaseEntriesController < ApplicationController
   # POST /case_entries
   # POST /case_entries.json
   def create
-    @case_entry = CaseEntry.new(params[:case_entry])
 
-    respond_to do |format|
-      if @case_entry.save
-        format.html { redirect_to case_entries_path(), notice: 'Case entry was successfully created.' }
-        format.json { render json: @case_entry, status: :created, location: @case_entry }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @case_entry.errors, status: :unprocessable_entity }
+    if params[:case_entry][:create_multiple_lawyer_entries] == "1"
+      
+      @assigned_lawyers = AssignedLawyer.find(:all, :conditions => { :file_matter_id => params[:filematter_id] } )
+        
+        @assigned_lawyers.each do |al|
+          
+          @users = User.find(:all, :conditions => {:lawyer_id => al.lawyer_id }  )
+          @users.each do |usr|
+            @case_entry = CaseEntry.new(
+              :file_matter_id => params[:case_entry][:file_matter_id],
+              :entry_date => params[:case_entry][:entry_date],
+              :time_spent_from => params[:case_entry][:time_spent_from], 
+              :time_spent_to => params[:case_entry][:time_spent_to], 
+              :work_particulars => params[:case_entry][:work_particulars], 
+              :client_id => params[:case_entry][:client_id], 
+              :case_title => params[:case_entry][:case_title], 
+              :file_matter_case => params[:case_entry][:file_matter_case], 
+              :lawyer_id => al.lawyer_id, 
+              :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries], 
+              :user_id => usr.id 
+            )
+            @case_entry.save  
+          end
+
+        end
+        respond_to do |format|
+          format.html { redirect_to case_entries_path(), notice: 'Case entries was successfully created.' }
+          format.json { render json: @case_entry, status: :created, location: @case_entry }
+        end
+
+    else
+      
+      @case_entry = CaseEntry.new(params[:case_entry])
+      respond_to do |format|
+        if @case_entry.save
+          format.html { redirect_to case_entries_path(), notice: 'Case entry was successfully created.' }
+          format.json { render json: @case_entry, status: :created, location: @case_entry }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @case_entry.errors, status: :unprocessable_entity }
+        end
       end
+
     end
+
+    
+
   end
 
   # PUT /case_entries/1
@@ -150,6 +187,16 @@ class CaseEntriesController < ApplicationController
         #   @file_matter_info = nil
         #   @case_listings = nil
         # end
+
+        # if params[:file_matter_id].blank? && params[:case_number].blank?
+        #   @case_entries = CaseEntry.find(:all, :conditions => { :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )
+        # elsif !params[:file_matter_id].blank? && params[:case_number].blank?
+        #   @case_entries = CaseEntry.find(:all, :conditions => { :file_matter_id => params[:file_matter_id], :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )
+        # elsif params[:file_matter_id].blank? && !params[:case_number].blank?
+        #   @case_entries = CaseEntry.find(:all, :conditions => { :file_matter_case => params[:case_number], :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )
+        # else
+        #   @case_entries = CaseEntry.find(:all, :conditions => { :file_matter_id => params[:file_matter_id], :file_matter_case => params[:case_number], :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )
+        # end      
           
         @start_date = params[:beginning_date]
         @end_date = params[:ending_date]
@@ -168,10 +215,9 @@ class CaseEntriesController < ApplicationController
             send_data pdf.render, filename: "Case Reports " + Date.today.to_s + ".pdf", disposition: "inline"
           end
 
-          format.csv do
-            filename = "Case EntryReports"
-            render_csv(filename)
-          end
+          format.csv { send_data @case_entries.to_csv }
+          format.xls
+          
       end
   end    
 end

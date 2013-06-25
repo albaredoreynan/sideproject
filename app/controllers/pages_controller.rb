@@ -13,7 +13,8 @@ class PagesController < ApplicationController
 		@file_matters2.each do |fm|
 			@lawyers << fm.lawyer_id
 		end
-		@my_lawyers =  Lawyer.find(:all, :conditions => ["id IN (?)", @lawyers] ).map{|b| [b.full_name, b.id]}
+		@lawyer_selected = current_user.lawyer_id.to_i
+		@my_lawyers =  Lawyer.find(:all, :conditions => ["id IN (?)", @lawyers] ).map{|b| [b.full_name, b.id] }
 		
 	end
 
