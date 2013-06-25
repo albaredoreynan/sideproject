@@ -49,8 +49,16 @@
 				
 
 				<%= f.label :lawyer_id, "Assigned Lawyer:"%>
-				<%= f.collection_select(:lawyer_id, @lawyers, :id, :full_name,  { :id => 'lawyer_id', :required => true, :prompt => "Select From List"} ) %>
-
+				<% if current_user.lawyer_id.nil? %>
+					<% @lawyer_id = 0 %>
+				<% else %>
+					<% @lawyer_id = current_user.lawyer_id %>
+				<% end %>
+				<%= f.collection_select(:lawyer_id, @lawyers, :id, :full_name,  { :id => 'lawyer_id', :required => true, :prompt => "Select From List", :selected =>  current_user.lawyer_id } ) %>
+				<br/>
+				<br/>
+				<%= f.check_box :create_multiple_lawyer_entries %><span style="margin-top: -10px;">Multiple Lawyer Entries</span>
+				<%= hidden_field_tag :filematter_id, :value => ""  %>
 			</div>
   		</div>
 

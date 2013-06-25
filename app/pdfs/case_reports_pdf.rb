@@ -2,7 +2,7 @@ class CaseReportsPdf < Prawn::Document
 	include ActionView::Helpers::NumberHelper
 
 	def initialize(case_listings, file_entries, start_date, end_date, file_matter_id, case_number)
-		super( :page_layout => :landscape, top_margin: 10)
+		super( :page_layout => :portrait, top_margin: 15 )
 
 		@case_listings = case_listings
 		@file_matter_info = file_entries
@@ -11,11 +11,12 @@ class CaseReportsPdf < Prawn::Document
 		@end_date = end_date
 		@file_matter_id = file_matter_id
 		@case_number = case_number
-		
+		move_down(30)
 		text "LAWYERS' TIMESHEETS", :size => 15, :style => :bold, :align => :center
-		move_down(1)
+		move_down(2)
 		text "For the period #{@start_date.to_time.strftime('%B %d, %Y')} up to #{@end_date.to_time.strftime('%B %d, %Y')}", :size => 10, :style => :normal, :align => :center
 
+		move_down(12)
 		move_down(5)
 		case_entry_reports(@start_date, @end_date, @file_matter_id, @case_number)
 		#case_entry_reports2
@@ -30,7 +31,7 @@ class CaseReportsPdf < Prawn::Document
 		  row1 << [" ", {:content => fmi.file_code, :colspan => 4 } ]
 		  move_down(2)
 		  @client_name = Client.find(fmi.client_id)
-		  row1 << ["Client :", {:content => @client_name.name, :colspan => 2 } ]
+		  row1 << ["CLIENT :", {:content => @client_name.name, :colspan => 2 } ]
 		  row1 << [{:content => "", :colspan => 5 }] 	
 		  row1 << [{:content => "", :colspan => 5 }]
 		  row1 << [{:content => "", :colspan => 5 }]
@@ -47,9 +48,9 @@ class CaseReportsPdf < Prawn::Document
 				row1 << [{:content => "", :colspan => 5 }]
 				row1 << [{:content => "", :colspan => 5 }]
 				row1 << [
-						{:content => "DATE", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :width => 100 }, 
-						{:content => "WORK PARTICULARS", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :width => 500, :colspan => 3 }, 
-						{:content => "TIME SPENT", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :width => 120 }
+						{:content => "DATE", :background_color => "E8E8D0", :align => :center, :text_color => "001B76" }, 
+						{:content => "WORK PARTICULARS", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :colspan => 3 }, 
+						{:content => "TIME SPENT", :background_color => "E8E8D0", :align => :center, :text_color => "001B76" }
 						]
 				@total_hours = Array.new
 				@case_entries = CaseEntry.find(:all, :conditions => { :file_matter_id => file_matter_id, :lawyer_id => al.lawyer_id, :entry_date => start_date..end_date }  )
@@ -112,7 +113,7 @@ class CaseReportsPdf < Prawn::Document
 			row1 << [{:content => "", :colspan => 5 }]
 			row1 << [{:content => "", :colspan => 5}]
 			row1 << [{:content => "", :colspan => 5}]
-			row1 << [{:content => "SUMMARY OF HOURS AND TIME CHARGES", :colspan => 4, :align => :center, :font_style => :bold }]
+			row1 << [{:content => "SUMMARY OF HOURS AND TIME CHARGES", :colspan => 5, :align => :center, :font_style => :bold }]
 			row1 << [
 					{:content => "LAWYERS", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :colspan => 2 },
 					{:content => "HOURS", :background_color => "E8E8D0", :align => :center, :text_color => "001B76" }, 
@@ -129,7 +130,7 @@ class CaseReportsPdf < Prawn::Document
 				@minutes2 = Array.new
 				@case_entries2 = CaseEntry.find(:all, :conditions => { :file_matter_id => file_matter_id, :lawyer_id => laws.lawyer_id, :entry_date => start_date..end_date }  )
 				
-				@case_entries2.each do |ce| 
+					@case_entries2.each do |ce| 
 					@start_time2 = Time.strptime(ce.time_spent_from, '%I:%M %P')
 					@end_time2 = Time.strptime(ce.time_spent_to, '%I:%M %P')
 					@time_spent2 = @end_time2 - @start_time2
@@ -167,7 +168,7 @@ class CaseReportsPdf < Prawn::Document
 				@thf =  number_to_currency( @total_hours_final, :unit => "Php ")
 
 				row1 << [
-					{:content => "#{@laws_lawyer_full_name}", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :colspan => 2 }, 
+					{:content => "#{@laws_lawyer_full_name}", :background_color => "E8E8D0", :align => :left, :text_color => "001B76", :colspan => 2 }, 
 					{:content => "#{@tah}", :background_color => "E8E8D0", :align => :center, :text_color => "001B76" },
 					{:content => "#{@laws_lawyer_rate}", :background_color => "E8E8D0", :align => :center, :text_color => "001B76" },
 					{:content => "#{@thf}", :background_color => "E8E8D0", :align => :center, :text_color => "001B76" }
@@ -181,7 +182,7 @@ class CaseReportsPdf < Prawn::Document
 						] 
 		end
 
-		table(row1, :width => 720, :cell_style => {:size => 12, :border_color => "FFFFFF", :padding => 1 } ) do
+		table(row1, :width => 540, :cell_style => {:size => 11, :border_color => "FFFFFF", :padding => 1 } ) do
 			# column(0).style :align => :center
 			# column(1).style :align => :center
 			# column(2).style :align => :center

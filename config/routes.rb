@@ -1,5 +1,6 @@
 Case2::Application.routes.draw do
   devise_for :users
+  
   namespace :account do
     resources :users 
   end
