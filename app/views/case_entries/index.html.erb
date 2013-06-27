@@ -13,10 +13,10 @@
   <table class="table table-striped" id="case_entries">
     <thead>
       <tr>
-        <th width="10%"><center>Entry Date</center></th>
-        <th width="10%"><center>File Ref. No.</center></th>
-        <th width="25%"><center>Client</center></th>
-        <th width="25%"><center>File Matter No.</center></th>
+        <th width="13%"><center>Entry Date</center></th>
+        <th width="17%"><center>File Reference No.</center></th>
+        <th width="22%"><center>Client</center></th>
+        <th width="18%"><center>Case Title</center></th>
         <th width="10%"><center>Start Time</center></th>
         <th width="10%"><center>End Time</center></th>
         <th width="10%"><center>Action</center></th>
@@ -32,7 +32,7 @@
                 <%= x.name %>
               <% end %>
           </td>    
-          <td><%= case_entry.file_matter_case %></td>
+          <td><%#= case_entry.file_matter_case %><%= case_entry.case_title %></td>
           <td><center><%= case_entry.time_spent_from %></center></td>
           <td><center><%= case_entry.time_spent_to %></center></td>
           <td><center>
