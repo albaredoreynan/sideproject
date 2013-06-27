@@ -14,9 +14,10 @@
     <thead>
       <tr>
         <th width="13%"><center>Entry Date</center></th>
-        <th width="17%"><center>File Reference No.</center></th>
-        <th width="22%"><center>Client</center></th>
-        <th width="18%"><center>Case Title</center></th>
+        <th width="15%"><center>File Reference No.</center></th>
+        <th width="20%"><center>Client</center></th>
+        <th width="14%"><center>Case Title</center></th>
+        <th width="8%"><center>Initial</center></th>
         <th width="10%"><center>Start Time</center></th>
         <th width="10%"><center>End Time</center></th>
         <th width="10%"><center>Action</center></th>
@@ -33,6 +34,12 @@
               <% end %>
           </td>    
           <td><%#= case_entry.file_matter_case %><%= case_entry.case_title %></td>
+          <% @lawyers_initial = Lawyer.where("id = ?", case_entry.lawyer_id) %>
+          <td><center>
+            <% @lawyers_initial.each do |initials| %>
+              <%= initials.initials %>
+            <% end %>
+          </center></td>
           <td><center><%= case_entry.time_spent_from %></center></td>
           <td><center><%= case_entry.time_spent_to %></center></td>
           <td><center>
