@@ -29,7 +29,6 @@ INSERT INTO users( email, encrypted_password, username, name, reset_password_tok
 INSERT INTO users( email, encrypted_password, username, name, reset_password_token, reset_password_sent_at, remember_created_at, sign_in_count, current_sign_in_at, last_sign_in_at, current_sign_in_ip, last_sign_in_ip, created_at, updated_at, role) VALUES ('sysad@techsupport.com', '$2a$10$dqr14Hl0LV6oso6U8TwpYujoTzeAKAu2QoLHhvGrnqfB8traBFEAi', 'supersysad', 'Super System Administrator', NULL, NULL, NULL, 1, '2013-06-04 22:27:58.854698', '2013-06-04 22:27:58.854698', '127.0.0.1', '127.0.0.1', '2013-06-04 22:27:58.849065', '2013-06-04 22:27:58.849065', 'Super Administrator');
 
 
-
 -- INSERT INTO file_matters (id, file_code, client_id, title, case_number, case_date, created_at, updated_at) VALUES (1,'2001-021',1,'GENERAL FILE','','01/31/01', '2013-06-04 22:26:41.87955', '2013-06-04 22:26:41.87955');
 -- INSERT INTO file_matters (id, file_code, client_id, title, case_number, case_date, created_at, updated_at) VALUES (2,'2001-028',2,'GENERAL FILE','','02/06/01', '2013-06-04 22:26:41.87955', '2013-06-04 22:26:41.87955');
 -- INSERT INTO file_matters (id, file_code, client_id, title, case_number, case_date, created_at, updated_at) VALUES (3,'1997-163',3,'GENERAL FILE','','06/03/97', '2013-06-04 22:26:41.87955', '2013-06-04 22:26:41.87955');

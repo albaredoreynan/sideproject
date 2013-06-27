@@ -28,7 +28,7 @@
                   <%#= link_to "Reports", admin_side_index_path %>
                 </li> -->
                 <li>  
-                  <%= link_to "Reports", search_entry_path %>
+                  <%= link_to "Timesheet", search_entry_path %>
                 </li>
                 <li>  
                   <%= link_to "Users", account_users_path %>
@@ -42,7 +42,7 @@
               <li>
                 <%= link_to current_user.name, edit_user_registration_path(current_user) %>
               </li>
-              <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+              <li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
             </ul>
           <% end %>
         </div>

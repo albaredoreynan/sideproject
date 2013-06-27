@@ -1,16 +1,16 @@
 <%- model_class = FileMatter -%>
 <div class="page-header">
-  <h3>File Matters</h3>
+  <h3 class="title">File Matters</h3>
 </div>
 <div class="row">
-  <div class="span12 well">
+  <div class="span11 well">
     <table class="table table-striped" id="filematters">
       <thead>
         <tr>
-          <th>File Code</th>
-          <th>Title</th>
-          <th>Case #</th>
-          <th><%=t '.actions', :default => t("helpers.actions") %></th>
+          <th width="15%"><center>File Reference No.</center></th>
+          <th width="35%"><center>Case Title</center></th>
+          <th width="35%"><center>Case No.</center></th>
+          <th width="15%"><center><%=t '.actions', :default => t("helpers.actions") %></center></th>
         </tr>
       </thead>
       <tbody>
@@ -37,6 +37,8 @@
 <%= link_to 'Create Entry',
             new_file_matter_path,
             :class => 'btn btn-primary' %>
+<br/>
+<br/>
 <script>
   $('#filematters').dataTable( {
     "aoColumns": [

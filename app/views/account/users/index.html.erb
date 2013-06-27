@@ -1,9 +1,9 @@
 <%- model_class = User -%>
 <div class="page-header">
-  <h1>System Users</h1>
+  <h3 class="title">System Users</h3>
 </div>
 <br/>
-<div class="span12 well">                        
+<div class="span11 well">                        
   <table class="table table-striped" id="user_list">
     <thead>
       <tr>
@@ -23,9 +23,9 @@
           <td><%= user_list.lawyer_id %></td>
           <td>
             <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                        edit_case_entry_path(user_list), :class => 'btn btn-mini' %>
+                        edit_account_user_path(user_list), :class => 'btn btn-mini' %>
             <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                        case_entry_path(user_list),
+                        account_user_path(user_list),
                         :method => :delete,
                         :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                         :class => 'btn btn-mini btn-danger' %>
