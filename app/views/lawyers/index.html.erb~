@@ -19,10 +19,10 @@
         <% @lawyers.each do |lawyer| %>
           <tr>
             <td><%= lawyer.first_name+" "+lawyer.middle_name+" "+lawyer.last_name %> </td>
-            <td><%= lawyer.initials %></td>
-            <td><%= lawyer.position %></td>
-            <td><%= lawyer.email %></td>
-            <td><%= lawyer.mobile_number %></td>
+            <td><center><%= lawyer.initials %></center></td>
+            <td><center><%= lawyer.position %></center></td>
+            <td><center><%= lawyer.email %></center></td>
+            <td><center><%= lawyer.mobile_number %></center></td>
             <td>
               <%= link_to t('.edit', :default => t("helpers.links.edit")),
                           edit_lawyer_path(lawyer), :class => 'btn btn-mini' %>

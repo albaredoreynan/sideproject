@@ -7,7 +7,7 @@ class CaseEntriesController < ApplicationController
     if current_user.role == 'Administrator'
       @case_entries = CaseEntry.all
     else
-      @case_entries = CaseEntry.find(:all, :conditions => { :lawyer_id => current_user.lawyer_id }, :order => "entry_date DESC" )
+      @case_entries = CaseEntry.find(:all, :conditions => { :lawyer_id => current_user.lawyer_id } )
     end
     @lawyer = current_user.name
     respond_to do |format|

@@ -67,11 +67,10 @@
     "aoColumns": [
       { "bSearchable": true, "bSortable": true },
       { "bSearchable": true, "bSortable": true },
-      { "bSearchable": true, "bSortable": true },
-      { "bSearchable": true, "bSortable": true },
-      { "bSearchable": true, "bSortable": true },
-      { "bSearchable": true, "bSortable": true },
-      { "bSearchable": true, "bSortable": true },
+      { "bSearchable": false, "bSortable": true },
+      { "bSearchable": false, "bSortable": true },
+      null,
+      null,
       { "bSearchable": false, "bSortable": false }
     ],
     "sPaginationType": "bootstrap"

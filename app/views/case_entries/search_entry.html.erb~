@@ -82,13 +82,13 @@
 					<% @total_hours = Array.new %>
 												
 					<% if params[:file_matter_id].blank? && params[:case_number].blank? %>
-						<% @case_entries = CaseEntry.find(:all, :conditions => { :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
+						<% @case_entries = CaseEntry.find(:all, :conditions => { :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }, :order => "entry_date ASC"  )%>
 					<% elsif !params[:file_matter_id].blank? && params[:case_number].blank? %>
-						<% @case_entries = CaseEntry.find(:all, :conditions => { :file_matter_id => params[:file_matter_id], :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
+						<% @case_entries = CaseEntry.find(:all, :conditions => { :file_matter_id => params[:file_matter_id], :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }, :order => "entry_date ASC"  )%>
 					<% elsif params[:file_matter_id].blank? && !params[:case_number].blank? %>
-						<% @case_entries = CaseEntry.find(:all, :conditions => { :file_matter_case => params[:case_number], :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
+						<% @case_entries = CaseEntry.find(:all, :conditions => { :file_matter_case => params[:case_number], :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }, :order => "entry_date ASC"  )%>
 					<% else%>
-						<% @case_entries = CaseEntry.find(:all, :conditions => { :file_matter_id => params[:file_matter_id], :file_matter_case => params[:case_number], :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
+						<% @case_entries = CaseEntry.find(:all, :conditions => { :file_matter_id => params[:file_matter_id], :file_matter_case => params[:case_number], :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }, :order => "entry_date ASC"  )%>
 					<% end%>
 					<% if !@case_entries.empty? %>
 					<tr>
