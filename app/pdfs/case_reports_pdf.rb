@@ -26,12 +26,12 @@ class CaseReportsPdf < Prawn::Document
 		# row2 = []
 		row1 = []
 		@file_matter_info.each do |fmi|
-		  row1 << ["MATTER :", {:content => fmi.title, :colspan => 4 } ]
-		  row1 << [" ", {:content => fmi.case_number, :colspan => 4 } ]
-		  row1 << [" ", {:content => fmi.file_code, :colspan => 4 } ]
+		  row1 << ["MATTER :", {:content => fmi.title, :font_style => :bold, :colspan => 4 } ]
+		  row1 << [" ", {:content => fmi.case_number, :font_style => :bold, :colspan => 4 } ]
+		  row1 << [" ", {:content => fmi.file_code, :font_style => :bold, :colspan => 4 } ]
 		  move_down(2)
 		  @client_name = Client.find(fmi.client_id)
-		  row1 << ["CLIENT :", {:content => @client_name.name, :colspan => 2 } ]
+		  row1 << ["CLIENT :", {:content => @client_name.name, :font_style => :bold, :colspan => 2 } ]
 		  row1 << [{:content => "", :colspan => 5 }] 	
 		  row1 << [{:content => "", :colspan => 5 }]
 		  row1 << [{:content => "", :colspan => 5 }]
@@ -124,7 +124,7 @@ class CaseReportsPdf < Prawn::Document
 			row1 << [{:content => "SUMMARY OF HOURS AND TIME CHARGES", :colspan => 5, :align => :center, :font_style => :bold }]
 			row1 << [
 					{:content => "LAWYERS", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :colspan => 2 },
-					{:content => "HOURS", :background_color => "E8E8D0", :align => :center, :text_color => "001B76" }, 
+					{:content => "HOURS", :background_color => "E8E8D0", :align => :center, :text_color => "001B76"}, 
 					{:content => "RATE PER HOUR", :background_color => "E8E8D0", :align => :center, :text_color => "001B76" },
 					{:content => "TOTAL CHARGES", :background_color => "E8E8D0", :align => :center, :text_color => "001B76" }
 					]
