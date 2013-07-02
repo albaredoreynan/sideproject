@@ -142,7 +142,13 @@
 													<tr class="success">
 														<td colspan="2"><strong>TOTAL HOURS SPENT : </strong></td>
 														<td width="10%" style="text-align:right;padding-right:40px"><strong>
-																<%= @total_hours = @hr_reg.to_s+"."+@min_reg.to_s %>
+																<% if @min_reg < 10 %>
+																	<% @new_min = "0"+@min_reg.to_s %>
+																<% else %>
+																	<% @new_min = @min_reg.to_s %>
+																<% end %>	
+
+																<%= @total_hours = @hr_reg.to_s+"."+@new_min %>
 																<%# number_with_precision(@total_hours.to_f, :precision => 2, :delimiter => ',') %>
 															</strong></td>
 													</tr>
@@ -217,7 +223,13 @@
 									<tr class="info">
 									  <td width="30%"><%=  laws.lawyer.full_name %></td>
 									  <%# @total_actual_hours = @total_hours2.inject(:+) %>
-									  <% @total_actual_hours =  @hr_reg2.to_s+"."+@min_reg2.to_s %>
+
+									    <% if @min_reg2 < 10 %>
+											<% @new_min2 = "0"+@min_reg2.to_s %>
+										<% else %>
+											<% @new_min2 = @min_reg2.to_s %>
+										<% end %>
+									  <% @total_actual_hours =  @hr_reg2.to_s+"."+@new_min2 %>
 									  <% @multiplier_hours =  ( @min_reg2.to_f / 60 ).round(2) %>
 									  <% @total_multi = @hr_reg2 + @multiplier_hours %>
 									  <td width="10%" style="text-align:right;padding-right:40px"><%=  number_with_precision(@total_actual_hours.to_f, :precision => 2, :delimiter => ',') %></td>
