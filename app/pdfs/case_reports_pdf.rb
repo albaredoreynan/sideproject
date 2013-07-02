@@ -124,8 +124,8 @@ class CaseReportsPdf < Prawn::Document
 			row1 << [{:content => "SUMMARY OF HOURS AND TIME CHARGES", :colspan => 5, :align => :center, :font_style => :bold }]
 			row1 << [
 					{:content => "LAWYERS", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :colspan => 2 },
-					{:content => "HOURS", :background_color => "E8E8D0", :align => :center, :text_color => "001B76"}, 
-					{:content => "RATE PER HOUR", :background_color => "E8E8D0", :align => :center, :text_color => "001B76" },
+					{:content => "HOURS", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :width => 25}, 
+					{:content => "RATE PER HOUR", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :width => 100 },
 					{:content => "TOTAL CHARGES", :background_color => "E8E8D0", :align => :center, :text_color => "001B76" }
 					]
 			
