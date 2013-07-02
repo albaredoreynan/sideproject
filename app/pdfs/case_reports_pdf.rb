@@ -12,7 +12,7 @@ class CaseReportsPdf < Prawn::Document
 		@file_matter_id = file_matter_id
 		@case_number = case_number
 		move_down(30)
-		text "LAWYERS' TIMESHEETS", :size => 15, :style => :bold, :align => :center
+		text "TIMESHEETS", :size => 15, :style => :bold, :align => :center
 		move_down(2)
 		text "For the period #{@start_date.to_time.strftime('%B %d, %Y')} up to #{@end_date.to_time.strftime('%B %d, %Y')}", :size => 10, :style => :normal, :align => :center
 
