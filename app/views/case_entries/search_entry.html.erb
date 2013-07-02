@@ -108,23 +108,6 @@
 													<th width="65%"><center>WORK PARTICULARS</center></th>
 													<th width="10%"><center>TIME SPENT</center></th>
 												</tr>
-												
-
-												<!-- regular -->
-												<%# @x_reg = labor_hours_list.regular %>
-												<%# @x_reg = @x_reg.to_s %>
-												<%# @x_reg = @x_reg.split(".") %>
-												<%# @hours_reg << @x_reg[0].to_i %>
-												<%# @minutes_reg << @x_reg[1].to_i %>
-												<%# @hr_reg = @hours_reg.inject(:+) %>
-												<%# @min_reg = @minutes_reg.inject(:+) %>
-												<%# if @min_reg >= 60 %>
-													<%# @hr_reg = (@min_reg / 60) + @hr_reg %>
-													<%# @min_reg = @min_reg % 60 %>
-												<%# end %>
-
-												
-
 													<% @hours = Array.new %>
 													<% @minutes = Array.new %>
 													<% @case_entries.each do |ce| %>
@@ -159,8 +142,8 @@
 													<tr class="success">
 														<td colspan="2"><strong>TOTAL HOURS SPENT : </strong></td>
 														<td width="10%" style="text-align:right;padding-right:40px"><strong>
-																<% @total_hours = @hr_reg.to_s+"."+@min_reg.to_s %>
-																<%= number_with_precision(@total_hours.to_f, :precision => 2, :delimiter => ',') %>
+																<%= @total_hours = @hr_reg.to_s+"."+@min_reg.to_s %>
+																<%# number_with_precision(@total_hours.to_f, :precision => 2, :delimiter => ',') %>
 															</strong></td>
 													</tr>
 												

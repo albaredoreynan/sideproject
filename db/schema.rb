@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130624062101) do
+ActiveRecord::Schema.define(:version => 20130702042134) do
 
   create_table "assigned_lawyers", :force => true do |t|
     t.integer  "lawyer_id"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(:version => 20130624062101) do
     t.string   "case_title"
     t.integer  "user_id"
     t.boolean  "create_multiple_lawyer_entries"
+    t.string   "client_name"
   end
 
   create_table "clients", :force => true do |t|
