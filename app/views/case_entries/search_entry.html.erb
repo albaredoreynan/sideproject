@@ -1,5 +1,5 @@
 <div class="page-header">
-  <h3 class="title">Lawyers Timesheet</h3>
+  <h3 class="title">Timesheet</h3>
 </div>
 <div class="row">
 	<div class="span12 ">
@@ -17,8 +17,8 @@
 					<td>
 						<%#= text_field :case_number, :url => autocomplete_file_matter_case_number_case_entries_path, :as => :autocomplete, :required => false, :label => "Case Number:" %>
 						<%#= label :case_number,  "Case Number:" %>
-						Case Number:<br/>
-						<%= autocomplete_field_tag :case_number, nil, autocomplete_file_matter_case_number_case_entries_path, :required => false %>
+						<br/>
+						<%= autocomplete_field_tag :case_number, nil, autocomplete_file_matter_case_number_case_entries_path, :required => false, :disabled => :disabled %>
 					</td>
 					<td>
 						<%#= label :beginning_date,  "Date From:" %>
@@ -57,7 +57,7 @@
 				<tr>
 					<td colspan="2">
 						<center>
-							<h3>Lawyers Timesheet</h3>
+							<h3>Timesheet</h3>
 							For the period <%= @start_date.to_time.strftime('%B %d, %Y') %> up to <%= @end_date.to_time.strftime('%B %d, %Y') %>
 						</center>
 						<br/>
@@ -140,9 +140,15 @@
 														</tr>
 													<% end %>
 													<tr class="success">
-														<td colspan="2"><strong>TOTAL HOURS SPENT : </strong></td>
+														<td colspan="2" class="text-right"><strong>TOTAL HOURS SPENT : </strong></td>
 														<td width="10%" style="text-align:right;padding-right:40px"><strong>
-																<%= @total_hours = @hr_reg.to_s+"."+@min_reg.to_s %>
+																<% if @min_reg < 10 %>
+																	<% @new_min = "0"+@min_reg.to_s %>
+																<% else %>
+																	<% @new_min = @min_reg.to_s %>
+																<% end %>	
+
+																<%= @total_hours = @hr_reg.to_s+"."+@new_min %>
 																<%# number_with_precision(@total_hours.to_f, :precision => 2, :delimiter => ',') %>
 															</strong></td>
 													</tr>
@@ -217,7 +223,13 @@
 									<tr class="info">
 									  <td width="30%"><%=  laws.lawyer.full_name %></td>
 									  <%# @total_actual_hours = @total_hours2.inject(:+) %>
-									  <% @total_actual_hours =  @hr_reg2.to_s+"."+@min_reg2.to_s %>
+
+									    <% if @min_reg2 < 10 %>
+											<% @new_min2 = "0"+@min_reg2.to_s %>
+										<% else %>
+											<% @new_min2 = @min_reg2.to_s %>
+										<% end %>
+									  <% @total_actual_hours =  @hr_reg2.to_s+"."+@new_min2 %>
 									  <% @multiplier_hours =  ( @min_reg2.to_f / 60 ).round(2) %>
 									  <% @total_multi = @hr_reg2 + @multiplier_hours %>
 									  <td width="10%" style="text-align:right;padding-right:40px"><%=  number_with_precision(@total_actual_hours.to_f, :precision => 2, :delimiter => ',') %></td>
@@ -233,7 +245,7 @@
 								<% end %>
 							<% end %>
 							<tr class="success">
-								<td colspan="3"><strong>TOTAL :</strong></td>
+								<td colspan="3" class="text-right"><strong>TOTAL :</strong></td>
 								<td><center><strong><%= number_to_currency( @totals_all.inject(:+).to_f, :unit => "Php ") %></strong></center></td>
 							</tr>
 						</table>
