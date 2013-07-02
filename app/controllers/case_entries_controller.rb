@@ -5,7 +5,7 @@ class CaseEntriesController < ApplicationController
 
   def index
     if current_user.role == 'Administrator'
-      @case_entries = CaseEntry.all
+      @case_entries = CaseEntry.find(:all, :order => "entry_date DESC")
     else
       @case_entries = CaseEntry.find(:all, :conditions => { :lawyer_id => current_user.lawyer_id }, :order => "entry_date DESC" )
     end

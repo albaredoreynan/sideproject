@@ -36,13 +36,16 @@
   		<div class="span3">
   			<div class="span2">	
 				<%= f.label :client_id, "Client:"%>
-				<%= f.collection_select(:client_id, @clients, :id, :name,  { :id => 'client_id', :required => true, :prompt => "---" } ) %>
+				<%= f.text_field :client_name, :readonly => true %>
+				<%#= f.collection_select(:client_id, @clients, :id, :name,  { :id => 'client_id', :required => true, :prompt => "Select From List", :readonly => true } ) %>
 
+
+				<%= f.hidden_field :client_id %>
 				<%= f.label :case_title, "Case Title:"%>
-				<%= f.text_field :case_title %>
+				<%= f.text_field :case_title,:readonly => true %>
 
 				<%= f.label :file_matter_case, "Case No.:"%>
-				<%= f.text_field :file_matter_case %>
+				<%= f.text_field :file_matter_case,:readonly => true %>
 
 				<%#= f.collection_select(:file_matter_case, @file_matter_case, :id, :case_number, { :class => 'chzn-select' } ) %>
 				<%#= f.collection_select(:file_matter_case, @file_matter_case, :id, :case_number,  {:id => 'file_matter_case', :required => true} ) %>

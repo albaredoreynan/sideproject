@@ -43,12 +43,11 @@ class CaseReportsPdf < Prawn::Document
 			@assigned_lawyers.each do |al|	
 				@total_hours = Array.new
 				@case_entries = CaseEntry.find(:all, :conditions => { :file_matter_id => file_matter_id, :lawyer_id => al.lawyer_id, :entry_date => start_date..end_date }, :order => "entry_date DESC"  )
-				@hours = Array.new
-				@minutes = Array.new
+				
 
 				if !@case_entries.empty?
 
-					row1 << ["ATTORNEY :", {:content => al.lawyer.full_name+", "+al.lawyer.position, :colspan => 4 } ]
+					row1 << ["ATTORNEY :", {:content => al.lawyer.full_name+", "+al.lawyer.position, :colspan => 4, :font_style => :bold } ]
 					
 					row1 << [{:content => "", :colspan => 5 }] 
 					row1 << [{:content => "", :colspan => 5 }]
@@ -59,7 +58,8 @@ class CaseReportsPdf < Prawn::Document
 							{:content => "WORK PARTICULARS", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :colspan => 3 }, 
 							{:content => "TIME SPENT", :background_color => "E8E8D0", :align => :center, :text_color => "001B76" }
 							]
-					
+					@hours = Array.new
+					@minutes = Array.new
 					@case_entries.each do |ce|
 						# @start_time = Time.strptime(ce.time_spent_from, '%I:%M %P')
 						# @end_time = Time.strptime(ce.time_spent_to, '%I:%M %P')
@@ -78,31 +78,28 @@ class CaseReportsPdf < Prawn::Document
 						end
 						@mm = Time.at(@time_spent).utc.strftime('%M')
 						@value = @hh+"."+@mm
-						@total_hours << @value.to_f
+						
 						@x = @value.to_s
 						@xx = @x.split(".")
 						@hours << @xx[0].to_i
 						@minutes << @xx[1].to_i
-						@hr_reg = @hours.inject(:+).to_f
-						@min_reg = @minutes.inject(:+).to_f
+						@hr_reg = @hours.inject(:+)
+						@min_reg = @minutes.inject(:+)
 						if @min_reg >= 60
 							@hr_reg = (@min_reg / 60) + @hr_reg
-							@min_reg = @min_reg % 60 
+							@min_reg = @min_reg % 60
 						end
-
-						@ce_entry_date = ce.entry_date
-						@ce_work_particulars = ce.work_particulars
 
 						# row1 << [ ce.entry_date, {:content => ce.work_particulars, :colspan => 2 }, @value ]
 						# row1 << [ {:content => ce.entry_date, :align => 'center' }, {:content => ce.work_particulars, :align => 'left' }, {:content => @value, :align => 'center' } ]
 						row1 << [
-							{:content => "#{@ce_entry_date}", :background_color => "ffffff", :align => :center, :text_color => "000000" }, 
-							{:content => "#{@ce_work_particulars}", :background_color => "ffffff", :align => :left, :text_color => "000000", :colspan => 3 }, 
+							{:content => "#{ce.entry_date}", :background_color => "ffffff", :align => :center, :text_color => "000000" }, 
+							{:content => "#{ce.work_particulars}", :background_color => "ffffff", :align => :left, :text_color => "000000", :colspan => 3 }, 
 							{:content => "#{@value}", :background_color => "ffffff", :align => :center, :text_color => "000000" }
 							]
 					end
-					@grand_total_hours = number_with_precision(@total_hours.inject(:+).to_f, :precision => 2, :delimiter => ',')
 					@total_hours = @hr_reg.to_s+"."+@min_reg.to_s
+					#@grand_total_hours = number_with_precision(@total_hours.inject(:+).to_f, :precision => 2, :delimiter => ',')
 					row1 << [
 							{:content => "TOTAL HOURS SPENT :", :colspan => 4, :align => :right, :font_style => :bold}, 
 							{:content => "#{ number_with_precision(@total_hours.to_f, :precision => 2, :delimiter => ',') }", :align => :center, :font_style => :bold}, 
@@ -119,6 +116,9 @@ class CaseReportsPdf < Prawn::Document
 			end
 			row1 << [{:content => "", :colspan => 5 }]
 			row1 << [{:content => "", :colspan => 5 }]
+			row1 << [{:content => "", :colspan => 5}]
+			row1 << [{:content => "", :colspan => 5}]
+			row1 << [{:content => "", :colspan => 5}]
 			row1 << [{:content => "", :colspan => 5}]
 			row1 << [{:content => "", :colspan => 5}]
 			row1 << [{:content => "SUMMARY OF HOURS AND TIME CHARGES", :colspan => 5, :align => :center, :font_style => :bold }]
