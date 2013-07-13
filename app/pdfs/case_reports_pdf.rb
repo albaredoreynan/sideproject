@@ -140,7 +140,7 @@ class CaseReportsPdf < Prawn::Document
 			row1 << [
 					{:content => "LAWYERS", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :colspan => 2 },
 					{:content => "HOURS", :background_color => "E8E8D0", :align => :center, :text_color => "001B76" }, 
-					{:content => "RATE PER HOUR", :background_color => "E8E8D0", :align => :center, :text_color => "001B76" },
+					{:content => "RATE PER HOUR", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :width => 150 },
 					{:content => "TOTAL CHARGES", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :colspan => 2 }
 					]
 			
@@ -212,7 +212,7 @@ class CaseReportsPdf < Prawn::Document
 						{:content => "#{@laws_lawyer_full_name}", :background_color => "E8E8D0", :align => :left, :text_color => "001B76", :colspan => 2 }, 
 						{:content => "#{@tah}", :background_color => "E8E8D0", :align => :center, :text_color => "001B76" },
 						{:content => "#{@laws_lawyer_rate}", :background_color => "E8E8D0", :align => :center, :text_color => "001B76" },
-						{:content => "#{@thf}", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :colspan => 2 }
+						{:content => "#{@thf}", :background_color => "E8E8D0", :align => :right, :text_color => "001B76", :colspan => 2 }
 						]
 					@totals_all << @total_hours_final.to_f
 				else
@@ -221,8 +221,8 @@ class CaseReportsPdf < Prawn::Document
 			end
 			@grand_total_payment = number_to_currency( @totals_all.inject(:+).to_f, :unit => "Php ")
 				row1 << [
-						{:content => "TOTAL :", :colspan => 5, :align => :right, :font_style => :bold}, 
-						{:content => "#{@grand_total_payment}", :align => :center, :font_style => :bold}
+						{:content => "TOTAL :", :colspan => 4, :align => :right, :font_style => :bold}, 
+						{:content => "#{@grand_total_payment}", :colspan => 2, :align => :right, :font_style => :bold}
 						] 
 		end
 
