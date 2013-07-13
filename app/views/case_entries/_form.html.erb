@@ -64,13 +64,10 @@
 				<%= hidden_field_tag :filematter_id, :value => ""  %>
 			</div>
   		</div>
-
-  		<div class="span12">
-			
-		</div>
-		<br/>
-		<div class="span11">	
-		  <div class="form-actions">	
+  		<br/>	
+		<div class="span9">
+		  <br/>	
+		  <div class="pull left" style="margin-left: 30px;">	
 		  	<%= f.hidden_field :user_id, value: current_user.id %>
 		    <%= f.submit "Submit Entry", :class => 'btn btn-primary' %>
 		  	<%= link_to 'View Time Summary', case_entries_path, :class => 'btn' %>

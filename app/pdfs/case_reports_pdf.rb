@@ -55,7 +55,7 @@ class CaseReportsPdf < Prawn::Document
 					row1 << [{:content => "", :colspan => 6 }]
 					row1 << [
 							{:content => "DATE", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :width => 90 }, 
-							{:content => "WORK PARTICULARS", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :colspan => 4 }, 
+							{:content => "WORK DESCRIPTIONS / PARTICULARS", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :colspan => 4 }, 
 							{:content => "TIME SPENT", :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :width => 95 }
 							]
 					@hours = Array.new

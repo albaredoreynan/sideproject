@@ -4,7 +4,7 @@
 <div class="row">
 	<div class="span12 ">
 		<%= form_for case_entries_search_path, :method => 'get' do %>
-			<table class="table well" >
+			<table class="table well" width="100%">
 			  <thead>		
 				<tr>
 					<td>
@@ -14,12 +14,6 @@
 						File Reference No. :<br/>
 						<%= autocomplete_field_tag :file_matter_id, nil, autocomplete_file_matter_file_code_case_entries_path, :required => false %>
 					</td>	
-					<td>
-						<%#= text_field :case_number, :url => autocomplete_file_matter_case_number_case_entries_path, :as => :autocomplete, :required => false, :label => "Case Number:" %>
-						<%#= label :case_number,  "Case Number:" %>
-						<br/>
-						<%= autocomplete_field_tag :case_number, nil, autocomplete_file_matter_case_number_case_entries_path, :required => false, :disabled => :disabled %>
-					</td>
 					<td>
 						<%#= label :beginning_date,  "Date From:" %>
 						Date From:<br/>
@@ -104,15 +98,15 @@
 										<table class="table table-condensed" width="80%">
 											
 												<tr class="success">
-													<th width="15%"><center>DATE</center></th>
-													<th width="65%"><center>WORK PARTICULARS</center></th>
-													<th width="10%"><center>TIME SPENT</center></th>
+													<th width="15%" style="text-align:left;padding-left:10px">DATE</th>
+													<th width="65%"><center>WORK DESCRIPTIONS / PARTICULARS</center></th>
+													<th width="10%" style="text-align:right;padding-right:10px"><center>TIME SPENT</center></th>
 												</tr>
 													<% @hours = Array.new %>
 													<% @minutes = Array.new %>
 													<% @case_entries.each do |ce| %>
 														<tr class="info">
-															<td width="15%"><center><%= ce.entry_date %></center></td>
+															<td width="15%" style="text-align:left;padding-left:10px"><%= ce.entry_date %></td>
 															<td width="65%"><%= ce.work_particulars %></td>
 															<% @start_time = Time.strptime(ce.time_spent_from, '%I:%M %P') %>
 															<% @end_time = Time.strptime(ce.time_spent_to, '%I:%M %P') %>
@@ -136,12 +130,12 @@
 																<% @hr_reg = (@min_reg / 60) + @hr_reg %>
 																<% @min_reg = @min_reg % 60 %>
 															<% end %>
-															<td width="10%" style="text-align:right;padding-right:40px"><%= @value %></td>
+															<td width="10%" style="text-align:right;padding-right:10px"><%= @value %></td>
 														</tr>
 													<% end %>
 													<tr class="success">
 														<td colspan="2" class="text-right"><strong>TOTAL HOURS SPENT : </strong></td>
-														<td width="10%" style="text-align:right;padding-right:40px"><strong>
+														<td width="10%" style="text-align:right;padding-right:10px"><strong>
 																<% if @min_reg < 10 %>
 																	<% @new_min = "0"+@min_reg.to_s %>
 																<% else %>
@@ -171,10 +165,10 @@
 								<td colspan="4"><center><h4>SUMMARY OF HOURS AND TIME CHARGES</h4></center></td>
 							</tr>
 							<tr>
-								<th width="40%"><center>LAWYER</center></th>
+								<th width="40%" style="text-align:left;padding-left:10px">LAWYER</th>
 								<th width="10%"><center>HOURS</center></th>
 								<th width="20%"><center>RATE PER HOUR</center></th>
-								<th width="20%"><center>TOTAL CHARGES</center></th>
+								<th width="10%" style="text-align:right;padding-right:10px">TOTAL CHARGES</th>
 							</tr>
 							<% @totals_all = Array.new %>
 							<% @assigned_lawyers_list = AssignedLawyer.find(:all, :conditions => { :file_matter_id => fmi.id } ) %>
@@ -221,7 +215,7 @@
 										<% end %>
 									<% end %>
 									<tr class="info">
-									  <td width="30%"><%=  laws.lawyer.full_name %></td>
+									  <td width="40%" style="text-align:left;padding-left:10px"><%=  laws.lawyer.full_name %></td>
 									  <%# @total_actual_hours = @total_hours2.inject(:+) %>
 
 									    <% if @min_reg2 < 10 %>
@@ -232,11 +226,11 @@
 									  <% @total_actual_hours =  @hr_reg2.to_s+"."+@new_min2 %>
 									  <% @multiplier_hours =  ( @min_reg2.to_f / 60 ).round(2) %>
 									  <% @total_multi = @hr_reg2 + @multiplier_hours %>
-									  <td width="10%" style="text-align:right;padding-right:40px"><%=  number_with_precision(@total_actual_hours.to_f, :precision => 2, :delimiter => ',') %></td>
+									  <td width="10%" ><center><%=  number_with_precision(@total_actual_hours.to_f, :precision => 2, :delimiter => ',') %></center></td>
 									  <td width="20%"><center><%=  number_to_currency( laws.lawyer.rate, :unit => "Php 	") %></center></td>
-									  <td width="20%"><center>
+									  <td width="10%" style="text-align:right;padding-right:10px" >
 									  	<%  @total_hours_final = @total_multi * laws.lawyer.rate.to_f %>
-									  	<%=  number_to_currency( @total_hours_final, :unit => "Php 	") %></center>	
+									  	<%=  number_to_currency( @total_hours_final, :unit => "Php 	") %>
 									  </td>
 									</tr>
 									<% @totals_all << @total_hours_final.to_f %>
@@ -245,8 +239,8 @@
 								<% end %>
 							<% end %>
 							<tr class="success">
-								<td colspan="3" class="text-right"><strong>TOTAL :</strong></td>
-								<td><center><strong><%= number_to_currency( @totals_all.inject(:+).to_f, :unit => "Php ") %></strong></center></td>
+								<td colspan="3" width="60%" class="text-right"><strong>CHARGES :</strong></td>
+								<td style="text-align:right;padding-right:10px"><strong><%= number_to_currency( @totals_all.inject(:+).to_f, :unit => "Php ") %></strong></td>
 							</tr>
 						</table>
 					</td>
