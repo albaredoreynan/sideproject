@@ -9,7 +9,8 @@
 		<%= f.input :address, :as => :text, :label => 'Address',  :input_html => { :cols => 50, :rows => 3 } %>
 		
 		
-	  <div class="form-actions">
+	  <br/>
+	  <div class="pull left">
 	    <%= f.button :submit, :class => 'btn btn-primary' %>
 	    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
 	                clients_path, :class => 'btn' %>

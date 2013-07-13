@@ -52,7 +52,7 @@ class CaseEntriesController < ApplicationController
   def edit
     @case_entry = CaseEntry.find(params[:id])
     @file_matters = FileMatter.all
-    @lawyers = Lawyer.all
+    @lawyers = Lawyer.find(:all, :conditions => { :id => @case_entry.lawyer_id } )
     @clients = Client.all
   end
 
@@ -132,7 +132,7 @@ class CaseEntriesController < ApplicationController
     @case_entry.destroy
 
     respond_to do |format|
-      format.html { redirect_to case_entries_url }
+      format.html { redirect_to case_entries_path, alert: 'Case entry has been deleted.' }
       format.json { head :no_content }
     end
   end
