@@ -3,20 +3,48 @@
   <h1><%=t '.title', :default => model_class.model_name.human %></h1>
 </div>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:file_code) %>:</strong></dt>
-  <dd><%= @file_matter.file_code %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:title) %>:</strong></dt>
-  <dd><%= @file_matter.title %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:case_number) %>:</strong></dt>
-  <dd><%= @file_matter.case_number %></dd>
-</dl>
+<div class="dl-horizontal">
+  <div class="span1">&nbsp;</div>
+  <div class="span9">
+    <span><strong>File Reference No. :</strong></span>
+    <span><%= @file_matter.file_code %></span><br/>
+    
+    <span><strong>Client :</strong></span>
+    <span>
+      <% @client = Client.find(@file_matter.client_id) %>
+      
+        <%=  @client.name %>
+      
+      </span><br/>
+    
+    <span><strong>Case Title :</strong></span>
+    <span><%= @file_matter.title %></span><br/>
+    
+    <span><strong>Case Number :</strong></span>
+    <span><%= @file_matter.case_number %></span><br/>
+    
+    <span><strong>Case Date :</strong></span>
+    <span><%= @file_matter.case_date %></span><br/>
+    
+    <span><strong>Currency Use :</strong></span>
+    <span><%= @file_matter.currency_used %></span><br/>
+    
+    <span><strong>Assigned Lawyers :</strong></span><br/>
+    <% @assigned_lawyers = AssignedLawyer.find(:all, :conditions => { :file_matter_id => params[:id] } ) %>
+    <% @assigned_lawyers.each do |al| %>
+      <div style="padding-left:30px;"><span><%= al.lawyer.full_name %></span></div>
+    <% end %>
+  </div>
+</div>
 
 <div class="form-actions">
   <%= link_to t('.back', :default => t("helpers.links.back")),
-              file_matters_path, :class => 'btn'  %>
+              file_matters_path, :class => 'btn btn-primary'  %>
+  <%= link_to 'Next',
+            new_file_matter_path,
+            :class => 'btn btn-primary' %>            
   <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_file_matter_path(@file_matter), :class => 'btn' %>
+              edit_file_matter_path(@file_matter), :class => 'btn btn-primary' %>
   <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
               file_matter_path(@file_matter),
               :method => 'delete',

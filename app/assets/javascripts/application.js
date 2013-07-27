@@ -24,7 +24,7 @@
 //= require_tree .
 
 (function($){
-    
+    $(".alert").alert('closed')
     /**
      *  jQuery definition
      *
