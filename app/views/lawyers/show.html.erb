@@ -3,32 +3,47 @@
   <h1><%=t '.title', :default => model_class.model_name.human %></h1>
 </div>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:first_name) %>:</strong></dt>
-  <dd><%= @lawyer.first_name %></dd>
+<div class="dl-horizontal">
+  <div class="span1">&nbsp;</div>
+  <div class="span9">
+    <span><strong>First Name :</strong></span>
+    <span><%= @lawyer.first_name %></span><br/>
+    
+    <span><strong>Last Name :</strong></span>
+    <span><%= @lawyer.last_name %></span><br/>
+    
+    <span><strong>Middle Name :</strong></span>
+    <span><%= @lawyer.middle_name %></span><br/>
+    
+    <span><strong>Initial :</strong></span>
+    <span><%= @lawyer.initials %></span><br/>
 
-  <dt><strong><%= model_class.human_attribute_name(:last_name) %>:</strong></dt>
-  <dd><%= @lawyer.last_name %></dd>
+    <span><strong>Mobile Number :</strong></span>
+    <span><%= @lawyer.mobile_number %></span><br/>
+    
+    <span><strong>Position :</strong></span>
+    <span><%= @lawyer.position %></span><br/>
+    
+    <span><strong>Email :</strong></span>
+    <span><%= @lawyer.email %></span><br/>
+    
+    <span><strong>Peso Rate (PHP) :</strong></span>
+    <span><%= number_to_currency( @lawyer.rate.to_f, :unit => " ") %></span><br/>
 
-  <dt><strong><%= model_class.human_attribute_name(:middle_name) %>:</strong></dt>
-  <dd><%= @lawyer.middle_name %></dd>
+    <span><strong>Dollar Rate (USD) :</strong></span>
+    <span><%= number_to_currency(@lawyer.dollar_rate.to_f, :unit => " ") %></span><br/>
 
-  <dt><strong><%= model_class.human_attribute_name(:mobile_number) %>:</strong></dt>
-  <dd><%= @lawyer.mobile_number %></dd>
-
-  <dt><strong><%= model_class.human_attribute_name(:position) %>:</strong></dt>
-  <dd><%= @lawyer.position %></dd>
-
-  <dt><strong><%= model_class.human_attribute_name(:email) %>:</strong></dt>
-  <dd><%= @lawyer.email %></dd>
-  
-</dl>
+  </div>
+</div>
 
 <div class="form-actions">
   <%= link_to t('.back', :default => t("helpers.links.back")),
-              lawyers_path, :class => 'btn'  %>
+              lawyers_path, :class => 'btn btn-primary'  %>
+  <%= link_to "Next",
+            new_lawyer_path,
+            :class => 'btn btn-primary' %>              
   <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_lawyer_path(@lawyer), :class => 'btn' %>
+              edit_lawyer_path(@lawyer), :class => 'btn btn-primary' %>
   <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
               lawyer_path(@lawyer),
               :method => 'delete',
