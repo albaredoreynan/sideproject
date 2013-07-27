@@ -54,19 +54,18 @@
   <div class="container">
     <div class="marginal_row">
       <div class="row">
-
-        <div class="span12">
-          <% [:notice, :error, :alert].each do |level| %>
-            <% unless flash[level].blank? %>
-            <br/><br/>
-            <div class="span12">
-                <div class="alert alert-<%= flash_class(level) %>" id="flash">
-                  <a class="close" data-dismiss="alert" href="#">×</a>
-                  <%= content_tag :p, flash[level] %>
-                </div>
+        <% [:notice, :error, :alert].each do |level| %>
+          <% unless flash[level].blank? %>
+            <br>
+            <div class="span4"></div>    
+            <div class="span3 alert alert-<%= flash_class(level) %>" id="flash">
+              <a class="close" data-dismiss="alert" href="#">×</a>
+              <%= content_tag :p, flash[level] %>
             </div>
-            <% end %>
+            <div class="span4"></div>
           <% end %>
+        <% end %>
+        <div class="span12">
           <%= yield %>
         </div>
       </div>
