@@ -2,6 +2,11 @@
 <div class="page-header">
   <h3><%=t '.title', :default => model_class.model_name.human.pluralize %></h3>
 </div>
+<%= link_to "Create Entry",
+            new_lawyer_path,
+            :class => 'btn btn-primary' %>
+<br/>
+<br/>
 <div class="row">
   <div class="span11 well">
     <table class="table table-striped" id="lawyers">

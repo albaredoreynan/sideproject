@@ -211,13 +211,21 @@
 
                   <% end %>
 
+                  <% if fmi.currency_used == 'Dollar'%>
+                    <% @rates = laws.lawyer.dollar_rate %>
+                    <% @units = "USD " %>
+                  <% else %>
+                    <% @rates = laws.lawyer.rate %>
+                    <% @units = "PHP " %>
+                  <% end %>
+
                   <% @total_actual_hours =  @hr_reg2.to_s+"."+@min_reg2.to_s %>
                   <% @multiplier_hours =  ( @min_reg2.to_f / 60 ).round(2) %>
                   <% @total_multi = @hr_reg2 + @multiplier_hours %>
-                  <% @total_hours_final = @total_multi * laws.lawyer.rate.to_f %>
+                  <% @total_hours_final = @total_multi * @rates.to_f %>
                   <% @tah = number_with_precision(@total_actual_hours.to_f, :precision => 2, :delimiter => ',') %>
-                  <% @lr = number_to_currency( laws.lawyer.rate, :unit => "Php  ") %>
-                  <% @thf = number_to_currency( @total_hours_final, :unit => "Php  ")%>
+                  <% @lr = number_to_currency( @rates, :unit => @units) %>
+                  <% @thf = number_to_currency( @total_hours_final, :unit => @units)%>
 
                   <Row>
                     <Cell><Data ss:Type="String"></Data></Cell>
@@ -233,7 +241,7 @@
               <Cell><Data ss:Type="String">TOTAL</Data></Cell>
               <Cell><Data ss:Type="String"></Data></Cell>
               <Cell><Data ss:Type="String"></Data></Cell>
-              <Cell><Data ss:Type="String"><%= number_to_currency( @totals_all.inject(:+).to_f, :unit => "Php ") %></Data></Cell>
+              <Cell><Data ss:Type="String"><%= number_to_currency( @totals_all.inject(:+).to_f, :unit => @units) %></Data></Cell>
             </Row>  
       <% end %>     
    </Table>

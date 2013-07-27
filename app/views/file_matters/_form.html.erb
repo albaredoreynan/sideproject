@@ -1,10 +1,11 @@
 <%= simple_form_for @file_matter, :html => { :class => 'form-horizontal' } do |f| %>
-  		<%= f.input :file_code, :label => "File Reference No." %>
-		<%= f.input :client_id, :collection => @clients.map {|u| [u.name, u.id] },  :include_blank => false, :prompt => "Select From List" %>
-		<%= f.input :title, :label => "Case Title" %>
+  		<%= f.input :file_code, :label => "File Reference No.", :required => true %>
+		<%= f.input :client_id, :collection => @clients.map {|u| [u.name, u.id] },  :include_blank => false, :prompt => "Select From List", :required => true %>
+		<%= f.input :title, :label => "Case Title", :required => true %>
 		<%= f.input :case_number, :label => "Case Number" %>
 		<%= f.label :case_date, "Date Open" %>
 		<%= f.text_field :case_date, :id => 'datepicker123', :class => "case_date" %>
+		<%= f.input :currency_used, :collection => [ "Peso", "Dollar"] , :label =>  "Currency Billing" , :include_blank => false %> 
 		<%= f.simple_fields_for :assigned_lawyers do |assigned_lawyers| %>
 			<%= render 'assigned_lawyer_fields', :f => assigned_lawyers %>
 		<% end %>

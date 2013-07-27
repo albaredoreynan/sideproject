@@ -198,16 +198,24 @@ class CaseReportsPdf < Prawn::Document
 						@new_hr2 = @hr_reg2.to_s
 					end
 
+					if fmi.currency_used == 'Dollar'
+					  @rates = laws.lawyer.dollar_rate
+					  @units = "USD "
+					else
+					  @rates = laws.lawyer.rate
+					  @units = "PHP "
+					end
 
 					@laws_lawyer_full_name = laws.lawyer.full_name
 					@total_actual_hours = @total_hours2.inject(:+)
 					@tah = @new_hr2+"."+@new_min2
 					#@tah = number_with_precision(@total_actual_hours, :precision => 2, :delimiter => ',')
-					@laws_lawyer_rate = number_to_currency( laws.lawyer.rate, :unit => "Php ")
+					@laws_lawyer_rate = number_to_currency( @rates, :unit => @units)
 					@multiplier_hours =  ( @new_min2.to_f / 60 ).round(2)
 					@total_multi = @hr_reg2 + @multiplier_hours
-					@total_hours_final = @total_multi.to_f * laws.lawyer.rate.to_f
-					@thf =  number_to_currency( @total_hours_final, :unit => "Php ")
+					@total_hours_final = @total_multi.to_f * @rates.to_f
+					@thf =  number_to_currency( @total_hours_final, :unit => @units)
+					
 
 					row1 << [
 						{:content => "#{@laws_lawyer_full_name}", :background_color => "E8E8D0", :align => :left, :text_color => "001B76", :colspan => 2 }, 
@@ -220,7 +228,7 @@ class CaseReportsPdf < Prawn::Document
 
 				end
 			end
-			@grand_total_payment = number_to_currency( @totals_all.inject(:+).to_f, :unit => "Php ")
+			@grand_total_payment = number_to_currency( @totals_all.inject(:+).to_f, :unit => @units)
 				row1 << [
 
 						{:content => "CHARGES :", :colspan => 5, :align => :right, :font_style => :bold}, 
