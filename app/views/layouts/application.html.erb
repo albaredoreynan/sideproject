@@ -4,6 +4,7 @@
   <title>Time Entry System</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "highcharts" %>
   <%= csrf_meta_tags %>
   <%= favicon_link_tag 'favicon.ico' %>
 <body>
@@ -33,7 +34,12 @@
                 <li>  
                   <%= link_to "Users", account_users_path %>
                 </li>
+                <li>  
+                  <%= link_to "Graphs", graphs_path %>
+                </li>
               <% else %>
+                <li><%= link_to "Case Entries", case_entries_path %></li>
+                <li><%= link_to "File/Matters", file_matters_path %></li>
               <% end %>
 
             </ul>

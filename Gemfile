@@ -22,7 +22,10 @@ gem 'less-rails'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 # gem 'sqlite3'
-
+group :development do
+  gem "better_errors"
+  gem "binding_of_caller"
+end
 
 # Gems used only for assets and not required
 # in production environments by default.

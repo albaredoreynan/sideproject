@@ -1,73 +1,104 @@
-<%- model_class = CaseEntry -%>
-<div class="page-header">
-  <h3 class="title">Case Entries</h3>
-</div>
-<div class="row">
-  <div class="span11">
-    <div class="pull-left">
+<div class="panel">
+  <div class="panel-heading"><h3>Case Entries</h3></div>
+  <div class="panel panel-primary">
+    <div class="panel-primary panel-heading">Search</div>
+    <div class="row">
+      <div class="span11">
+      <%= form_for case_entries_path, :method => 'get' do %>
+          <div class="span3">
+              File Reference No. :<br/>
+              <%= autocomplete_field_tag :file_matter_id, nil, autocomplete_file_matter_file_code_case_entries_path, :required => false %>
+          </div>
+          <div class="span3">    
+              Date From:<br/>
+              <%= text_field_tag :beginning_date, nil,  :id => "datepicker_beg"%>
+          </div>
+          <div class="span3">
+              Date To:<br/>
+              <%= text_field_tag :ending_date, nil,  :id => "datepicker_end"%>
+          </div>
+          <div class="span11">
+            <div class="pull-right">
+                  <%= submit_tag "Search" %>
+            </div>
+          </div>
+      <% end %>
+      </div>
+    </div>
+  </div>
+  
+  <div class="panel panel-primary">
+    <div class="panel-primary panel-heading">Case Lists</div>
+    <div class="row">
+      <div class="span11">
+        <div class="pull-left">
+          <%= link_to "Create Entry",
+                    new_case_entry_path,
+                    :class => 'btn btn-primary' %>
+        </div>
+        <div class="pull-right" style="margin-right: -40px;">
+          <%= link_to "Download as PDF <i class='icon-download-alt'></i>".html_safe, case_entries_path(params.merge(format: 'pdf')), :class => "btn btn-primary" %>   
+        </div>
+
+      </div>
+      <br/>
+      <br/>              
+      <div class="span11 well">                        
+        <table class="table table-striped" id="case_entries">
+          <thead>
+            <tr>
+              <th width="10%"><center>Entry Date</center></th>
+              <th width="10%"><center>File Ref No.</center></th>
+              <th width="20%"><center>Client</center></th>
+              <th width="21%"><center>Case Title</center></th>
+              <th width="8%"><center>Initial</center></th>
+              <th width="10%"><center>Start Time</center></th>
+              <th width="10%"><center>End Time</center></th>
+              <th width="10%"><center>Action</center></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @case_entries.each do |case_entry| %>
+              <tr>
+                <td data-title=""><center><%= case_entry.entry_date %></center></td>
+                <td data-title=""><center><%= case_entry.file_matter_id %></center></td>
+                <% @client = Client.find(:all, :conditions => { :id => case_entry.client_id} ) %>
+                <td><% @client.each do |x| %>
+                      <%= x.name %>
+                    <% end %>
+                </td>    
+                <td><%#= case_entry.file_matter_case %><%= case_entry.case_title %></td>
+                <% @lawyers_initial = Lawyer.where("id = ?", case_entry.lawyer_id) %>
+                <td><center>
+                  <% @lawyers_initial.each do |initials| %>
+                    <%= initials.initials %>
+                  <% end %>
+                </center></td>
+                <td><center><%= case_entry.time_spent_from %></center></td>
+                <td><center><%= case_entry.time_spent_to %></center></td>
+                <td><center>
+                  <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                              edit_case_entry_path(case_entry), :class => 'btn btn-mini' %>
+                  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                              case_entry_path(case_entry),
+                              :method => :delete,
+                              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                              :class => 'btn btn-mini btn-danger' %>
+                  </center>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="span2">
       <%= link_to "Create Entry",
-                new_case_entry_path,
-                :class => 'btn btn-primary' %>
-    </div>
-    <div class="pull-right" style="margin-right: -40px;">
-      <%= link_to "Download as PDF <i class='icon-download-alt'></i>".html_safe, case_entries_path(params.merge(format: 'pdf')), :class => "btn btn-primary" %>   
+                  new_case_entry_path,
+                  :class => 'btn btn-primary' %>
+      </div>
     </div>
   </div>
-  <br/>
-  <br/>              
-  <div class="span11 well">                        
-    <table class="table table-striped" id="case_entries">
-      <thead>
-        <tr>
-          <th width="10%"><center>Entry Date</center></th>
-          <th width="10%"><center>File Ref No.</center></th>
-          <th width="20%"><center>Client</center></th>
-          <th width="21%"><center>Case Title</center></th>
-          <th width="8%"><center>Initial</center></th>
-          <th width="10%"><center>Start Time</center></th>
-          <th width="10%"><center>End Time</center></th>
-          <th width="10%"><center>Action</center></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @case_entries.each do |case_entry| %>
-          <tr>
-            <td data-title=""><center><%= case_entry.entry_date %></center></td>
-            <td data-title=""><center><%= case_entry.file_matter_id %></center></td>
-            <% @client = Client.find(:all, :conditions => { :id => case_entry.client_id} ) %>
-            <td><% @client.each do |x| %>
-                  <%= x.name %>
-                <% end %>
-            </td>    
-            <td><%#= case_entry.file_matter_case %><%= case_entry.case_title %></td>
-            <% @lawyers_initial = Lawyer.where("id = ?", case_entry.lawyer_id) %>
-            <td><center>
-              <% @lawyers_initial.each do |initials| %>
-                <%= initials.initials %>
-              <% end %>
-            </center></td>
-            <td><center><%= case_entry.time_spent_from %></center></td>
-            <td><center><%= case_entry.time_spent_to %></center></td>
-            <td><center>
-              <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                          edit_case_entry_path(case_entry), :class => 'btn btn-mini' %>
-              <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                          case_entry_path(case_entry),
-                          :method => :delete,
-                          :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                          :class => 'btn btn-mini btn-danger' %>
-              </center>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-  <div class="span2">
-  <%= link_to "Create Entry",
-              new_case_entry_path,
-              :class => 'btn btn-primary' %>
-  </div>
+  
 </div>
   <script>
     $('#case_entries').dataTable( {
@@ -84,4 +115,9 @@
       ],
       "sPaginationType": "bootstrap"
     } );
+    
+    $(function() {
+      $('#datepicker_beg').datepicker({format: 'yyyy-mm-dd'});
+      $('#datepicker_end').datepicker({format: 'yyyy-mm-dd'});
+    });  
   </script>            

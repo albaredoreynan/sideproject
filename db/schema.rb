@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130702042134) do
+ActiveRecord::Schema.define(:version => 20130720004536) do
 
   create_table "assigned_lawyers", :force => true do |t|
     t.integer  "lawyer_id"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(:version => 20130702042134) do
     t.string   "case_date"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "currency_used", :default => "Peso", :null => false
   end
 
   create_table "lawyers", :force => true do |t|
@@ -73,6 +74,7 @@ ActiveRecord::Schema.define(:version => 20130702042134) do
     t.datetime "updated_at",    :null => false
     t.string   "rate"
     t.string   "initials"
+    t.string   "dollar_rate"
   end
 
   create_table "users", :force => true do |t|

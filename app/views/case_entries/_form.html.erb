@@ -1,40 +1,39 @@
 <%#= simple_form_for @case_entry, :html => { :class => 'form-horizontal' } do |f| %>
 <%= form_for @case_entry, :html => { :class => 'form-horizontal' } do |f| %>
   	<div class="row">
-  		<div class="span9">
-  			<div class="span3">	
+  		<div class="span8">
+  			<div class="span2">	
 				<%#= f.input :file_matter_id, :url => autocomplete_file_matter_file_code_case_entries_path, :as => :autocomplete, :id => 'file_matter_code' %>
 				<%#= f.input :file_matter_id, :collection => @file_matters.map {|u| [u.file_code, u.id] },  :include_blank => false, :label => "File Reference #", :id =>  'file_matter_code' %>
 				<%= f.label :file_matter_id, "File Reference No.:" %>
 				<%#= f.collection_select(:file_matter_id, @file_matters, :id, :file_code,  {:id => 'file_matter_id', :required => true}, { :class => 'chzn-select' } ) %>
-				<%= f.autocomplete_field :file_matter_id, autocomplete_file_matter_file_code_case_entries_path, :required => true %>
+				<%= f.autocomplete_field :file_matter_id, autocomplete_file_matter_file_code_case_entries_path, :required => true, :class => "entry_date" %>
 				<%#= f.autocomplete_field :submitted_by, autocomplete_annual_procurement_plan_submitted_by_annual_procurement_plans_path,class:"bolder input-xlarge", :required =>true%>
 			</div>
 			<div class="span2">
 				<%= f.label :entry_date, "Date:" %>
-				<%= f.text_field :entry_date, :id => 'datepicker123', :class => "entry_date" %>	
+				<%= f.text_field :entry_date, :id => 'datepicker123', :class => "entry_date", :required => true %>	
 			</div>
 			<div class="span3">
 				<div class="input-append" style="padding-left: 10px;">
 					<%= f.label :time_spent_from, "Start Time:" %>
-					<%= f.text_field :time_spent_from, :class => "input-small" %>
+					<%= f.text_field :time_spent_from, :class => "input-small", :required => true %>
 					<!-- <span class="add-on"><i class="icon-time"></i></span> -->
 				</div>
 
 				<div class="input-append" style="padding-left: 30px;">
 					<%= f.label :time_spent_to, "End Time:" %>
-					<%= f.text_field :time_spent_to, :class => "input-small" %>
+					<%= f.text_field :time_spent_to, :class => "input-small", :required => true %>
 					<!-- <span class="add-on"><i class="icon-time"></i></span> -->
 				</div>
 			</div>
-			<div class="span8">
+			<div class="span6">
 				<%= f.label :work_particulars, "Work Particulars:"%>	
-				<%= f.text_area :work_particulars, :rows => 8, :cols => 65, :class => "text_area" %>
+				<%= f.text_area :work_particulars, :rows => 8, :cols => 30, :class => "text_area" %>
 			</div>	
   		</div>
 
-  		<div class="span3">
-  			<div class="span2">	
+  		<div class="span4">	
 				<%= f.label :client_id, "Client:"%>
 				<%= f.text_field :client_name, :readonly => true %>
 				<%#= f.collection_select(:client_id, @clients, :id, :name,  { :id => 'client_id', :required => true, :prompt => "Select From List", :readonly => true } ) %>
@@ -50,19 +49,25 @@
 				<%#= f.collection_select(:file_matter_case, @file_matter_case, :id, :case_number, { :class => 'chzn-select' } ) %>
 				<%#= f.collection_select(:file_matter_case, @file_matter_case, :id, :case_number,  {:id => 'file_matter_case', :required => true} ) %>
 				
-
-				<%= f.label :lawyer_id, "Assigned Lawyer:"%>
 				<% if current_user.lawyer_id.nil? %>
 					<% @lawyer_id = 0 %>
+					<% @check = true %>
 				<% else %>
 					<% @lawyer_id = current_user.lawyer_id %>
+					<% @check = false %>
 				<% end %>
-				<%= f.collection_select(:lawyer_id, @lawyers, :id, :full_name,  { :id => 'lawyer_id', :required => true, :prompt => "Select From List", :selected =>  current_user.lawyer_id } ) %>
-				<br/>
-				<br/>
-				<%= f.check_box :create_multiple_lawyer_entries %><span style="margin-top: -10px;">Multiple Lawyer Entries</span>
+				
+				<div id="lawyer_field" class="pads_up">
+					<%= f.label :lawyer_id, "Assigned Lawyer:"%>
+					<%#= f.collection_select(:lawyer_id, @lawyers, :id, :full_name,  { :id => 'lawyer_id', :required => true, :prompt => "Select From List", :selected =>  current_user.lawyer_id } ) %>
+				</div>
+					<%= f.check_box :lawyer_id, :checked => true, :value => current_user.lawyer_id %><div style="margin-top: -17px; padding-left: 20px;"><%= current_user.lawyer.full_name %></div>
+				<div style="margin-top: 10px;">
+					<%= f.check_box :create_multiple_lawyer_entries %>
+				</div>
+				<div style="margin-top: -17px; padding-left: 20px;">Multiple Lawyer Entries</div>
 				<%= hidden_field_tag :filematter_id, :value => ""  %>
-			</div>
+				
   		</div>
   		<br/>	
 		<div class="span9">
@@ -94,16 +99,6 @@
 	        dataType: "script"
 	      });
 	    });
-
-	    // $('#case_entry_file_matter_id').change(function(){
-	    //   $.ajax({
-	    //     url: "<%= update_songs_path %>",
-	    //     data: {
-	    //       case_entry_file_matter_id : $('#case_entry_file_matter_id').val()
-	    //     },
-	    //     dataType: "script"
-	    //   });
-	    // });
 
 		$('#case_entry_file_matter_case').change(function(){
 	      $.ajax({

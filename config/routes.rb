@@ -18,6 +18,7 @@ Case2::Application.routes.draw do
   end
 
   resources :admin_side
+  resources :graphs
   
   root :to => 'case_entries#new'
   
