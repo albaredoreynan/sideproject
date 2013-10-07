@@ -246,9 +246,14 @@
 
 								<% end %>
 							<% end %>
+							<% if @totals_all.blank? %>
+								<% @totals_all = 0.0 %>
+							<% else %>
+								<% @totals_all = number_to_currency( @totals_all.inject(:+).to_f, :unit => @units ) %>
+							<% end %>							
 							<tr class="success">
 								<td colspan="3" width="60%" class="text-right"><strong>CHARGES :</strong></td>
-								<td style="text-align:right;padding-right:10px"><strong><%= number_to_currency( @totals_all.inject(:+).to_f, :unit => @units ) %></strong></td>
+								<td style="text-align:right;padding-right:10px"><strong><%= @totals_all %></strong></td>
 							</tr>
 						</table>
 					</td>

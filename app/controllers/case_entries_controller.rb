@@ -8,11 +8,12 @@ class CaseEntriesController < ApplicationController
     if current_user.role == 'Administrator'
       @case_entries = CaseEntry.find(:all, :order => "entry_date DESC")
     else
-      if params[:beginning_date].present? && params[:ending_date].present? && params[:file_matter_id]
+      if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id]
         args = {}
         args.merge!(file_matter_id: params[:file_matter_id]) unless params[:file_matter_id].blank?
         args.merge!(case_number: params[:case_number]) unless params[:case_number].blank?
         args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
+        args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
         @case_entries = CaseEntry.where(args).order("entry_date DESC")
       else
         @case_entries = CaseEntry.find(:all, :conditions => { :lawyer_id => current_user.lawyer_id }, :order => "entry_date DESC" )
@@ -69,103 +70,151 @@ class CaseEntriesController < ApplicationController
 
   # POST /case_entries
   # POST /case_entries.json
+  # def create
+
+  #   #@lawyer_listings = params[:case_entry][:lawyer_id].map { |x| x.id }
+
+  #   if params[:case_entry][:create_multiple_lawyer_entries] == "1"
+      
+  #     @assigned_lawyers = AssignedLawyer.find(:all, :conditions => { :file_matter_id => params[:filematter_id] } )
+        
+  #       @assigned_lawyers.each do |al|
+          
+  #         @users = User.find(:all, :conditions => {:lawyer_id => al.lawyer_id }  )
+  #         @users.each do |usr|
+  #           @case_entry = CaseEntry.new(
+  #             :file_matter_id => params[:case_entry][:file_matter_id],
+  #             :entry_date => params[:case_entry][:entry_date],
+  #             :time_spent_from => params[:case_entry][:time_spent_from], 
+  #             :time_spent_to => params[:case_entry][:time_spent_to], 
+  #             :work_particulars => params[:case_entry][:work_particulars], 
+  #             :client_id => params[:case_entry][:client_id], 
+  #             :case_title => params[:case_entry][:case_title], 
+  #             :file_matter_case => params[:case_entry][:file_matter_case], 
+  #             :lawyer_id => al.lawyer_id, 
+  #             :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries], 
+  #             :user_id => usr.id 
+  #           )
+  #           @case_entry.save  
+  #         end
+
+  #       end
+        
+  #       respond_to do |format|
+  #         format.html { redirect_to case_entries_path(), notice: 'Case entries was successfully created.' }
+  #         format.json { render json: @case_entry, status: :created, location: @case_entry }
+  #       end
+
+  #   else
+  #     @assigned_lawyers = AssignedLawyer.find(:all, :conditions => { :file_matter_id => params[:filematter_id] } )
+      
+  #     @assigned_lawyers.each do |al|
+        
+  #       if params[:case_entry_lawyer_id].present?
+  #         @users = User.find(:all, :conditions => {:lawyer_id => al.lawyer_id }  )
+  #         @users.each do |usr|
+  #           @case_entry = CaseEntry.new(
+  #             :file_matter_id => params[:case_entry][:file_matter_id],
+  #             :entry_date => params[:case_entry][:entry_date],
+  #             :time_spent_from => params[:case_entry][:time_spent_from], 
+  #             :time_spent_to => params[:case_entry][:time_spent_to], 
+  #             :work_particulars => params[:case_entry][:work_particulars], 
+  #             :client_id => params[:case_entry][:client_id], 
+  #             :case_title => params[:case_entry][:case_title], 
+  #             :file_matter_case => params[:case_entry][:file_matter_case], 
+  #             :lawyer_id => al.lawyer_id, 
+  #             :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries], 
+  #             :user_id => usr.id 
+  #           )
+  #           @case_entry.save
+  #         end
+  #       else
+  #         if current_user.lawyer_id == al.lawyer_id
+  #           @case_entry = CaseEntry.new(
+  #               :file_matter_id => params[:case_entry][:file_matter_id],
+  #               :entry_date => params[:case_entry][:entry_date],
+  #               :time_spent_from => params[:case_entry][:time_spent_from], 
+  #               :time_spent_to => params[:case_entry][:time_spent_to], 
+  #               :work_particulars => params[:case_entry][:work_particulars], 
+  #               :client_id => params[:case_entry][:client_id], 
+  #               :case_title => params[:case_entry][:case_title], 
+  #               :file_matter_case => params[:case_entry][:file_matter_case], 
+  #               :lawyer_id => current_user.lawyer_id,  
+  #               :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries], 
+  #               :user_id => current_user.id 
+  #             )
+  #             @case_entry.save
+  #         end    
+  #       end
+
+  #     end
+      
+  #     respond_to do |format|
+  #       format.html { redirect_to case_entries_path(), notice: 'Case entries was successfully created.' }
+  #       format.json { render json: @case_entry, status: :created, location: @case_entry }
+  #     end
+  #     #@case_entry = CaseEntry.new(params[:case_entry])
+  #     # respond_to do |format|
+  #     #   if @case_entry.save
+  #     #     format.html { redirect_to case_entries_path(), notice: 'Case entry was successfully created.' }
+  #     #     format.json { render json: @case_entry, status: :created, location: @case_entry }
+  #     #   else
+  #     #     format.html { render action: "new" }
+  #     #     format.json { render json: @case_entry.errors, status: :unprocessable_entity }
+  #     #   end
+  #     # end
+
+  #   end
+  # end
+
   def create
 
-    #@lawyer_listings = params[:case_entry][:lawyer_id].map { |x| x.id }
-
     if params[:case_entry][:create_multiple_lawyer_entries] == "1"
-      
+
       @assigned_lawyers = AssignedLawyer.find(:all, :conditions => { :file_matter_id => params[:filematter_id] } )
-        
+
         @assigned_lawyers.each do |al|
-          
+
           @users = User.find(:all, :conditions => {:lawyer_id => al.lawyer_id }  )
           @users.each do |usr|
             @case_entry = CaseEntry.new(
               :file_matter_id => params[:case_entry][:file_matter_id],
               :entry_date => params[:case_entry][:entry_date],
-              :time_spent_from => params[:case_entry][:time_spent_from], 
-              :time_spent_to => params[:case_entry][:time_spent_to], 
-              :work_particulars => params[:case_entry][:work_particulars], 
-              :client_id => params[:case_entry][:client_id], 
-              :case_title => params[:case_entry][:case_title], 
-              :file_matter_case => params[:case_entry][:file_matter_case], 
-              :lawyer_id => al.lawyer_id, 
-              :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries], 
-              :user_id => usr.id 
+              :time_spent_from => params[:case_entry][:time_spent_from],
+              :time_spent_to => params[:case_entry][:time_spent_to],
+              :work_particulars => params[:case_entry][:work_particulars],
+              :client_id => params[:case_entry][:client_id],
+              :case_title => params[:case_entry][:case_title],
+              :file_matter_case => params[:case_entry][:file_matter_case],
+              :lawyer_id => al.lawyer_id,
+              :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
+              :user_id => usr.id
             )
-            @case_entry.save  
+            @case_entry.save
           end
 
         end
-        
         respond_to do |format|
           format.html { redirect_to case_entries_path(), notice: 'Case entries was successfully created.' }
           format.json { render json: @case_entry, status: :created, location: @case_entry }
         end
 
     else
-      @assigned_lawyers = AssignedLawyer.find(:all, :conditions => { :file_matter_id => params[:filematter_id] } )
-      
-      @assigned_lawyers.each do |al|
-        
-        if params[:case_entry_lawyer_id]["#{al.lawyer_id}"].present?
-          @users = User.find(:all, :conditions => {:lawyer_id => al.lawyer_id }  )
-          @users.each do |usr|
-            @case_entry = CaseEntry.new(
-              :file_matter_id => params[:case_entry][:file_matter_id],
-              :entry_date => params[:case_entry][:entry_date],
-              :time_spent_from => params[:case_entry][:time_spent_from], 
-              :time_spent_to => params[:case_entry][:time_spent_to], 
-              :work_particulars => params[:case_entry][:work_particulars], 
-              :client_id => params[:case_entry][:client_id], 
-              :case_title => params[:case_entry][:case_title], 
-              :file_matter_case => params[:case_entry][:file_matter_case], 
-              :lawyer_id => al.lawyer_id, 
-              :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries], 
-              :user_id => usr.id 
-            )
-            @case_entry.save
-          end
-        else
-          if current_user.lawyer_id == al.lawyer_id
-            @case_entry = CaseEntry.new(
-                :file_matter_id => params[:case_entry][:file_matter_id],
-                :entry_date => params[:case_entry][:entry_date],
-                :time_spent_from => params[:case_entry][:time_spent_from], 
-                :time_spent_to => params[:case_entry][:time_spent_to], 
-                :work_particulars => params[:case_entry][:work_particulars], 
-                :client_id => params[:case_entry][:client_id], 
-                :case_title => params[:case_entry][:case_title], 
-                :file_matter_case => params[:case_entry][:file_matter_case], 
-                :lawyer_id => current_user.lawyer_id,  
-                :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries], 
-                :user_id => current_user.id 
-              )
-              @case_entry.save
-          end    
-        end
 
-      end
-      
+      @case_entry = CaseEntry.new(params[:case_entry])
       respond_to do |format|
-        format.html { redirect_to case_entries_path(), notice: 'Case entries was successfully created.' }
-        format.json { render json: @case_entry, status: :created, location: @case_entry }
+        if @case_entry.save
+          format.html { redirect_to case_entries_path(), notice: 'Case entry was successfully created.' }
+          format.json { render json: @case_entry, status: :created, location: @case_entry }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @case_entry.errors, status: :unprocessable_entity }
+        end
       end
-      #@case_entry = CaseEntry.new(params[:case_entry])
-      # respond_to do |format|
-      #   if @case_entry.save
-      #     format.html { redirect_to case_entries_path(), notice: 'Case entry was successfully created.' }
-      #     format.json { render json: @case_entry, status: :created, location: @case_entry }
-      #   else
-      #     format.html { render action: "new" }
-      #     format.json { render json: @case_entry.errors, status: :unprocessable_entity }
-      #   end
-      # end
 
     end
 
-    
+
 
   end
 

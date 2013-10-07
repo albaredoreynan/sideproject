@@ -7,7 +7,12 @@ Case2::Application.routes.draw do
 
   resources :clients
   resources :lawyers
-  resources :file_matters
+  resources :file_matters do
+    collection do 
+      get "autocomplete_file_matter_file_code"
+      get "autocomplete_file_matter_title"
+    end
+  end
   resources :case_entries do
   	# get :autocomplete_file_matter_file_code, :on => :collection
     collection do 
@@ -30,6 +35,7 @@ Case2::Application.routes.draw do
   # match '/all_employees_list', :to => 'labor_hours#all_employees_list'
   match 'search_entry', :to  => 'case_entries#search_entry'
   match 'case_entries/search' => 'case_entries#search_entry'
+  match 'file_matters/search' => 'file_matters#search_entry'
   match '/admin_side/search' => 'admin_side#index'
   
 end
