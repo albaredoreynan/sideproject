@@ -16,4 +16,10 @@
  * require dataTables/extras/TableTools
  * require dataTables/extras/TableTools_JUI
  * require_tree .
+ *= require bootstrap
+ *= require overrides
+ *= require font-awesome
+ *= require elements
+ *= require index
+ *= require case_layout
  */
