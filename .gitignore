@@ -13,3 +13,12 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+
+config/database.yml
+.ruby-version
+
+.*~
+*.swp
+*.swo
+.DS_Store
+.env
