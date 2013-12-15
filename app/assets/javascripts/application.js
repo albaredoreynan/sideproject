@@ -21,7 +21,7 @@
 // require dataTables/jquery.dataTables.bootstrap
 // require dataTables/extras/TableTools 
 // require cocoon
-// require bootstrap.min.js
+//= require bootstrap.min.js
 // require theme
 // require_tree .
 
