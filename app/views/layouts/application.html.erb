@@ -1,81 +1,34 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Time Entry System</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
-  <%= javascript_include_tag "highcharts" %>
-  <%= csrf_meta_tags %>
-  <%= favicon_link_tag 'favicon.ico' %>
-<body>
-  <div class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-      <div class="container">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </a>
-        <a class="brand" href="#">Time Entry</a>
-        <div class="nav-collapse">
-          <% if user_signed_in? %>
-            <ul class="nav">
-              <% if current_user.role != 'User' %>
-                <li><%= link_to "Case Entries", case_entries_path %></li>
-                <li><%= link_to "Clients", clients_path %></li>
-                <li><%= link_to "Lawyers", lawyers_path %></li>
-                <li><%= link_to "File/Matters", file_matters_path %></li>
-                <!-- <li>
-                  <%#= link_to "Reports", admin_side_index_path %>
-                </li> -->
-                <li>  
-                  <%= link_to "Timesheet", search_entry_path %>
-                </li>
-                <li>  
-                  <%= link_to "Users", account_users_path %>
-                </li>
-                <li>  
-                  <%= link_to "Graphs", graphs_path %>
-                </li>
-              <% else %>
-                <li><%= link_to "Case Entries", case_entries_path %></li>
-                <li><%= link_to "File/Matters", file_matters_path %></li>
-              <% end %>
-
-            </ul>
-          
-            <ul class="nav pull-right">
-              <li>
-                <%= link_to current_user.name, edit_user_registration_path(current_user) %>
-              </li>
-              <li><%= link_to "Sign Out", destroy_user_session_path, :method => :delete %></li>
-            </ul>
+  <head>
+    <title>Time Entry System</title>
+    <%= stylesheet_link_tag    "application", :media => "all" %>
+    <%= javascript_include_tag "application" %>
+    <%= javascript_include_tag "highcharts" %>
+    <%= csrf_meta_tags %>
+    <%= favicon_link_tag 'favicon.ico' %>
+  </head>
+  <body>
+    <%= render "partials/nav" %>
+    <div class="container">
+      <div class="marginal_row">
+        <div class="row">
+          <% [:notice, :error, :alert].each do |level| %>
+            <% unless flash[level].blank? %>
+              <br>
+              <div class="span4"></div>    
+              <div class="span3 alert alert-<%= flash_class(level) %>" id="flash">
+                <a class="close" data-dismiss="alert" href="#">×</a>
+                <%= content_tag :p, flash[level] %>
+              </div>
+              <div class="span4"></div>
+            <% end %>
           <% end %>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="container">
-    <div class="marginal_row">
-      <div class="row">
-        <% [:notice, :error, :alert].each do |level| %>
-          <% unless flash[level].blank? %>
-            <br>
-            <div class="span4"></div>    
-            <div class="span3 alert alert-<%= flash_class(level) %>" id="flash">
-              <a class="close" data-dismiss="alert" href="#">×</a>
-              <%= content_tag :p, flash[level] %>
-            </div>
-            <div class="span4"></div>
-          <% end %>
-        <% end %>
-        <div class="span12">
-          <%= yield %>
+          <div class="span12">
+            <%= yield %>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>
