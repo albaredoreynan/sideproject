@@ -9,7 +9,10 @@
     <%= favicon_link_tag 'favicon.ico' %>
   </head>
   <body>
-    <%= render "partials/nav" %>
+    <%#= render "partials/nav" %>
+    <%= render "partials/topbar"%>
+    <%= render "partials/sidenav"%>
+    <%= render "partials/content"%>
     <div class="container">
       <div class="marginal_row">
         <div class="row">
@@ -25,7 +28,7 @@
             <% end %>
           <% end %>
           <div class="span12">
-            <%= yield %>
+            <%#= yield %>
           </div>
         </div>
       </div>
