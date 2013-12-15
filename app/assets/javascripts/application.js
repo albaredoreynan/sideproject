@@ -11,17 +11,17 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require jquery_ujs
-//= require jquery.ui.all
-//= require twitter/bootstrap
-//= require bootstrap-datepicker
-//= require autocomplete-rails
-//= require chosen-jquery
-//= require dataTables/jquery.dataTables
-//= require dataTables/jquery.dataTables.bootstrap
-//= require dataTables/extras/TableTools 
-//= require cocoon
-//= require_tree .
+// require jquery_ujs
+// require jquery.ui.all
+// require twitter/bootstrap
+// require bootstrap-datepicker
+// require autocomplete-rails
+// require chosen-jquery
+// require dataTables/jquery.dataTables
+// require dataTables/jquery.dataTables.bootstrap
+// require dataTables/extras/TableTools 
+// require cocoon
+// require_tree .
 
 (function($){
     $(".alert").alert('closed')
