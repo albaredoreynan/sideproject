@@ -1,60 +1,61 @@
+<% if user_signed_in? %>
 <div class="subnavbar">
-
   <div class="subnavbar-inner">
-
     <div class="container">
-
       <a href="javascript:;" class="subnav-toggle" data-toggle="collapse" data-target=".subnav-collapse">
         <span class="sr-only">Toggle navigation</span>
         <i class="icon-reorder"></i>
-
       </a>
-
       <div class="collapse subnav-collapse">
         <ul class="mainnav">
+          <% if current_user.role != "User" %>
+            <li class="active">
+              <%= link_to "<i class='icon-home'></i><span>Home</span>".html_safe, root_path %>
+            </li>
 
-          <li class="active">
-            <a href="/">
-              <i class="icon-home"></i>
-              <span>Home</span>
-            </a>              
-          </li>
+            <li>
+              <%= link_to "<i class='icon-legal'></i><span>Case Entries</span>".html_safe, case_entries_path %>
+            </li>
 
-          <li>
-            <a href="./index.html">
-              <i class="icon-envelope"></i>
-              <span>Case Entries</span>
-            </a>              
-          </li>
+            <li>
+              <%= link_to "<i class='icon-book'></i><span>Clients</span>".html_safe, clients_path %>
+            </li>
 
-          <li>
-            <a href="./index.html">
-              <i class="icon-copy"></i>
-              <span>File Matters</span>
-            </a>              
-          </li>
-          <li class="dropdown">         
-            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="icon-th"></i>
-              <span>Components</span>
-              <b class="caret"></b>
-            </a>      
+            <li>
+              <%= link_to "<i class='icon-briefcase'></i><span>Lawyers</span>".html_safe, lawyers_path %>
+            </li>
 
-            <ul class="dropdown-menu">
-              <li><a href="./elements.html">Elements</a></li>
-              <li><a href="./forms.html">Form Styles</a></li>
-              <li><a href="./jqueryui.html">jQuery UI</a></li>
-              <li><a href="./charts.html">Charts</a></li>
-              <li><a href="./popups.html">Popups/Notifications</a></li>
-            </ul>         
-          </li>
+            <li>
+              <%= link_to "<i class='icon-archive'></i><span>File/Matters</span>".html_safe, file_matters_path %>
+            </li>
 
+            <li>
+              <%= link_to "<i class='icon-dashboard'></i><span>Timesheet</span>".html_safe, search_entry_path %>
+            </li>
 
+            <li>
+              <%= link_to "<i class='icon-group'></i><span>Users</span>".html_safe, account_users_path %>
+            </li>
+
+            <li>
+              <%= link_to "<i class='icon-bar-chart'></i><span>Graphs</span>".html_safe, graphs_path %>
+            </li>
+          <% else %>
+            <li class="active">
+              <%= link_to "<i class='icon-home'></i><span>Home</span>".html_safe, root_path %>
+            </li>
+
+            <li>
+              <%= link_to "<i class='icon-legal'></i><span>Case Entries</span>".html_safe, case_entries_path %>
+            </li>
+
+            <li>
+              <%= link_to "<i class='icon-archive'></i><span>File/Matters</span>".html_safe, file_matters_path %>
+            </li>
+          <% end %>
         </ul>
       </div> <!-- /.subnav-collapse -->
-
     </div> <!-- /container -->
-
   </div> <!-- /subnavbar-inner -->
-
 </div>
+<% end %>
