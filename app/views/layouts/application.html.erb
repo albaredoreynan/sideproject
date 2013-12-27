@@ -13,8 +13,10 @@
     <%= render "partials/topbar"%>
     <%= render "partials/subnav"%>
     <%#= render "partials/content"%>
-    <div class="content">
+    <div class="main">
+      <div class="container">
         <%= yield %>
+      </div>
     </div>
   </body>
 </html>
