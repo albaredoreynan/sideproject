@@ -9,47 +9,39 @@
       <div class="collapse subnav-collapse">
         <ul class="mainnav">
           <% if current_user.role != "User" %>
-            <li class="active">
-              <%= link_to "<i class='icon-home'></i><span>Home</span>".html_safe, root_path %>
-            </li>
-
-            <li>
-              <%= link_to "<i class='icon-legal'></i><span>Case Entries</span>".html_safe, case_entries_path %>
-            </li>
-
-            <li>
+            <li class="<%= 'active' if controller?('clients') %>">
               <%= link_to "<i class='icon-book'></i><span>Clients</span>".html_safe, clients_path %>
             </li>
 
-            <li>
-              <%= link_to "<i class='icon-briefcase'></i><span>Lawyers</span>".html_safe, lawyers_path %>
-            </li>
-
-            <li>
-              <%= link_to "<i class='icon-archive'></i><span>File/Matters</span>".html_safe, file_matters_path %>
-            </li>
-
-            <li>
-              <%= link_to "<i class='icon-dashboard'></i><span>Timesheet</span>".html_safe, search_entry_path %>
-            </li>
-
-            <li>
-              <%= link_to "<i class='icon-group'></i><span>Users</span>".html_safe, account_users_path %>
-            </li>
-
-            <li>
-              <%= link_to "<i class='icon-bar-chart'></i><span>Graphs</span>".html_safe, graphs_path %>
-            </li>
-          <% else %>
-            <li class="active">
-              <%= link_to "<i class='icon-home'></i><span>Home</span>".html_safe, root_path %>
-            </li>
-
-            <li>
+            <li class="<%= 'active' if controller?('case_entries') && action?('index') %>">
               <%= link_to "<i class='icon-legal'></i><span>Case Entries</span>".html_safe, case_entries_path %>
             </li>
 
-            <li>
+            <li class="<%= 'active' if controller?('lawyers') %>">
+              <%= link_to "<i class='icon-briefcase'></i><span>Lawyers</span>".html_safe, lawyers_path %>
+            </li>
+
+            <li class="<%= 'active' if controller?('file_matters') %>">
+              <%= link_to "<i class='icon-archive'></i><span>File/Matters</span>".html_safe, file_matters_path %>
+            </li>
+
+            <li class="<%= 'active' if controller?('case_entries') && action?('search_entry') %>">
+              <%= link_to "<i class='icon-dashboard'></i><span>Timesheet</span>".html_safe, search_entry_path %>
+            </li>
+
+            <li class="<%= 'active' if controller?('account/users') %>">
+              <%= link_to "<i class='icon-group'></i><span>Users</span>".html_safe, account_users_path %>
+            </li>
+
+            <li class="<%= 'active' if controller?('graphs') %>">
+              <%= link_to "<i class='icon-bar-chart'></i><span>Graphs</span>".html_safe, graphs_path %>
+            </li>
+          <% else %>
+            <li class="<%= 'active' if controller?('case_entries') && action?('index') %>">
+              <%= link_to "<i class='icon-legal'></i><span>Case Entries</span>".html_safe, case_entries_path %>
+            </li>
+
+            <li class="<%= 'active' if controller?('file_matters') %>">
               <%= link_to "<i class='icon-archive'></i><span>File/Matters</span>".html_safe, file_matters_path %>
             </li>
           <% end %>
