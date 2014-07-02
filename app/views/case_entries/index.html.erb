@@ -43,7 +43,7 @@
       </div>
       <br/>
       <br/>              
-      <div class="span11 well">                        
+      <div class="span11">                        
         <table class="table table-striped" id="case_entries">
           <thead>
             <tr>
@@ -88,8 +88,12 @@
                 </td>
               </tr>
             <% end %>
+
           </tbody>
         </table>
+        <div class="pull-right">
+          <%= will_paginate @case_entry, :param_name => 'page', previous_label: "<i class='icon-chevron-left'></i>".html_safe, next_label: "<i class='icon-chevron-right'></i>".html_safe %>
+        </div>
       </div>
       <div class="span2">
       <%= link_to "Create Entry",
@@ -101,20 +105,20 @@
   
 </div>
   <script>
-    $('#case_entries').dataTable( {
-      "aaSorting": [[ 0, "desc" ]],
-      "aoColumns": [
-        { "bSearchable": true, "bSortable": true },
-        { "bSearchable": true, "bSortable": true },
-        { "bSearchable": true, "bSortable": true },
-        { "bSearchable": true, "bSortable": true },
-        { "bSearchable": true, "bSortable": true },
-        { "bSearchable": true, "bSortable": true },
-        { "bSearchable": true, "bSortable": true },
-        { "bSearchable": false, "bSortable": false }
-      ],
-      "sPaginationType": "bootstrap"
-    } );
+    // $('#case_entries').dataTable( {
+    //   "aaSorting": [[ 0, "desc" ]],
+    //   "aoColumns": [
+    //     { "bSearchable": true, "bSortable": true },
+    //     { "bSearchable": true, "bSortable": true },
+    //     { "bSearchable": true, "bSortable": true },
+    //     { "bSearchable": true, "bSortable": true },
+    //     { "bSearchable": true, "bSortable": true },
+    //     { "bSearchable": true, "bSortable": true },
+    //     { "bSearchable": true, "bSortable": true },
+    //     { "bSearchable": false, "bSortable": false }
+    //   ],
+    //   "sPaginationType": "bootstrap"
+    // } );
     
     $(function() {
       $('#datepicker_beg').datepicker({format: 'yyyy-mm-dd'});

@@ -3,7 +3,8 @@
   <%= f.input :middle_name, :label => 'Middle Name', :required => true %>
   <%= f.input :last_name, :label => 'Last Name', :required => true %>
   <%= f.input :initials, :label => 'Initial' %>
-  <%= f.input :position, :collection => [ "Partner", "Senior Partner", "Senior Associate", "Associate"] , :label =>  "Position" , :include_blank => false, :required => true  %>
+  <%#= f.input :position, :collection => [ "Partner", "Senior Partner", "Senior Associate", "Associate"] , :label =>  "Position" , :include_blank => false, :required => true  %>
+  <%= f.input :position, :include_blank => false, :required => true  %>
   <%= f.input :mobile_number, :label => 'Mobile Number' %>
   <%= f.input :email, :label => 'Email Address' %>
   <%= f.input :rate, :label => 'Peso Rate', :required => true %>

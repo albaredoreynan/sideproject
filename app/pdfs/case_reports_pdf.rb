@@ -42,7 +42,7 @@ class CaseReportsPdf < Prawn::Document
 			@assigned_lawyers = AssignedLawyer.find(:all, :conditions => { :file_matter_id => fmi.id } )
 			@assigned_lawyers.each do |al|	
 				@total_hours = Array.new
-				@case_entries = CaseEntry.find(:all, :conditions => { :file_matter_id => file_matter_id, :lawyer_id => al.lawyer_id, :entry_date => start_date..end_date }, :order => "entry_date DESC"  )
+				@case_entries = CaseEntry.find(:all, :conditions => { :remove_from_billing => 'No', :file_matter_id => file_matter_id, :lawyer_id => al.lawyer_id, :entry_date => start_date..end_date }, :order => "entry_date DESC"  )
 				
 
 				if !@case_entries.empty?
@@ -152,7 +152,7 @@ class CaseReportsPdf < Prawn::Document
 				@total_hours2 = Array.new
 				@hours2 = Array.new
 				@minutes2 = Array.new
-				@case_entries2 = CaseEntry.find(:all, :conditions => { :file_matter_id => file_matter_id, :lawyer_id => laws.lawyer_id, :entry_date => start_date..end_date }  )
+				@case_entries2 = CaseEntry.find(:all, :conditions => { :remove_from_billing => 'No', :file_matter_id => file_matter_id, :lawyer_id => laws.lawyer_id, :entry_date => start_date..end_date }  )
 				
 				if !@case_entries2.empty?
 					@case_entries2.each do |ce| 

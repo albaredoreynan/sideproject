@@ -1,6 +1,6 @@
 class LawyersController < ApplicationController
   def index
-    @lawyers = Lawyer.all
+    @lawyers = Lawyer.paginate(:page => params[:page], :per_page => 25, :order => "last_name ASC")
     
     respond_to do |format|
       format.html # index.html.erb

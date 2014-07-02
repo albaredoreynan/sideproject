@@ -6,7 +6,17 @@ class CaseEntriesController < ApplicationController
   def index
     
     if current_user.role == 'Administrator'
-      @case_entries = CaseEntry.find(:all, :order => "entry_date DESC")
+      # @case_entries = CaseEntry.find(:all, :order => "entry_date DESC")
+      if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id]
+        args = {}
+        args.merge!(file_matter_id: params[:file_matter_id]) unless params[:file_matter_id].blank?
+        args.merge!(case_number: params[:case_number]) unless params[:case_number].blank?
+        args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
+        args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
+        @case_entries = CaseEntry.where(args).paginate(:page => params[:page], :per_page => 20, :order => "entry_date DESC")
+      else
+        @case_entries = CaseEntry.paginate(:page => params[:page], :per_page => 20, :order => "entry_date DESC")
+      end
     else
       if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id]
         args = {}
@@ -14,9 +24,10 @@ class CaseEntriesController < ApplicationController
         args.merge!(case_number: params[:case_number]) unless params[:case_number].blank?
         args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
         args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
-        @case_entries = CaseEntry.where(args).order("entry_date DESC")
+        @case_entries = CaseEntry.where(args).order("entry_date DESC").paginate(:page => params[:page], :per_page => 10)
       else
-        @case_entries = CaseEntry.find(:all, :conditions => { :lawyer_id => current_user.lawyer_id }, :order => "entry_date DESC" )
+        # @case_entries = CaseEntry.find(:all, :conditions => { :lawyer_id => current_user.lawyer_id }, :order => "entry_date DESC" ).paginate(:page => params[:page], :per_page => 10)
+        @case_entries = CaseEntry.where(:lawyer_id => current_user.lawyer_id).paginate(:page => params[:page], :per_page => 20, :order => "entry_date DESC")
       end
     end
     
@@ -256,6 +267,12 @@ class CaseEntriesController < ApplicationController
     # render json: AnnualProcurementPlan.select("distinct version as value").where("version ILIKE ?", "%#{params[:term]}%").where(:agency_id => current_user.agency.id)
   end
 
+  def exclude_billing
+    @ce = CaseEntry.find params[:cei]
+    @ce.update_attributes(:remove_from_billing => 'Yes')
+    redirect_to search_entry_path(params)
+  end
+
   def search_entry
       # args = {}
       # args.merge!(file_matter_id: params[:file_matter_id]) unless params[:file_matter_id].blank?
@@ -276,6 +293,7 @@ class CaseEntriesController < ApplicationController
         args.merge!(file_matter_id: params[:file_matter_id]) unless params[:file_matter_id].blank?
         args.merge!(file_matter_case: params[:case_number]) unless params[:case_number].blank?
         args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
+        # args.merge!(:remove_from_billing => 'No')
         if params[:file_matter_id].blank? && params[:case_number].blank? && params[:beginning_date].blank? && params[:ending_date].blank?
           @case_listings = nil
         else
@@ -315,7 +333,11 @@ class CaseEntriesController < ApplicationController
       # else
       #   @case_listings = CaseEntry.find(:all, :conditions => { :entry_date => Date.today })
       # end
-
+      
+      # if params[:edit_ent] == 'Yes'
+      #   @ce = CaseEntry.find params[:cei]
+      #   @ce.update_attributes(:remove_from_billing => 'Yes')
+      # else
       respond_to do |format|
           format.html
 
@@ -328,6 +350,7 @@ class CaseEntriesController < ApplicationController
           format.xls
           
       end
+      # end
   end
 
 end

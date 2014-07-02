@@ -3,16 +3,16 @@ development:
   database: case2_development
   pool: 5
   timeout: 5000
-  username: postgres
-  password: admin
+  username: reynanalbaredo
+  password:
 
 test:
   adapter: postgresql
   database: case2_test
   pool: 5
   timeout: 5000
-  username: postgres
-  password: admin
+  username: reynanalbaredo
+  password:
 
 production:
   adapter: postgresql

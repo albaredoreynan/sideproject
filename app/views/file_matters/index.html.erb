@@ -34,7 +34,7 @@
           <br/>
         <% end %>
         <div class="row">
-          <div class="span11 well">
+          <div class="span11">
             <table class="table table-striped" id="filematters">
               <thead>
                 <tr>
@@ -71,7 +71,11 @@
                 <% end %>
               </tbody>
             </table>
+            <div class="pull-right">
+              <%= will_paginate @file_matters, :param_name => 'page', previous_label: "<i class='icon-chevron-left'></i>".html_safe, next_label: "<i class='icon-chevron-right'></i>".html_safe %>
+            </div>
           </div>
+          
         </div>
         <% if current_user.role != 'User' %>
           <%= link_to 'Create Entry',
@@ -83,13 +87,13 @@
   </div>
 </div>
 <script>
-  $('#filematters').dataTable( {
-    "aoColumns": [
-      { "bSearchable": true, "bSortable": true , "asSorting": [ "desc", "asc" ]},
-      { "bSearchable": true, "bSortable": true },
-      { "bSearchable": true, "bSortable": true },
-      { "bSearchable": false, "bSortable": false }
-    ],
-    "sPaginationType": "bootstrap"
-  } );
+  // $('#filematters').dataTable( {
+  //   "aoColumns": [
+  //     { "bSearchable": true, "bSortable": true , "asSorting": [ "desc", "asc" ]},
+  //     { "bSearchable": true, "bSortable": true },
+  //     { "bSearchable": true, "bSortable": true },
+  //     { "bSearchable": false, "bSortable": false }
+  //   ],
+  //   "sPaginationType": "bootstrap"
+  // } );
 </script>

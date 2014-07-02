@@ -1,7 +1,7 @@
 class Account::UsersController < AccountController
 
 	def index
-		@user_list = User.find(:all)
+		@user_list = User.paginate(:page => params[:page], :per_page => 20, :order => "name DESC")
 	end
 	 
 	def create

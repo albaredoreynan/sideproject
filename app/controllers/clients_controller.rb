@@ -1,6 +1,6 @@
 class ClientsController < ApplicationController
   def index
-    @clients = Client.all
+    @clients = Client.paginate(:page => params[:page], :per_page => 50, :order => "name DESC")
     
     respond_to do |format|
       format.html # index.html.erb
