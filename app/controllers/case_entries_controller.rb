@@ -79,6 +79,11 @@ class CaseEntriesController < ApplicationController
     @clients = Client.all
   end
 
+
+
+
+
+
   # POST /case_entries
   # POST /case_entries.json
   # def create

@@ -10,14 +10,23 @@
               <%= autocomplete_field_tag :file_matter_id, nil, autocomplete_file_matter_file_code_case_entries_path, :required => false %>
           </div>
           <div class="span3">    
-              Date From:<br/>
+              Date From: <br/>
               <%= text_field_tag :beginning_date, nil,  :id => "datepicker_beg"%>
           </div>
           <div class="span3">
-              Date To:<br/>
+              Date To: <br/>
               <%= text_field_tag :ending_date, nil,  :id => "datepicker_end"%>
           </div>
-          <div class="span11">
+          <div class="span3">
+              Client: <br/>
+              <%= text_field_tag :client %>
+          </div>
+          <div class="span3">
+              Case Title: <br/>
+              <%= text_field_tag :case_title %>
+          </div>
+
+          <div class="span10">
             <div class="pull-right">
                   <%= submit_tag "Search" %>
             </div>
