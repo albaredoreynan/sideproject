@@ -37,9 +37,22 @@ class LawyersController < ApplicationController
 
   def create
     @lawyer = Lawyer.new(params[:lawyer])
-
+    @x = params[:lawyer][:first_name]
+    @y = params[:lawyer][:last_name]
+    @v = params[:lawyer][:middle_name]
+    
+    @email = params[:lawyer][:email]
+    @name = "#{@x} #{@v} #{@y}"
+    @username = "#{@x.slice(0).downcase}#{@v.slice(0).downcase}#{@y.downcase}"
     respond_to do |format|
       if @lawyer.save
+        @user = User.new
+        @user.email = @email
+        @user.name = @name
+        @user.username = @username
+        @user.password = 'password'
+        @user.role = 'User'
+        @user.save
         format.html { redirect_to @lawyer, notice: 'Lawyer was successfully created.' }
         format.json { render json: @lawyer, status: :created, location: @lawyer }
       else
