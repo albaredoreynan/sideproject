@@ -1,0 +1,115 @@
+<div class="panel">
+  <div class="panel-heading">
+  	<h3>Timesheet</h3>
+	</div>
+  <ul class="nav nav-tabs">
+	  <% if params[:pfr] == '1' %>
+	  	<% cl = 'active' %>
+	  <% else %>
+	  	<% cl = '' %>
+	  <% end %>
+
+	  <% if params[:pfr] == '2' %>
+	  	<% cl2 = 'active' %>
+	  <% else %>
+	  	<% cl2 = '' %>
+	  <% end %>
+
+	  <li class="<%= cl %>" >
+	    <%= link_to "Per File Reference", search_entry_path(pfr:"1") %>
+	  </li>
+	  <li class="<%= cl2 %>" >
+	  	<%= link_to "Per Date Covered", search_entry_multi_path(pfr:"2") %>
+	  </li>
+	</ul>
+  <div class="panel panel-primary">
+  	<div class="panel-primary panel-heading">Search</div>
+	  <div class="row">
+	    <div class="span11">
+		    <%= form_for case_entries_search_path, :method => 'get' do %>
+			<table class="table" width="100%">
+			  <thead>		
+				<tr>
+					<td>
+						<%#= label :beginning_date,  "Date From:" %>
+						Date From:<br/>
+						<%= text_field_tag :beginning_date, nil,  :id => "datepicker_beg"%>
+					</td>
+					<td>
+						<%#= label :ending_date, "Date To:" %>
+						Date To:<br/>
+						<%= text_field_tag :ending_date, nil,  :id => "datepicker_end"%>
+						<%= hidden_field_tag :pfr, params[:pfr] %>
+					</td>
+				</tr>
+				<tr><td colspan="4"><div class="pull-right">
+					    <%= submit_tag "Search" %>
+				</div></td></tr>
+			  </thead>		
+			</table>
+		<% end %>
+    	</div>
+  	</div>
+  </div>
+  <div class="panel panel-primary">
+    <div class="row">
+      <div class="span11">
+        <div class="row">
+          <div class="span11">
+            <% if !@case_listings.nil? %>
+							
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th width='20%'><center>File Reference No.</center></th>
+											<th width='30%'><center>Entry Date</center></th>
+											<th width='40%'><center>Assigned Lawyers</center></th>
+										</tr>
+									</thead>
+									<tbody>
+										<% @case_listings.each do |list| %>
+											<tr  class="success">
+												<td colspan="3">
+													<%= list.file_matter_id %>
+													<div class='pull-right'>
+														
+														<%= link_to 'View All Contents',
+                                  search_entry_path(:pfr => '1', :beginning_date => params[:beginning_date], :ending_date => params[:ending_date], :file_matter_id => list.file_matter_id, :commit => "Search"), :class => 'btn btn-mini'%>
+													</div>
+												</td>
+											</tr>
+											<% @case_listings2.each do |list2| %>
+												<% if list.file_matter_id == list2.file_matter_id %>
+													<tr  class="info">
+														<td>&nbsp;</td>
+														<td><%= list2.entry_date %></td>
+														<td><%= list2.lawyer.full_name %></td>	
+													</tr>
+												<% end %>
+											<% end %>	
+										<% end %>
+									</tbody>
+								</table>
+						<% else %>
+							<h5>This will be populated once the search field found a data.</h5>
+						<% end %>		
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+	$(function() {
+  		$('#datepicker_beg').datepicker({format: 'yyyy-mm-dd'});
+  		$('#datepicker_end').datepicker({format: 'yyyy-mm-dd'});
+  		// $(".collapse").collapse('toggle');
+  	});
+</script>
+		
+										
+											  
+
+											
+											 

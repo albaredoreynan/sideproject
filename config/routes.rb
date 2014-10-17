@@ -34,7 +34,9 @@ Case2::Application.routes.draw do
   # search
   # match '/all_employees_list', :to => 'labor_hours#all_employees_list'
   match 'search_entry', :to  => 'case_entries#search_entry'
+  match 'search_entry_multi', :to  => 'case_entries#search_entry_multi'
   match 'exclude_billing', :to =>  'case_entries#exclude_billing'
+  match 'modify_case_entry', :to =>  'case_entries#modify_case_entry'
   match 'case_entries/search' => 'case_entries#search_entry'
   match 'file_matters/search' => 'file_matters#search_entry'
   match '/admin_side/search' => 'admin_side#index'

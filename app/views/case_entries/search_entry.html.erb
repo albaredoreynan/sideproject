@@ -1,5 +1,27 @@
 <div class="panel">
-  <div class="panel-heading"><h3>Timesheet</h3></div>
+  <div class="panel-heading">
+  	<h3>Timesheet</h3>
+	</div>
+  <ul class="nav nav-tabs">
+	  <% if params[:pfr] == '1' %>
+	  	<% cl = 'active' %>
+	  <% else %>
+	  	<% cl = '' %>
+	  <% end %>
+
+	  <% if params[:pfr] == '2' %>
+	  	<% cl2 = 'active' %>
+	  <% else %>
+	  	<% cl2 = '' %>
+	  <% end %>
+
+	  <li class="<%= cl %>" >
+	    <%= link_to "Per File Reference", search_entry_path(pfr:"1") %>
+	  </li>
+	  <li class="<%= cl2 %>" >
+	  	<%= link_to "Per Date Covered", search_entry_multi_path(pfr:"2") %>
+	  </li>
+	</ul>
   <div class="panel panel-primary">
   	<div class="panel-primary panel-heading">Search</div>
 	  <div class="row">
@@ -24,6 +46,7 @@
 						<%#= label :ending_date, "Date To:" %>
 						Date To:<br/>
 						<%= text_field_tag :ending_date, nil,  :id => "datepicker_end"%>
+						<%= hidden_field_tag :pfr, params[:pfr] %>
 					</td>
 				</tr>
 				<tr><td colspan="4"><div class="pull-right">
@@ -47,7 +70,6 @@
 						    	<br/>
 						    </div>
 							<div class="clearfix"></div>
-							<% @file_matter_info.each do |fmi| %>
 							<table class="table table-condensed" width="90%" >
 								<tr>
 									<td colspan="2">
@@ -58,6 +80,19 @@
 										<br/>
 									</td>
 								</tr>
+							</table>
+							<% @file_matter_info.each do |fmi| %>
+							
+							<table class="table table-condensed" width="90%" >
+								<!-- <tr>
+									<td colspan="2">
+										<center>
+											<h3>Timesheet</h3>
+											For the period <%#= @start_date.to_time.strftime('%B %d, %Y') %> up to <%#= @end_date.to_time.strftime('%B %d, %Y') %>
+										</center>
+										<br/>
+									</td>
+								</tr> -->
 
 								<tr>
 									<td width="10%">MATTER :</td>
@@ -100,16 +135,16 @@
 															
 																<tr class="success">
 																	<th width="15%" style="text-align:left;padding-left:10px">DATE</th>
-																	<th width="65%"><center>WORK DESCRIPTIONS / PARTICULARS</center></th>
+																	<th width="60%"><center>WORK DESCRIPTIONS / PARTICULARS</center></th>
 																	<th width="10%" style="text-align:right;padding-right:10px"><center>TIME SPENT</center></th>
-																	<th width="10%" >Action</th>
+																	<th width="15%" >Action</th>
 																</tr>
 																	<% @hours = Array.new %>
 																	<% @minutes = Array.new %>
 																	<% @case_entries.each do |ce| %>
 																		<tr class="info">
 																			<td width="15%" style="text-align:left;padding-left:10px"><%= ce.entry_date %></td>
-																			<td width="65%"><%= ce.work_particulars %></td>
+																			<td width="60%"><%= ce.work_particulars %></td>
 																			<% @start_time = Time.strptime(ce.time_spent_from, '%I:%M %P') %>
 																			<% @end_time = Time.strptime(ce.time_spent_to, '%I:%M %P') %>
 																			<% @time_spent = @end_time - @start_time %>
@@ -133,8 +168,63 @@
 																				<% @min_reg = @min_reg % 60 %>
 																			<% end %>
 																			<td width="10%" style="text-align:right;padding-right:10px"><%= @value %></td>
-																			<td width="10%">
-																				<%= link_to "Exclude".html_safe, exclude_billing_path(params.merge(:edit_ent => 'Yes', :cei => ce.id)), class: 'btn btn-info btn-xs' %>
+																			<td width="15%">
+																				<div id="<%= ce.id %>" class="modal hide fade" style="width: 65%; height: auto; left:40%; overflow-y: hidden" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+																				  <div class="modal-header">
+																				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																				    <h3 id="myModalLabel">Quick Edit of Case Entry</h3>
+																				  </div>
+																				  <% @case_entry = CaseEntry.find(ce.id) %>
+																				  <%= simple_form_for(@case_entry, :url => modify_case_entry_path(@case_entry), :html => { :method => :post }) do |f| %>	
+																					  <div class="modal-body">
+																					  	<div class="form-inputs">
+																					  		<div class="span6">
+																					  			<%= hidden_field_tag :id, ce.id %>
+																					  			<p><b>File Reference No. :</b>&nbsp;<%= @case_entry.file_matter_id %></p>
+																					  			<p><b>Client :</b>&nbsp;<%= Client.find(@case_entry.client_id).name %></p>
+																					  			<p><b>Case Title :</b>&nbsp;<%= @case_entry.case_title %></p>
+																					  			<p><b>Case No. :</b>&nbsp;<%= @case_entry.file_matter_case %></p>
+																					  			<p><b>Assigned Lawyer :</b>&nbsp;<%= @case_entry.lawyer.full_name %></p>
+																					  		</div>
+																					  		<div class="span2">
+																									<%= f.label :entry_date, "Date:" %>
+																									<%= f.text_field :entry_date, :id => 'datepicker123', :class => "entry_date", :required => true %>	
+																								</div>
+																								<div class="span3">
+																									<div class="input-append" style="padding-left: 10px;">
+																										<%= f.label :time_spent_from, "Start Time:" %>
+																										<%= f.text_field :time_spent_from, :class => "input-small", :required => true %>
+																										<!-- <span class="add-on"><i class="icon-time"></i></span> -->
+																									</div>
+
+																									<div class="input-append" style="padding-left: 30px;">
+																										<%= f.label :time_spent_to, "End Time:" %>
+																										<%= f.text_field :time_spent_to, :class => "input-small", :required => true %>
+																										<!-- <span class="add-on"><i class="icon-time"></i></span> -->
+																									</div>
+																								</div>
+																								<div class="span6">
+																									<%= f.label :work_particulars, "Work Particulars:"%>	
+																									<%= f.text_area :work_particulars, :rows => 8, :cols => 30, :class => "text_area" %>
+																									<%= hidden_field_tag :file_matter_id, params[:file_matter_id]%>
+																									<%= hidden_field_tag :beginning_date, params[:beginning_date]%>
+																									<%= hidden_field_tag :ending_date, params[:ending_date]%>
+																									<%= hidden_field_tag :pfr, params[:pfr] %>
+																								</div>
+																					  	</div>
+																					  </div>
+																					  <div class="modal-footer">
+																					    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+																					    <!-- <button class="btn btn-primary">Save changes</button> -->
+																					    <%= f.button :submit, "Update Changes", :class => "btn btn-primary" %>
+																					  </div>
+																					<% end %>  
+																				</div>	
+
+																				<%= link_to "Exclude".html_safe, exclude_billing_path(params.merge(:edit_ent => 'Yes', :cei => ce.id)), title:"Exclude", class: 'btn btn-info btn-mini', :data => { :confirm => 'This entry will be excluded from the billing list. You can include it by going to the case entry list and edit the entry.' } %>
+																				&nbsp;
+																				<a href="#<%= ce.id %>" role="button" class="btn btn-success btn-mini" data-toggle="modal">Edit</a>
+																				<%#= link_to "Edit".html_safe, exclude_billing_path(params.merge(:edit_ent => 'Yes', :cei => ce.id)), class: 'btn btn-success btn-mini' %>
 																			</td>
 																		</tr>
 																	<% end %>
@@ -276,10 +366,17 @@
     </div>
   </div>
 </div>
+
+
+
+
 <script>
 	$(function() {
   		$('#datepicker_beg').datepicker({format: 'yyyy-mm-dd'});
   		$('#datepicker_end').datepicker({format: 'yyyy-mm-dd'});
+  		$('#datepicker123').datepicker({format: 'yyyy-mm-dd'});
+  		$('#case_entry_time_spent_from').ptTimeSelect();
+  		$('#case_entry_time_spent_to').ptTimeSelect();
   	});
 </script>
 										

@@ -46,13 +46,21 @@ class Account::UsersController < AccountController
     end
 	end
 
-	def destroy
-		# @user = User.find(params[:id])
-	 #    if @user.destroy
-  #  			redirect_to account_users_path
-		# else
-		# 	redirect_to account_users_path
-		# end
+	def activate_account
+
 	end
+
+	def deactivate_account
+
+	end
+
+	# def destroy
+	# 	# @user = User.find(params[:id])
+	#  #    if @user.destroy
+ #  #  			redirect_to account_users_path
+	# 	# else
+	# 	# 	redirect_to account_users_path
+	# 	# end
+	# end
 
 end

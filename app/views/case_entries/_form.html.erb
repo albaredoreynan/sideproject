@@ -65,8 +65,8 @@
           <%= f.collection_select(:lawyer_id, @lawyers, :id, :full_name,  { :id => 'lawyer_id', :required => true, :prompt => "Select From List", :selected =>  current_user.lawyer_id } ) %>
           <br/>
           <br/>
-          <%#= f.check_box :create_multiple_lawyer_entries %>
-          <!-- <span style="margin-top: -10px;">Multiple Lawyer Entries</span> -->
+          <%= f.check_box :create_multiple_lawyer_entries %>
+          <span style="margin-top: -10px;">Multiple Lawyer Entries</span>
           <%= hidden_field_tag :filematter_id, :value => ""  %>
         </div>
       </div>
@@ -119,6 +119,9 @@
 		  	<%= f.hidden_field :user_id, value: current_user.id %>
 		    <%= f.submit "Submit Entry", :class => 'btn btn-primary' %>
 		  	<%= link_to 'View Time Summary', case_entries_path, :class => 'btn' %>
+		  	<% if controller.action_name == 'new' %>
+		  		<%= f.submit "Submit & Add New Entry", :class => 'btn btn-success' %>
+		  	<% end %>
 		  </div>
 		</div>
 	</div>
