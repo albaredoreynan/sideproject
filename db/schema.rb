@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140702070459) do
+ActiveRecord::Schema.define(:version => 20141026122551) do
 
   create_table "assigned_lawyers", :force => true do |t|
     t.integer  "lawyer_id"
@@ -19,6 +19,17 @@ ActiveRecord::Schema.define(:version => 20140702070459) do
     t.integer  "client_id"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+  end
+
+  create_table "calls", :force => true do |t|
+    t.string   "called_number"
+    t.integer  "number_of_minutes"
+    t.integer  "call_amounts"
+    t.string   "client"
+    t.date     "call_date"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.integer  "client_id"
   end
 
   create_table "case_entries", :force => true do |t|
@@ -76,6 +87,23 @@ ActiveRecord::Schema.define(:version => 20140702070459) do
     t.string   "rate"
     t.string   "initials"
     t.string   "dollar_rate"
+  end
+
+  create_table "printouts", :force => true do |t|
+    t.integer  "ref_no"
+    t.date     "entry_date"
+    t.string   "case_title"
+    t.string   "client"
+    t.string   "document_name"
+    t.integer  "num_page"
+    t.integer  "num_copy"
+    t.string   "paper_size"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "client_id"
+    t.integer  "file_matter_id"
+    t.string   "file_matter_case"
+    t.integer  "lawyer_id"
   end
 
   create_table "users", :force => true do |t|

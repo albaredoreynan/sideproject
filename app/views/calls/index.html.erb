@@ -1,0 +1,89 @@
+<div class="panel">
+  <div class="panel-heading"><h3>Call Entries</h3></div>
+  <div class="panel panel-primary">
+    <div class="panel-primary panel-heading">Search</div>
+    <div class="row">
+      <div class="span11">
+      <%= form_for calls_path, :method => 'get' do %>
+          <div class="span5">    
+              Date From:&nbsp;&nbsp;
+              <%= text_field_tag :beginning_date, nil,  :id => "datepicker_beg"%>
+          </div>
+          <div class="span5">
+              Date To:&nbsp;&nbsp;
+              <%= text_field_tag :ending_date, nil,  :id => "datepicker_end"%>
+          </div>
+          <div class="span10">
+            <div class="pull-right">
+                  <%= submit_tag "Search" %>
+            </div>
+          </div>
+      <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-primary">
+    <div class="panel-primary panel-heading">Call Lists</div>
+    <div class="row">
+      <div class="span11">
+        <div class="pull-left">
+          <%= link_to "Create Entry",
+            new_call_path,
+            :class => 'btn btn-primary' %>
+        </div>
+        <div class="pull-right" style="margin-right: -40px;">
+          <%= link_to "Download as PDF <i class='icon-download-alt'></i>".html_safe, calls_path(params.merge(format: 'pdf')), :class => "btn btn-primary" %>   
+        </div>
+        <br/>
+        <br/>
+        <div class="row">
+          <div class="span11">
+            <table class="table table-striped" id="clients">
+              <thead>
+                <tr>
+                  <th width="30%"><center>Date Received</center></th>
+                  <th width="15%"><center>Client</center></th>
+                  <th width="15%"><center>Minutes of Call</center></th>
+                  <th width="10%"><center>Action</center></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @calls.each do |call| %>
+                  <tr>
+                    <td><%= call.call_date %></td>
+                    <td><%= call.client %></td>
+                    <td><%= call.number_of_minutes %></td>
+                    <td>
+                      <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                                  edit_call_path(call), :class => 'btn btn-mini' %>
+                      <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                                  call_path(call),
+                                  :method => :delete,
+                                  :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                                  :class => 'btn btn-mini btn-danger' %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+            <div class="pull-right">
+              <%= will_paginate @call, :param_name => 'page', previous_label: "<i class='icon-chevron-left'></i>".html_safe, next_label: "<i class='icon-chevron-right'></i>".html_safe %>
+            </div>
+          </div>
+        </div>
+        <%= link_to "Create Entry",
+                    new_call_path,
+                    :class => 'btn btn-primary' %>
+        <br>
+        <br>
+      </div>  
+    </div>
+  </div>  
+</div>
+
+<script>
+    $(function() {
+      $('#datepicker_beg').datepicker({format: 'yyyy-mm-dd'});
+      $('#datepicker_end').datepicker({format: 'yyyy-mm-dd'});
+    });  
+  </script>            

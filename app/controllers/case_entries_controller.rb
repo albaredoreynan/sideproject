@@ -236,7 +236,7 @@ class CaseEntriesController < ApplicationController
 
           format.pdf do 
             pdf = CaseReportsPdf.new(@case_listings, @file_matter_info, @start_date, @end_date, @file_matter_id, @case_number)
-            send_data pdf.render, filename: "Case Reports " + Date.today.to_s + ".pdf", disposition: "inline"
+            send_data pdf.render, filename: "Timesheet-"+'['+@file_matter_id+']-['+@start_date+'-'+@end_date+"].pdf", disposition: "inline"
           end
 
           format.csv { send_data @case_entries.to_csv }
@@ -264,7 +264,6 @@ class CaseEntriesController < ApplicationController
         
         if params[:file_matter_id].blank? && params[:case_number].blank? && params[:beginning_date].blank? && params[:ending_date].blank?
           @case_listings = nil
-
         else
           @case_listings = CaseEntry.select("DISTINCT(case_entries.file_matter_id)").where(args)
           @case_listings2 = CaseEntry.where(args)
@@ -280,8 +279,8 @@ class CaseEntriesController < ApplicationController
           format.html
 
           format.pdf do 
-            pdf = CaseReportsPdf.new(@case_listings, @file_matter_info, @start_date, @end_date, @file_matter_id, @case_number)
-            send_data pdf.render, filename: "Case Reports " + Date.today.to_s + ".pdf", disposition: "inline"
+            pdf = MultiCaseReportsPdf.new(@case_listings, @file_matter_info, @start_date, @end_date, @file_matter_id, @case_number)
+            send_data pdf.render, filename: "Case Reports " + @file_matter_id + ".pdf", disposition: "inline"
           end
 
           format.csv { send_data @case_entries.to_csv }

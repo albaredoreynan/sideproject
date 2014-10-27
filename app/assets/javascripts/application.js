@@ -21,7 +21,7 @@
 //= require dataTables/jquery.dataTables.bootstrap
 //= require dataTables/extras/TableTools 
 //= require cocoon
-//= require_tree .
+
 
 (function($){
     $(".alert").alert('closed')

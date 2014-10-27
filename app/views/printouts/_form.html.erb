@@ -1,0 +1,81 @@
+<%= simple_form_for @printout, :html => { :class => 'form-horizontal' } do |f| %>
+	<div class="panel panel-primary">
+		<div class="row">
+    	<div class="span10">
+	    	<div class="row">
+					<div class="span2">
+						<%#= f.input :ref_no, :label => 'Reference Number', :required => true %>
+						<%= f.label :file_matter_id, "File Reference Number:" %>
+						<%= f.autocomplete_field :file_matter_id, ac_file_code_printouts_path, :required => true, :class => "entry_date" %>
+						<%#= f.input :case_title, :label => 'Case Title' %>
+						<%#= f.input :client, :label => 'Client' %>
+					</div>	
+					<div class="span4">
+						<%= f.label :client, "Client:"%>
+					  <%= f.text_field :client, :readonly => true, :style => "width: 100%;" %>
+					</div>
+					<div class="span4">
+						<%= f.label :file_matter_case, "Case No.:"%>
+					  <%= f.text_field :file_matter_case,:readonly => true, :style => "width: 100%;" %>
+					</div>
+					<div class="span10">
+						<%= f.hidden_field :client_id %>
+					  <%= f.label :case_title, "Case Title:"%>
+					  <%= f.text_field :case_title,:readonly => true, :style => "width: 100%;" %>
+					</div>
+
+					
+					<div class="span3">
+						<%= f.label :entry_date, "Date fo Printing:", :required => true %>
+						<%= f.text_field :entry_date, :id => 'datepicker123', :class => "entry_date" %>
+					</div>
+					<div class="span3">
+	  				<%= f.input :document_name, :label => 'Document Name:' %>
+					</div>
+					<div class="span4">
+						<%= f.input :num_page, :label => 'Number of Page:' %>
+					</div>
+					<div class="span3">
+						<%= f.input :num_copy, :label => 'Number of Copy:' %>
+					</div>
+					<div class="span3">
+						<%= f.input :paper_size, :label => 'Paper Size:' %>
+					</div>
+					<div class="span3">
+						<%= f.input :times_amount, :label => 'Amount Per Pages:' %>
+					</div>	
+					<div class="span10">
+							<br/>
+					    <div class="pull right">
+						    <%= f.button :submit, 'Create Entry', :class => 'btn btn-primary' %>
+						    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+						                printouts_path, :class => 'btn' %>
+					    </div>
+					  	<br/>
+				 	</div>
+				</div>
+			</div>
+			<br/>
+			<br/>
+		</div>
+	</div>
+<% end %>
+
+<script>
+	$(function() {
+		$('#datepicker123').datepicker({format: 'yyyy-mm-dd'});
+	});
+
+	$(document).ready(function() {
+		$('#printout_file_matter_id').blur(function(){
+      $.ajax({
+        url: "<%= printouts_entry_path %>",
+        data: {
+          printout_file_matter_id : $('#printout_file_matter_id').val()
+        },
+        dataType: "script"
+      });
+    });
+  });  
+
+</script>

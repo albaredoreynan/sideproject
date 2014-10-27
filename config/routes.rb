@@ -23,18 +23,38 @@ Case2::Application.routes.draw do
   end
 
   resources :admin_side
-  resources :graphs
+  resources :graphs do 
+    collection do 
+      get "ac_file_code"
+    end
+  end
+  resources :calls do
+    collection do 
+      get "ac_client"
+    end
+  end
+
+  resources :printouts do
+    collection do 
+      get "ac_file_code"
+    end
+  end
   
   root :to => 'case_entries#new'
   
   # ajax
   get 'pages/update_songs', :as => 'update_songs'
   get 'pages/update_songs2', :as => 'update_songs2'
+  get 'pages/parse_client', :as => 'parse_client'
+  get 'pages/update_case_entry', :as => 'update_case_entry'
+  get 'pages/printouts_entry', :as => 'printouts_entry'
 
   # search
   # match '/all_employees_list', :to => 'labor_hours#all_employees_list'
   match 'search_entry', :to  => 'case_entries#search_entry'
   match 'search_entry_multi', :to  => 'case_entries#search_entry_multi'
+  match 'search_entry_graph', :to  => 'graphs#search_entry_graph'
+  match 'search_entry_other_graph', :to  => 'graphs#search_entry_other_graph'
   match 'exclude_billing', :to =>  'case_entries#exclude_billing'
   match 'modify_case_entry', :to =>  'case_entries#modify_case_entry'
   match 'case_entries/search' => 'case_entries#search_entry'

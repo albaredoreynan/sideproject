@@ -47,7 +47,7 @@ class Account::UsersController < AccountController
 	end
 
 	def activate_account
-
+		
 	end
 
 	def deactivate_account

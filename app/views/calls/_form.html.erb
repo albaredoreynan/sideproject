@@ -1,0 +1,45 @@
+<%= simple_form_for @call, :html => { :class => 'form-horizontal' } do |f| %>
+	<%= f.label :call_date, "Call Date", :required => true %>
+	<%= f.text_field :call_date, :id => 'datepicker123', :class => "entry_date" %>
+	
+	<%= f.label :client, "Client", :required => true %>
+	<%= f.autocomplete_field :client, ac_client_calls_path, :required => true, :class => "entry_date extend_length" %>
+	<%= f.hidden_field :client_id %>
+
+	<%= f.input :called_number, :label => 'Number Called', :required => true %>
+	<%= f.input :number_of_minutes, :label => 'Minutes of Call' %>
+	<%= f.input :call_amounts, :label => 'Call Amount' %>
+	<%#= f.input :client, :label => 'Client' %>
+	
+	
+	<br/>
+  <div class="pull left">
+    <%= f.button :submit, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                calls_path, :class => 'btn' %>
+  </div>
+<% end %>
+
+<script>
+	$(function() {
+  	$('#datepicker123').datepicker({format: 'yyyy-mm-dd'});
+
+  	// $('#call_client').blur(function(){
+  	// 	$.ajax({
+  	// 		alert("dsadsada7777");
+   //      url: "<%= parse_client_path %>",
+   //      data: {
+   //        client : $('#call_client').val()
+   //      },
+   //      dataType: "script"
+   //    });
+   //  });
+ 	});
+
+</script>
+
+<style>
+	.extend_length {
+		width: 300px;
+	}
+</style>
