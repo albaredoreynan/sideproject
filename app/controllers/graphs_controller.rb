@@ -1,8 +1,9 @@
 class GraphsController < ApplicationController
 	autocomplete :file_matter, :file_code, :full => true
+	
 	def index
 		if params[:lawyer_id].blank?
-			@lawyers = Lawyer.where(:id => [8, 12, 4, 2, 6, 7, 3])
+			@lawyers = Lawyer.where(:position => "Associates").limit(5)
 		else
 			@lawyers = Lawyer.where(:id => params[:lawyer_id])
 		end	

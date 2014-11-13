@@ -2,13 +2,13 @@
   	<div class="panel-primary panel-heading">Search-</div>
 	  <div class="row">
 	    <div class="span11">
-		    <%= form_for search_entry_graph_path, :method => 'get' do %>
+		    <%= form_for search_entry_other_graph_path, :method => 'get' do %>
 			<table class="table" width="100%">
 			  <thead>		
 				<tr>
 					<td>File Reference #:</td>
 					<td>
-						<%= autocomplete_field_tag :file_matter_id, ac_file_code_path, :class => "entry_date" %>
+						<%= autocomplete_field_tag :file_matter_id, nil, ac_file_code_graphs_path, :required => true %>
 					</td>
 					<td>Case Title:</td>
 					<td><%= text_field_tag :case_title, nil,  :id => "case_title" %></td>
@@ -21,7 +21,7 @@
 					<td>Date To: </td>	
 					<td>
 						<%= text_field_tag :ending_date, nil,  :id => "datepicker_end"%>
-						<%= hidden_field_tag :pfr, 1%>
+						<%= hidden_field_tag :pfr, 2%>
 					</td>
 				</tr>
 				<tr><td colspan="4"><div class="pull-right">

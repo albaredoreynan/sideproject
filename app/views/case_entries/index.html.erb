@@ -100,11 +100,12 @@
                           <div class="span6">
                             <%= hidden_field_tag :id, case_entry.id %>
                             <p><b>File Reference No. :</b>
-                              <%= f.autocomplete_field :file_matter_id, autocomplete_file_matter_file_code_case_entries_path, :required => true, :class => "case_entry_file_matter_id" %>
+                              <%= f.autocomplete_field :file_matter_id, autocomplete_file_matter_file_code_case_entries_path, :required => true, :class => "case_entry_file_matter_id", :id => "#{case_entry.id}" %>
                             </p>
-                            <p><b>Client :</b>&nbsp;<%= f.text_field :client_name, :readonly => true %></p>
-                            <p><b>Case Title :</b>&nbsp;<%= f.text_field :case_title,:readonly => true %></p>
-                            <p><b>Case No. :</b>&nbsp;<%= f.text_field :file_matter_case,:readonly => true %></p>
+                            <p><b>Client :</b>&nbsp;<%= f.text_field :client_name, :readonly => true, :id => "client_name_#{case_entry.id}" %></p>
+                              <%#= f.hidden_field :client_id, :id => "client_id_#{case_entry.id}" %>
+                            <p><b>Case Title :</b>&nbsp;<%= f.text_field :case_title, :readonly => true, :id => "case_title_#{case_entry.id}" %></p>
+                            <p><b>Case No. :</b>&nbsp;<%= f.text_field :file_matter_case, :readonly => true, :id => "file_matter_case_#{case_entry.id}" %></p>
                             <p><b>Assigned Lawyer :</b>&nbsp;<%= @ce.lawyer.full_name %></p>
                           </div>
                           <div class="span2">
@@ -200,14 +201,20 @@
       $('#case_entry_time_spent_to').ptTimeSelect();
     });
 
-    $(document).ready(function() {
+    $(document).ready(function(){
       $('.case_entry_file_matter_id').blur(function(){
+        var case_entry_value = $(this).val()
+        var case_entry_id = $(this).attr('id')
         $.ajax({
           url: "<%= update_case_entry_path %>",
           data: {
-            case_entry_file_matter_id : $('.case_entry_file_matter_id').val()
+            file_matter_id : case_entry_value,
+            case_entry_id  : case_entry_id
           },
-          dataType: "script"
+          dataType: "script",
+          success: function(data){
+            console.log(data);
+          }
         });
       });
     });  

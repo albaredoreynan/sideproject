@@ -1,0 +1,31 @@
+<div class="panel panel-primary">
+    <div class="panel-primary panel-heading">List of Filematters</div>
+    <div class="row">
+      <div class="span8">
+        <table class="table table-striped" id="filematters">
+          <thead>
+            <tr>
+              <th width="20%"><center>File Reference No.</center></th>
+              <th width="35%"><center>Case Title</center></th>
+              <th width="35%"><center>Case No.</center></th>
+              <th width="10%"><center></center></th>
+            </tr>
+            <% @file_matter = AssignedLawyer.where("lawyer_id =? ", current_user.lawyer_id) %>
+            <% @file_matter_id = @file_matter.pluck(:id) %>
+            <% @file_matter_info = FileMatter.where(:id => @file_matter_id ) %>
+            <% @file_matter_info.each do |fmi| %>
+              <tr>
+                <td><%= fmi.file_code %></td>
+                <td><%= fmi.title %></td>
+                <td><%= fmi.case_number %></td>
+                <td>
+                  <a href="#search_reference" role="button" class="btn btn-success btn-mini">Choose >></a>
+                </td>
+              </tr>
+            <% end %>
+          </thead>
+          <tbody>  
+        </table>
+      </div>
+    </div>
+  </div>

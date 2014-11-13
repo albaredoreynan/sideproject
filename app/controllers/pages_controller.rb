@@ -78,9 +78,18 @@ class PagesController < ApplicationController
   end
 
   def update_case_entry
-    @file_matters = FileMatter.find(:all, :conditions => { :file_code => params[:case_entry_file_matter_id] } ).first
+    @file_matters = FileMatter.find(:all, :conditions => { :file_code => params[:file_matter_id] } ).first
     @my_clients =  Client.find(:all, :conditions => { :id => @file_matters.client_id } ).first
-    @case_entry_id = params[:case_entry_id] 
+    @case_entry_id = params[:case_entry_id]
+    @file_matter_id = params[:file_matter_id]
+    # @file_matters_case_number = FileMatter.select("case_number").find(:all, :conditions => { :id => @file_matters } ).first
+    # @file_matters2 = AssignedLawyer.find(:all, :conditions => { :file_matter_id => @file_matters } )
+    # @lawyers = Array.new
+    # @file_matters2.each do |fm|
+    #         @lawyers << fm.lawyer_id
+    # end
+    # @lawyer_selected = current_user.lawyer_id.to_i
+    # @my_lawyers =  Lawyer.find(:all, :conditions => ["id IN (?)", @lawyers] ).map{|b| [b.full_name, b.id] }
   end
 
   def printouts_entry
