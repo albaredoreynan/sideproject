@@ -1,0 +1,81 @@
+<% @arr = Array.new %>
+<% @arr2 = Array.new %>
+<% @lawyers.each do |lawyer| %>
+  <% @arr << lawyer.full_name %>
+  <% @arr2 << calculate_time(lawyer.id, @beginning_date, @ending_date) %>
+<% end %>
+<script>
+  $(function () {
+      $('#container').highcharts({
+          chart: {
+              type: 'bar'
+          },
+          title: {
+              text: 'Lawyers Work Presentation by Hours'
+          },
+          subtitle: {
+              text: 'Period Covers: <%=raw(@beginning_date)%> - <%=raw(@ending_date)%>'
+          },
+          xAxis: {
+              // categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
+              categories: <%= raw(@arr) %>,
+              title: {
+                  text: null
+              }
+          },
+          yAxis: {
+              min: 0,
+              title: {
+                  text: 'List Of Lawyers Time Accumulation',
+                  align: 'high'
+              },
+              labels: {
+                  overflow: 'justify'
+              }
+          },
+          tooltip: {
+              valueSuffix: ' hours'
+          },
+          plotOptions: {
+              bar: {
+                  dataLabels: {
+                      enabled: true
+                  }
+              }
+          },
+          legend: {
+              layout: 'vertical',
+              align: 'right',
+              verticalAlign: 'top',
+              x: -40,
+              y: 100,
+              floating: true,
+              borderWidth: 1,
+              backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+              shadow: true
+          },
+          credits: {
+              enabled: false
+          },
+          series: [{
+              name: 'Accumulated Hours',
+              // data: [107, 31, 835, 203, 2, 50, 33, 23, 34, 12]
+              data: <%= raw(@arr2) %>
+          }
+          // }, 
+
+          // {
+          //     name: 'Year 1900',
+          //     data: [133, 156, 947, 408, 6, 50, 33, 23, 34, 12]
+          // }, 
+
+          // {
+          //     name: 'Year 2008',
+          //     data: [973, 914, 4054, 732, 34, 50, 33, 23, 34, 12]
+          // }
+
+          ]
+      });
+  });
+</script>
+<div id="container" style="width: 100%; height: 600px; margin: 0 auto"></div>

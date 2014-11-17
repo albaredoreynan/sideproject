@@ -28,10 +28,10 @@ class GraphsController < ApplicationController
 	end
 
 	def search_entry_other_graph
-		if params[:lawyer_id].blank?
-			@lawyers = Lawyer.where(:id => [8, 12, 4, 2, 6, 7, 3])
+		if params[:file_matter_id].blank? 
+			@file_matter_id = FileMatter.all.first
 		else
-			@lawyers = Lawyer.where(:id => params[:lawyer_id])
+			@file_matter_id = FileMatter.where(:file_code => params[:file_matter_id]).first
 		end	
 
 		if params[:beginning_date].blank?
@@ -46,6 +46,7 @@ class GraphsController < ApplicationController
 			@ending_date = Date.parse(params[:ending_date], '%b %d, %Y')
 		end
 
+		@assigned_lawyers = AssignedLawyer.where(:file_matter_id => @file_matter_id.id)	
 		# @beginning_date = Date.today.beginning_of_month.strftime('%b %d, %Y')
 		# @ending_date = Date.today.end_of_month.strftime('%b %d, %Y')
 		# @case_entries = @case_entries = CaseEntry.where(entry_date: @beginning_date..@ending_date)

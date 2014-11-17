@@ -16,19 +16,32 @@
       <% cl2 = '' %>
     <% end %>
 
+    <% if params[:pfr] == '3' %>
+      <% cl3 = 'active' %>
+    <% else %>
+      <% cl3 = '' %>
+    <% end %>
+
     <li class="<%= cl %>" >
       <%= link_to "Lawyers Hourly Stats", graphs_path(pfr:"1") %>
     </li>
     <li class="<%= cl2 %>" >
       <%= link_to "File Reference Stats", search_entry_other_graph_path(pfr:"2") %>
     </li>
+    <li class="<%= cl3 %>" >
+      <%= link_to "Client Stats", search_entry_other_graph_path(pfr:"2") %>
+    </li>
   </ul>
   <%= render "search_entry_other"%>
-  <% @arr = Array.new %>
-  <% @arr2 = Array.new %>
-  <% @lawyers.each do |lawyer| %>
-    <% @arr << lawyer.full_name %>
-    <% @arr2 << calculate_time(lawyer.id, @beginning_date, @ending_date) %>
+  <% if params[:file_matter_id].nil? %>
+  <% else %>
+    <% @arr = Array.new %>
+    <% @arr2 = Array.new %>
+    <% @assigned_lawyers.each do |lawyer| %>
+      <% lawyer.lawyer_id %>
+      <% @arr << lawyer.lawyer.full_name %>
+      <% @arr2 << calculate_time_per_filematter(lawyer.lawyer_id, @beginning_date, @ending_date, params[:file_matter_id].to_s).to_f %>
+    <% end %>
   <% end %>
   <div class="panel panel-primary">
     <div class="panel-primary panel-heading">Representation</div>
@@ -43,7 +56,7 @@
                               type: 'bar'
                           },
                           title: {
-                              text: 'Lawyers Work Presentation by Hours'
+                              text: 'Assigned Lawyer Per File Matter'
                           },
                           subtitle: {
                               text: 'Period Covers: <%=raw(@beginning_date)%> - <%=raw(@ending_date)%>'
