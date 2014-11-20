@@ -76,7 +76,7 @@
 												<td colspan="3">
 													<%= list.file_matter_id %>
 													<div class='pull-right'>
-														<%= link_to "Download as PDF <i class='icon-download-alt'></i>".html_safe, search_entry_multi_path(:pfr => '1', :beginning_date => params[:beginning_date], :ending_date => params[:ending_date], :file_matter_id => list.file_matter_id, format: 'pdf'), :class => "btn btn-primary btn-mini" %>	
+														<%= link_to "Download as PDF <i class='icon-download-alt'></i>".html_safe, search_entry_multi_path(:pfr => '1', :beginning_date => params[:beginning_date], :ending_date => params[:ending_date], :file_matter_id => list.file_matter_id, format: 'pdf'), :class => "btn btn-primary btn-mini", target: "_blank" %>	
 														<%= link_to 'View All Contents',
                                   search_entry_path(:pfr => '1', :beginning_date => params[:beginning_date], :ending_date => params[:ending_date], :file_matter_id => list.file_matter_id, :commit => "Search"), :class => 'btn btn-mini'%>
 													</div>

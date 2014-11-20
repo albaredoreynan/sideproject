@@ -110,31 +110,16 @@ class CaseEntriesController < ApplicationController
         end
 
     else
-      @assigned_lawyers = AssignedLawyer.find(:all, :conditions => { :file_matter_id => params[:filematter_id] } )
-      @assigned_lawyers.each do |al|
+      
+      if params[:case_entry_lawyer_id].present?
+        @assigned_lawyers = AssignedLawyer.find(:all, :conditions => { :file_matter_id => params[:filematter_id] } )
+        @assigned_lawyers.each do |al|
 
-        if params[:case_entry_lawyer_id]["#{al.lawyer_id}"].present?
-          @users = User.find(:all, :conditions => {:lawyer_id => al.lawyer_id }  )
-          @users.each do |usr|
-            @case_entry = CaseEntry.new(
-              :file_matter_id => params[:case_entry][:file_matter_id],
-              :entry_date => params[:case_entry][:entry_date],
-              :time_spent_from => params[:case_entry][:time_spent_from],
-              :time_spent_to => params[:case_entry][:time_spent_to],
-              :work_particulars => params[:case_entry][:work_particulars],
-              :client_id => params[:case_entry][:client_id],
-              :case_title => params[:case_entry][:case_title],
-              :file_matter_case => params[:case_entry][:file_matter_case],
-              :lawyer_id => al.lawyer_id,
-              :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
-              :user_id => usr.id
-            )
-            @case_entry.save
-          end
-        else
-          if current_user.lawyer_id == al.lawyer_id
-             @case_entry = CaseEntry.new(
-               :file_matter_id => params[:case_entry][:file_matter_id],
+          if params[:case_entry_lawyer_id]["#{al.lawyer_id}"].present?
+            @users = User.find(:all, :conditions => {:lawyer_id => al.lawyer_id }  )
+            @users.each do |usr|
+              @case_entry = CaseEntry.new(
+                :file_matter_id => params[:case_entry][:file_matter_id],
                 :entry_date => params[:case_entry][:entry_date],
                 :time_spent_from => params[:case_entry][:time_spent_from],
                 :time_spent_to => params[:case_entry][:time_spent_to],
@@ -142,14 +127,50 @@ class CaseEntriesController < ApplicationController
                 :client_id => params[:case_entry][:client_id],
                 :case_title => params[:case_entry][:case_title],
                 :file_matter_case => params[:case_entry][:file_matter_case],
-                :lawyer_id => current_user.lawyer_id,
+                :lawyer_id => al.lawyer_id,
                 :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
-                :user_id => current_user.id
+                :user_id => usr.id
               )
               @case_entry.save
+            end
+          else
+            if current_user.lawyer_id == al.lawyer_id
+               @case_entry = CaseEntry.new(
+                 :file_matter_id => params[:case_entry][:file_matter_id],
+                  :entry_date => params[:case_entry][:entry_date],
+                  :time_spent_from => params[:case_entry][:time_spent_from],
+                  :time_spent_to => params[:case_entry][:time_spent_to],
+                  :work_particulars => params[:case_entry][:work_particulars],
+                  :client_id => params[:case_entry][:client_id],
+                  :case_title => params[:case_entry][:case_title],
+                  :file_matter_case => params[:case_entry][:file_matter_case],
+                  :lawyer_id => current_user.lawyer_id,
+                  :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
+                  :user_id => current_user.id
+                )
+                @case_entry.save
+            end
           end
         end
+      else
+        @case_entry = CaseEntry.new(
+         :file_matter_id => params[:case_entry][:file_matter_id],
+          :entry_date => params[:case_entry][:entry_date],
+          :time_spent_from => params[:case_entry][:time_spent_from],
+          :time_spent_to => params[:case_entry][:time_spent_to],
+          :work_particulars => params[:case_entry][:work_particulars],
+          :client_id => params[:case_entry][:client_id],
+          :case_title => params[:case_entry][:case_title],
+          :file_matter_case => params[:case_entry][:file_matter_case],
+          :lawyer_id => current_user.lawyer_id,
+          :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
+          :user_id => current_user.id
+        )
+        @case_entry.save
+        
       end
+
+
       respond_to do |format|
         format.html { redirect_to case_entries_path(), notice: 'Case entries was successfully created.' }
         format.json { render json: @case_entry, status: :created, location: @case_entry }

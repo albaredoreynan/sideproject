@@ -65,7 +65,7 @@
           <div class="span11">
             <% if !@case_listings.nil? %>
 							<div class="pull-right" width="100%">
-						  		<%= link_to "Download as PDF <i class='icon-download-alt'></i>".html_safe, search_entry_path(params.merge(format: 'pdf')), :class => "btn btn-primary" %> 	
+						  		<%= link_to "Download as PDF <i class='icon-download-alt'></i>".html_safe, search_entry_path(params.merge(format: 'pdf')), :class => "btn btn-primary", target: "_blank" %> 	
 						  		<%= link_to "Download as EXCEL <i class='icon-download-alt'></i>".html_safe, search_entry_path(params.merge(format: 'xls')), :class => "btn btn-primary" %>
 						    	<br/>
 						    </div>
