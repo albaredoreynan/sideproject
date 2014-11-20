@@ -26,6 +26,7 @@ Case2::Application.routes.draw do
   resources :graphs do 
     collection do 
       get "ac_file_code"
+      get "ac_client_gr"
     end
   end
   resources :calls do
@@ -48,6 +49,8 @@ Case2::Application.routes.draw do
   get 'pages/parse_client', :as => 'parse_client'
   get 'pages/update_case_entry', :as => 'update_case_entry'
   get 'pages/printouts_entry', :as => 'printouts_entry'
+  get 'pages/update_cases', :as => 'update_cases'
+  get 'pages/update_search_form', :as => 'update_search_form'
 
   # search
   # match '/all_employees_list', :to => 'labor_hours#all_employees_list'
@@ -55,6 +58,7 @@ Case2::Application.routes.draw do
   match 'search_entry_multi', :to  => 'case_entries#search_entry_multi'
   match 'search_entry_graph', :to  => 'graphs#search_entry_graph'
   match 'search_entry_other_graph', :to  => 'graphs#search_entry_other_graph'
+  match 'search_entry_other_graph2', :to  => 'graphs#search_entry_other_graph2'
   match 'exclude_billing', :to =>  'case_entries#exclude_billing'
   match 'modify_case_entry', :to =>  'case_entries#modify_case_entry'
   match 'case_entries/search' => 'case_entries#search_entry'

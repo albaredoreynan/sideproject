@@ -1,0 +1,57 @@
+<% if params[:client].nil? %>
+
+<% else %>
+  <%# @file_matter_case = FileMatter.select('title, file_code').where(file_code: params[:file_matter_id]).last %>
+  <% @arr = Array.new %>
+  <% @assigned_lawyers.each do |lawyer| %>
+    <% lawyer.lawyer_id %>
+    <% @arr << [lawyer.lawyer.full_name, calculate_time_per_filematter(lawyer.lawyer_id, @beginning_date, @ending_date, @file_reference.last.file_code.to_s).to_f] %>
+  <% end %>
+  <script>
+  $(function () {
+      $('#container').highcharts({
+          chart: {
+              plotBackgroundColor: null,
+              plotBorderWidth: 1,//null,
+              plotShadow: false
+          },
+          title: {
+                text: 'Client Name: <%= raw(@client_id.name).upcase %>'
+            },
+            subtitle: {
+                text: 'Case Title: <%= raw(@file_reference.last.title).upcase %> <br/> Period Covers: <%=raw(@beginning_date)%> - <%=raw(@ending_date)%>'
+            },
+          tooltip: {
+              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+          },
+          plotOptions: {
+              pie: {
+                  allowPointSelect: true,
+                  cursor: 'pointer',
+                  dataLabels: {
+                      enabled: true,
+                      format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                      style: {
+                          color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                      }
+                  }
+              }
+          },
+          series: [{
+              type: 'pie',
+              name: 'Lawyers Performance',
+              data: <%= raw(@arr) %>
+
+              // [ 
+              //     ['Firefox',   45.0],
+              //     ['IE',       26.8],
+              //     // ['Safari',    8.5],
+              //     // ['Opera',     6.2],
+              //     // ['Others',   0.7]
+              // ]
+          }]
+      });
+  });
+  </script>
+  <div id="container" style="width: 100%; height: 600px; margin: 0 auto"></div>
+<% end %>

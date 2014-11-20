@@ -110,21 +110,65 @@ class CaseEntriesController < ApplicationController
         end
 
     else
+      @assigned_lawyers = AssignedLawyer.find(:all, :conditions => { :file_matter_id => params[:filematter_id] } )
+      @assigned_lawyers.each do |al|
 
-      @case_entry = CaseEntry.new(params[:case_entry])
-      respond_to do |format|
-        if @case_entry.save
-          if params[:commit] == 'Submit & Add New Entry'
-            format.html { redirect_to new_case_entry_path, notice: "Entries for Case #{params[:case_entry][:case_title]} has been created." }
-          else
-            format.html { redirect_to case_entries_path(), notice: 'Case entry was successfully created.' }
-            format.json { render json: @case_entry, status: :created, location: @case_entry }
+        if params[:case_entry_lawyer_id]["#{al.lawyer_id}"].present?
+          @users = User.find(:all, :conditions => {:lawyer_id => al.lawyer_id }  )
+          @users.each do |usr|
+            @case_entry = CaseEntry.new(
+              :file_matter_id => params[:case_entry][:file_matter_id],
+              :entry_date => params[:case_entry][:entry_date],
+              :time_spent_from => params[:case_entry][:time_spent_from],
+              :time_spent_to => params[:case_entry][:time_spent_to],
+              :work_particulars => params[:case_entry][:work_particulars],
+              :client_id => params[:case_entry][:client_id],
+              :case_title => params[:case_entry][:case_title],
+              :file_matter_case => params[:case_entry][:file_matter_case],
+              :lawyer_id => al.lawyer_id,
+              :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
+              :user_id => usr.id
+            )
+            @case_entry.save
           end
         else
-          format.html { render action: "new" }
-          format.json { render json: @case_entry.errors, status: :unprocessable_entity }
+          if current_user.lawyer_id == al.lawyer_id
+             @case_entry = CaseEntry.new(
+               :file_matter_id => params[:case_entry][:file_matter_id],
+                :entry_date => params[:case_entry][:entry_date],
+                :time_spent_from => params[:case_entry][:time_spent_from],
+                :time_spent_to => params[:case_entry][:time_spent_to],
+                :work_particulars => params[:case_entry][:work_particulars],
+                :client_id => params[:case_entry][:client_id],
+                :case_title => params[:case_entry][:case_title],
+                :file_matter_case => params[:case_entry][:file_matter_case],
+                :lawyer_id => current_user.lawyer_id,
+                :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
+                :user_id => current_user.id
+              )
+              @case_entry.save
+          end
         end
       end
+      respond_to do |format|
+        format.html { redirect_to case_entries_path(), notice: 'Case entries was successfully created.' }
+        format.json { render json: @case_entry, status: :created, location: @case_entry }
+      end
+
+      # @case_entry = CaseEntry.new(params[:case_entry])
+      # respond_to do |format|
+      #   if @case_entry.save
+      #     if params[:commit] == 'Submit & Add New Entry'
+      #       format.html { redirect_to new_case_entry_path, notice: "Entries for Case #{params[:case_entry][:case_title]} has been created." }
+      #     else
+      #       format.html { redirect_to case_entries_path(), notice: 'Case entry was successfully created.' }
+      #       format.json { render json: @case_entry, status: :created, location: @case_entry }
+      #     end
+      #   else
+      #     format.html { render action: "new" }
+      #     format.json { render json: @case_entry.errors, status: :unprocessable_entity }
+      #   end
+      # end
 
     end
 
@@ -279,8 +323,13 @@ class CaseEntriesController < ApplicationController
           format.html
 
           format.pdf do 
-            pdf = MultiCaseReportsPdf.new(@case_listings, @file_matter_info, @start_date, @end_date, @file_matter_id, @case_number)
-            send_data pdf.render, filename: "Case Reports " + @file_matter_id + ".pdf", disposition: "inline"
+            if @file_matter_id.nil?
+              pdf = MultiCaseReportsAllPdf.new(@case_listings2, @file_matter_info, @start_date, @end_date)
+              send_data pdf.render, filename: "Case Reports " +@start_date+ "-"+@end_date+".pdf", disposition: "inline"
+            else
+              pdf = MultiCaseReportsPdf.new(@case_listings, @file_matter_info, @start_date, @end_date, @file_matter_id, @case_number)
+              send_data pdf.render, filename: "Case Reports " + @file_matter_id + ".pdf", disposition: "inline"
+            end
           end
 
           format.csv { send_data @case_entries.to_csv }

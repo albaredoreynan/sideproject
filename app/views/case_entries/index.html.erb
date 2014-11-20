@@ -87,7 +87,7 @@
                 <td><center><%= case_entry.time_spent_to %></center></td>
                 
                 <!-- Pop Up Editing -->
-                <% if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id].present? || params[:client].present? || params[:case_title].present? %>
+                <%# if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id].present? || params[:client].present? || params[:case_title].present? %>
                   <div id="<%= case_entry.id %>" class="modal hide fade" style="width: 65%; height: auto; left:40%; overflow-y: hidden" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -103,7 +103,7 @@
                               <%= f.autocomplete_field :file_matter_id, autocomplete_file_matter_file_code_case_entries_path, :required => true, :class => "case_entry_file_matter_id", :id => "#{case_entry.id}" %>
                             </p>
                             <p><b>Client :</b>&nbsp;<%= f.text_field :client_name, :readonly => true, :id => "client_name_#{case_entry.id}" %></p>
-                              <%#= f.hidden_field :client_id, :id => "client_id_#{case_entry.id}" %>
+                              <%= f.hidden_field :client_id, :id => "client_id_#{case_entry.id}" %>
                             <p><b>Case Title :</b>&nbsp;<%= f.text_field :case_title, :readonly => true, :id => "case_title_#{case_entry.id}" %></p>
                             <p><b>Case No. :</b>&nbsp;<%= f.text_field :file_matter_case, :readonly => true, :id => "file_matter_case_#{case_entry.id}" %></p>
                             <p><b>Assigned Lawyer :</b>&nbsp;<%= @ce.lawyer.full_name %></p>
@@ -142,15 +142,16 @@
                       </div>
                     <% end %>
                   </div> 
-                <% end %>  
+                <%# end %>  
 
                 <td><center>
-                  <% if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id].present? || params[:client].present? || params[:case_title].present? %>
+                  <%# if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id].present? || params[:client].present? || params[:case_title].present? %>
                     <a href="#<%= case_entry.id %>" role="button" class="btn btn-success btn-mini" data-toggle="modal">Edit</a>
-                  <% else %>
-                    <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                  <%# else %>
+                    <%#= link_to t('.edit', :default => t("helpers.links.edit")),
                               edit_case_entry_path(case_entry), :class => 'btn btn-mini' %>
-                  <% end %>
+                    <!-- <a href="#<%= case_entry.id %>" role="button" class="btn btn-success btn-mini" data-toggle="modal">Edit</a> -->
+                  <%# end %>
 
                   <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                               case_entry_path(case_entry),
@@ -211,10 +212,10 @@
             file_matter_id : case_entry_value,
             case_entry_id  : case_entry_id
           },
-          dataType: "script",
-          success: function(data){
-            console.log(data);
-          }
+          dataType: "script"
+          // success: function(data){
+          //   console.log(data);
+          // }
         });
       });
     });  

@@ -1,35 +1,29 @@
 <div class="panel panel-primary">
-  	<div class="panel-primary panel-heading">Search-</div>
+  	<div class="panel-primary panel-heading">Search</div>
 	  <div class="row">
 	    <div class="span11">
 		    <%= form_for search_entry_other_graph_path, :method => 'get' do %>
-			<table class="table" width="100%">
-			  <thead>		
-				<tr>
-					<td>File Reference #:</td>
-					<td>
-						<%= autocomplete_field_tag :file_matter_id, nil, ac_file_code_graphs_path, :required => true %>
-					</td>
-					<td>Case Title:</td>
-					<td><%= text_field_tag :case_title, nil,  :id => "case_title" %></td>
-				</tr>	
-				<tr>
-					<td>Date From: </td>	
-					<td>
-						<%= text_field_tag :beginning_date, nil,  :id => "datepicker_beg"%>
-					</td>
-					<td>Date To: </td>	
-					<td>
-						<%= text_field_tag :ending_date, nil,  :id => "datepicker_end"%>
-						<%= hidden_field_tag :pfr, 2%>
-					</td>
-				</tr>
-				<tr><td colspan="4"><div class="pull-right">
-					    <%= submit_tag "Search" %>
-				</div></td></tr>
-			  </thead>		
-			</table>
-		<% end %>
+					<table class="table" width="100%">
+					  <thead>		
+							<tr>
+								<td width="12%">File Reference #:</td>
+								<td width="12%">
+									<%= autocomplete_field_tag :file_matter_id, nil, ac_file_code_graphs_path, :required => true, :style => "width: 90%;" %>
+								</td>
+								<td width="10%"><center>Date From:</center></td>	
+								<td width="15%">
+									<%= text_field_tag :beginning_date, nil,  :id => "datepicker_beg", :style => "width: 80%;"%>
+								</td>
+								<td width="10%"><center>Date To:</center></td>	
+								<td width="15%">
+									<%= text_field_tag :ending_date, nil,  :id => "datepicker_end", :style => "width: 80%;"%>
+									<%= hidden_field_tag :pfr, 2%>
+								</td>
+								<td><center><%= submit_tag "Search" %></center></td>
+							</tr>
+					  </thead>		
+					</table>
+				<% end %>
     	</div>
   	</div>
   </div>

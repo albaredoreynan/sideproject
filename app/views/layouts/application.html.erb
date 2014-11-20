@@ -20,14 +20,11 @@
         <div class="nav-collapse">
           <% if user_signed_in? %>
             <ul class="nav">
-              <% if current_user.role != 'User' %>
+              <% if current_user.role == 'Administrator' %>
                 <li><%= link_to "Case Entries", case_entries_path %></li>
                 <li><%= link_to "Clients", clients_path %></li>
                 <li><%= link_to "Lawyers", lawyers_path %></li>
                 <li><%= link_to "File/Matters", file_matters_path %></li>
-                <!-- <li>
-                  <%#= link_to "Reports", admin_side_index_path %>
-                </li> -->
                 <li>  
                   <%= link_to "Timesheet", search_entry_path(:pfr => 1) %>
                 </li>
@@ -35,13 +32,21 @@
                   <%= link_to "Users", account_users_path %>
                 </li>
                 <li>  
-                  <%= link_to "Graphs", graphs_path %>
+                  <%= link_to "Graphs", graphs_path(pfr: 1) %>
                 </li>
                 <li>  
                   <%= link_to "Calls", calls_path %>
                 </li>
                 <li>  
                   <%= link_to "Prints", printouts_path %>
+                </li>
+              <% elsif current_user.role == 'Encoder-Call' %>
+                <li>  
+                  <%= link_to "Calls", new_call_path %>
+                </li>
+              <% elsif current_user.role == 'Encoder-Print' %>
+                <li>  
+                  <%= link_to "Prints", new_printout_path %>
                 </li>
               <% else %>
                 <li><%= link_to "Case Entries", case_entries_path %></li>

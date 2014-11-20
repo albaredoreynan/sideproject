@@ -62,7 +62,9 @@
           <% else %>
                   <% @lawyer_id = current_user.lawyer_id %>
           <% end %>
-          <%= f.collection_select(:lawyer_id, @lawyers, :id, :full_name,  { :id => 'lawyer_id', :required => true, :prompt => "Select From List", :selected =>  current_user.lawyer_id } ) %>
+          <div id="lawyer_field" class="pads_up"></div>
+          <%#= f.collection_select(:lawyer_id, @lawyers, :id, :full_name,  { :id => 'lawyer_id', :required => true, :prompt => "Select From List", :selected =>  current_user.lawyer_id } ) %>
+          <%= f.check_box :lawyer_id, :checked => true, :value => current_user.lawyer_id %><div style="margin-top: -17px; padding-left: 20px;"><%= current_user.lawyer.full_name %></div>
           <br/>
           <br/>
           <%= f.check_box :create_multiple_lawyer_entries %>
@@ -99,8 +101,8 @@
 				<br/><br/>
 				<%#= f.label :lawyer_id, "Assigned Lawyer:"%>
 				<%#= f.check_box :lawyer_id, :checked => true, :value => current_user.lawyer_id %><div style="margin-top: -17px; padding-left: 20px;"><%#= @lawyer_name %></div>
-				<div id="lawyer_field" class="pads_up">
-					
+				
+				<div id="lawyer_field" class="pads_up">					
 					<%#= f.collection_select(:lawyer_id, @lawyers, :id, :full_name,  { :id => 'lawyer_id', :required => true, :prompt => "Select From List", :selected =>  current_user.lawyer_id } ) %>
 				</div>
 					
