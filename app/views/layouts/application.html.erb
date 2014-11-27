@@ -48,6 +48,23 @@
                 <li>  
                   <%= link_to "Prints", new_printout_path %>
                 </li>
+              <% elsif current_user.role == 'Billing Clerk'%>
+                <li><%= link_to "Case Entries", case_entries_path %></li>
+                <li><%= link_to "Clients", clients_path %></li>
+                <li><%= link_to "Lawyers", lawyers_path %></li>
+                <li><%= link_to "File/Matters", file_matters_path %></li>
+                <li>  
+                  <%= link_to "Timesheet", search_entry_path(:pfr => 1) %>
+                </li>
+                <li>  
+                  <%= link_to "Users", account_users_path %>
+                </li>
+                <li>  
+                  <%= link_to "Calls", calls_path %>
+                </li>
+                <li>  
+                  <%= link_to "Prints", printouts_path %>
+                </li>
               <% else %>
                 <li><%= link_to "Case Entries", case_entries_path %></li>
                 <li><%= link_to "File/Matters", file_matters_path %></li>

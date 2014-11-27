@@ -1,11 +1,15 @@
 class LawyersController < ApplicationController
   def index
-    @lawyers = Lawyer.paginate(:page => params[:page], :per_page => 25, :order => "last_name ASC")
     
+    @lawyers = Lawyer.paginate(:page => params[:page], :per_page => 25, :order => "last_name ASC")
+    @lawyer_all = Lawyer.order("last_name ASC")
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @lawyers }
       format.csv  { render :csv => @lawyers, :except => [:id] }
+      format.xls do 
+        headers['Content-Disposition'] = "attachment; filename=\"BackupListLawyers_#{Date.today}.xls\""
+      end
       # format.pdf do 
       #   headers['Content-Disposition'] = "attachment; filename=\"#{params[:controller]}\""
       #   render :layout => false

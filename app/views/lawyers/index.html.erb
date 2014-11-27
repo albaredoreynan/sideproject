@@ -1,9 +1,36 @@
 <div class="panel">
   <div class="panel-heading"><h3>Lawyers</h3></div>
   <div class="panel panel-primary">
+    <div class="panel-primary panel-heading">Search</div>
+    <div class="row">
+      <div class="span10">
+        <%= form_for lawyers_path, :method => 'get' do %>
+          <table class="table" width="100%">
+            <thead>   
+            <tr>
+              <td>Name :</td>
+              <td>
+                <%= autocomplete_field_tag :client, nil, ac_client_gr_graphs_path, :required => true, :style => "width: 100%;" %>
+              </td>
+              <td colspan=>
+                <div class="pull-right">
+                  <%= submit_tag "Search" %>
+                </div>
+              </td>
+            </tr>
+            </thead>    
+          </table>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-primary">
     <div class="panel-primary panel-heading">Lawyers List</div>
     <div class="row">
       <div class="span11">
+        <div class="pull-right">
+          <%= link_to "Backup in EXCEL File <i class='icon-download-alt'></i>".html_safe, lawyers_path(params.merge(format: 'xls')), :class => "btn btn-success" %>
+        </div>  
         <%= link_to "Create Entry",
                     new_lawyer_path,
                     :class => 'btn btn-primary' %>

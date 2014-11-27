@@ -1,29 +1,53 @@
-<%= simple_form_for @file_matter, :html => { :class => 'form-horizontal' } do |f| %>
-  		<%= f.input :file_code, :label => "File Reference No.", :required => true %>
-		<%= f.input :client_id, :collection => @clients.map {|u| [u.name, u.id] },  :include_blank => false, :prompt => "---", :required => true %>
-		<%= f.input :title, :label => "Case Title", :required => true %>
-		<%= f.input :case_number, :label => "Case Number" %>
-		<%= f.label :case_date, "Date Open" %>
-		<%= f.text_field :case_date, :id => 'datepicker123', :class => "case_date" %>
-		<%= f.input :currency_used, :collection => [ "Peso", "Dollar"] , :label =>  "Currency Billing" , :include_blank => false %> 
-		<%= f.simple_fields_for :assigned_lawyers do |assigned_lawyers| %>
-			<%= render 'assigned_lawyer_fields', :f => assigned_lawyers %>
-		<% end %>
-		<div>
-			<%= link_to_add_association 'Add Lawyer', f, :assigned_lawyers %>
+<div class="panel panel-primary">
+	<div class="row">
+		<div class="span10">
+			<%= simple_form_for @file_matter, :html => { :class => 'form-horizontal' } do |f| %>
+		  	<div class="span3">
+		  		<%= f.input :file_code, :label => "File Reference No.", :required => true %>
+		  	</div>
+		  	<div class="span3">	
+					<%= f.input :client_id, :collection => @clients.map {|u| [u.name, u.id] },  :include_blank => false, :prompt => "---", :required => true %>
+				</div>
+				<div class="span3">	
+					<%= f.input :title, :label => "Case Title", :required => true %>
+				</div>
+				
+				<div class="span3">
+					<%= f.input :case_number, :label => "Case Number" %>
+				</div>
+				<div class="span3">
+					<%= f.label :case_date, "Date Open" %>
+					<%= f.text_field :case_date, :id => 'datepicker123', :class => "case_date" %>
+				</div>
+				<div class="span3">
+					<%= f.input :currency_used, :collection => [ "Peso", "Dollar"] , :label =>  "Currency Billing" , :include_blank => false %> 
+				</div>
+
+				<div class="span10" style="padding-top: 30px;">
+					<div class="span5" style="padding-bottom:20px;">
+					<%= link_to_add_association 'Add Lawyer', f, :assigned_lawyers, :class => 'btn btn-success btn-mini', 'data-association-insertion-method' => 'append', 'data-association-insertion-node' => '#lawlist' %>
+					</div>
+
+					<div class="span10" id="lawlist">
+						<%= f.simple_fields_for :assigned_lawyers do |assigned_lawyers| %>
+							<%= render 'assigned_lawyer_fields', :f => assigned_lawyers %>
+						<% end %>
+					</div>
+
+				</div>
+
+			  <div class="span10" style="padding-top: 30px; padding-bottom:20px;">
+			    <%= f.button :submit, :class => 'btn btn-primary' %>
+			    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+			                file_matters_path, :class => 'btn' %>
+			  </div>
+			<% end %>
 		</div>
-		
-		
-	  <div class="form-actions">
-	    <%= f.button :submit, :class => 'btn btn-primary' %>
-	    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-	                file_matters_path, :class => 'btn' %>
-	  </div>
-	
-<% end %>
+	</div>
+</div>
 
 <script>
 	$(function() {
-  		$('#datepicker123').datepicker({format: 'mm/dd/yy'});
-  	});
+  	$('#datepicker123').datepicker({format: 'mm/dd/yy'});
+  });
 </script>

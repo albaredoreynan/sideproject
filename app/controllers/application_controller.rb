@@ -21,8 +21,14 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(user)
     if user.role == 'User'
     	new_case_entry_path
+    elsif user.role == 'Encoder-Call'
+    	calls_path
+    elsif user.role == 'Encoder-Print'
+      print_path
+    elsif user.role == 'Billing Clerk'
+      search_entry_path(:pfr => 1)
     else
-    	clients_path
+      graphs_path(:pfr => 1)
     end	
   end
 

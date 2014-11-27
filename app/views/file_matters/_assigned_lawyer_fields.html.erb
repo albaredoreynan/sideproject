@@ -1,12 +1,12 @@
-<div class="nested-fields">
-	<div class="span6">
+<div class="nested-fields span10">
 		<div class="span3">
-			<%= f.input :lawyer_id, :collection => @lawyers.map {|u| ["#{u.first_name+" "+u.middle_name+" "+u.last_name}", u.id] },  :prompt => "Select From List" %>
+			<%= f.input :lawyer_id, :collection => @lawyers.map {|u| ["#{u.first_name+" "+u.middle_name+" "+u.last_name}", u.id] },  :prompt => "Select From List", :class => "listings" %>
 		</div>
-		<div class="span2">
-			<br/>
-			<br/>
-			<%= link_to_remove_association 'Remove Lawyer', f %>
+		<div class="span3">	
+			<%= f.input :amount %>
 		</div>
-	</div>
+		<div class="span3" style="margin-top:6px;">
+			<br/>
+			<%= link_to_remove_association 'Remove Lawyer', f, :class => "btn btn-danger btn-mini" %>
+		</div>
 </div>

@@ -2,10 +2,14 @@
 <% else %>
   <% @arr = Array.new %>
   <% @arr2 = Array.new %>
-  <% @assigned_lawyers.each do |lawyer| %>
-    <% lawyer.lawyer_id %>
-    <% @arr << lawyer.lawyer.full_name %>
-    <% @arr2 << calculate_time_per_client(lawyer.lawyer_id, @beginning_date, @ending_date, @client_id.id).to_f %>
+  <%# @assigned_lawyers.each do |lawyer| %>
+    <%# lawyer.lawyer_id %>
+    <%# @arr << lawyer.lawyer.full_name %>
+    <%# @arr2 << calculate_time_per_client(lawyer.lawyer_id, @beginning_date, @ending_date, @client_id.id).to_f %>
+  <%# end %>
+  <% params[:month].each do |month_name| %>
+    <% @arr << month_name %>
+    <% @arr2 << calculate_client_service(params[:year], month_name, @client_id.id)%>
   <% end %>
   <script>
     $(function () {
@@ -17,7 +21,7 @@
                 text: 'Client Name: <%= raw(@client_id.name).upcase %>'
             },
             subtitle: {
-                text: 'Case Title: <%= raw(@file_reference.last.title).upcase %> <br/> Period Covers: <%=raw(@beginning_date)%> - <%=raw(@ending_date)%>'
+                text: 'Year: <%= raw(params[:year])%>'
             },
             xAxis: {
                 // categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
@@ -29,7 +33,7 @@
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'List Of Lawyers Time Accumulation',
+                    text: 'Total Hours for Client Service',
                     align: 'high'
                 },
                 labels: {

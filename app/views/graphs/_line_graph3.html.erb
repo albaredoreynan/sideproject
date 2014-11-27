@@ -3,9 +3,13 @@
 <% else %>
   <%# @file_matter_case = FileMatter.select('title, file_code').where(file_code: params[:file_matter_id]).last %>
   <% @arr = Array.new %>
-  <% @assigned_lawyers.each do |lawyer| %>
-    <% lawyer.lawyer_id %>
-    <% @arr << [lawyer.lawyer.full_name, calculate_time_per_filematter(lawyer.lawyer_id, @beginning_date, @ending_date, @file_reference.last.file_code.to_s).to_f] %>
+  <%# @assigned_lawyers.each do |lawyer| %>
+    <%# lawyer.lawyer_id %>
+    <%# @arr << [lawyer.lawyer.full_name, calculate_time_per_filematter(lawyer.lawyer_id, @beginning_date, @ending_date, @file_reference.last.file_code.to_s).to_f] %>
+  <%# end %>
+
+  <% params[:month].each do |month_name| %>
+    <% @arr << [month_name, calculate_client_service(params[:year], month_name, @client_id.id)]%>
   <% end %>
     <script>
     $(function () {
@@ -17,7 +21,7 @@
                 text: 'Client Name: <%= raw(@client_id.name).upcase %>'
             },
             subtitle: {
-                text: 'Case Title: <%= raw(@file_reference.last.title).upcase %> <br/> Period Covers: <%=raw(@beginning_date)%> - <%=raw(@ending_date)%>'
+                text: 'Year: <%= raw(params[:year])%>'
             },
             xAxis: {
                 type: 'category',
@@ -32,7 +36,7 @@
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'List Of Lawyers Time Accumulation'
+                    text: 'Total Hours for Client Service'
                 }
             },
             legend: {

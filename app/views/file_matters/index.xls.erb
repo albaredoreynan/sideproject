@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Worksheet ss:Name="Sheet1">
+   <Table>
+     <Row>
+       <Cell><Data ss:Type="String">ID</Data></Cell>
+       <Cell><Data ss:Type="String">Year</Data></Cell>
+       <Cell><Data ss:Type="String">File Reference #</Data></Cell>
+       <Cell><Data ss:Type="String">Client ID</Data></Cell>
+       <Cell><Data ss:Type="String">Client Name</Data></Cell>
+       <Cell><Data ss:Type="String">Case Title</Data></Cell>
+       <Cell><Data ss:Type="String">File Case #</Data></Cell>
+       <Cell><Data ss:Type="String">Case Date</Data></Cell>
+       <Cell><Data ss:Type="String">Currency</Data></Cell>
+       <Cell><Data ss:Type="String">Created At</Data></Cell>
+       <Cell><Data ss:Type="String">Updated At</Data></Cell>
+     </Row>
+     <Row>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+     </Row>
+     <Row>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+     </Row>
+      <% @all_fm.each do |fm| %>
+        <Row>
+          <Cell><Data ss:Type="String"><%= fm.id %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= fm.year %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= fm.file_code %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= fm.client_id %></Data></Cell>
+          <Cell><Data ss:Type="String">
+            <% if fm.client_id.nil? || fm.client_id == "" %>
+              Nothing to display
+            <% else %>
+              <% if @client.nil? %>
+                Nothing to display
+              <% else %>  
+                <% @client = Client.find(fm.client_id) %>
+                <%= @client.name %>
+              <% end %>
+            <% end %>
+          </Data></Cell>
+          <Cell><Data ss:Type="String"><%= fm.title %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= fm.case_number %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= fm.case_date %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= fm.currency_used %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= fm.created_at %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= fm.updated_at %></Data></Cell>
+        </Row> 
+      <% end %>     
+   </Table>
+ </Worksheet>
+</Workbook>

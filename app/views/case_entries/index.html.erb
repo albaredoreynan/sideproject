@@ -46,7 +46,8 @@
                     :class => 'btn btn-primary' %>
         </div>
         <div class="pull-right" style="margin-right: -40px;">
-          <%= link_to "Download as PDF <i class='icon-download-alt'></i>".html_safe, case_entries_path(params.merge(format: 'pdf')), :class => "btn btn-primary" %>   
+          <%= link_to "Download as PDF <i class='icon-download-alt'></i>".html_safe, case_entries_path(params.merge(format: 'pdf')), :class => "btn btn-primary" %>
+          <%= link_to "Backup in EXCEL File <i class='icon-download-alt'></i>".html_safe, case_entries_path(params.merge(format: 'xls')), :class => "btn btn-success" %>
         </div>
 
       </div>
@@ -106,19 +107,24 @@
                               <%= f.hidden_field :client_id, :id => "client_id_#{case_entry.id}" %>
                             <p><b>Case Title :</b>&nbsp;<%= f.text_field :case_title, :readonly => true, :id => "case_title_#{case_entry.id}" %></p>
                             <p><b>Case No. :</b>&nbsp;<%= f.text_field :file_matter_case, :readonly => true, :id => "file_matter_case_#{case_entry.id}" %></p>
-                            <p><b>Assigned Lawyer :</b>&nbsp;<%= @ce.lawyer.full_name %></p>
+                            <p><b>Assigned Lawyer :</b>&nbsp;
+                                <% if @ce.lawyer_id.nil? %>
+                                  <%= "No info provided" %>
+                                <% else %>
+                                  <%= @ce.lawyer.full_name %>
+                                <% end %>
+                            </p>
                           </div>
                           <div class="span2">
                             <%= f.label :entry_date, "Date:" %>
                             <%= f.text_field :entry_date, :id => 'datepicker123', :class => "entry_date", :required => true %>  
                           </div>
-                          <div class="span3">
+                          <div class="span4">
                             <div class="input-append" style="padding-left: 10px;">
                               <%= f.label :time_spent_from, "Start Time:" %>
                               <%= f.text_field :time_spent_from, :class => "input-small", :required => true %>
                               <!-- <span class="add-on"><i class="icon-time"></i></span> -->
                             </div>
-
                             <div class="input-append" style="padding-left: 30px;">
                               <%= f.label :time_spent_to, "End Time:" %>
                               <%= f.text_field :time_spent_to, :class => "input-small", :required => true %>
@@ -133,9 +139,16 @@
                             <%= hidden_field_tag :ending_date, params[:ending_date]%>
                             <%= hidden_field_tag :pfr, params[:pfr] %>
                           </div>
+                          <div class="span6">
+                            <div class="input-append">
+                              <%= f.label :remove_from_billing, "Exclude from Billing:"%> 
+                              <%= f.text_field :remove_from_billing %>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div class="modal-footer">
+                        <%= link_to t('.destroy', :default => t("helpers.links.destroy")), case_entry_path(case_entry), :method => :delete, :class => 'btn btn-danger' %>
                         <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
                         <!-- <button class="btn btn-primary">Save changes</button> -->
                         <%= f.button :submit, "Update Changes", :class => "btn btn-primary" %>

@@ -331,10 +331,22 @@
 													  	<% @units = "PHP " %>
 													  <% end %>
 
-													  <td width="20%"><center><%=  number_to_currency( @rates, :unit => @units ) %></center></td>
+													  <td width="20%"><center>
+													  	<% if laws.amount.nil? || laws.amount == 0 %>
+													  		<%=  number_to_currency( @rates, :unit => @units ) %>
+													  	<% else %>
+													  		<%=  number_to_currency( laws.amount, :unit => @units ) %>
+													  	<% end %>
+													  </center></td>
 													  <td width="10%" style="text-align:right;padding-right:10px" >
-													  	<%  @total_hours_final = @total_multi * @rates.to_f %>
-													  	<%=  number_to_currency( @total_hours_final, :unit => @units) %>
+													  	<% if laws.amount.nil? || laws.amount == 0 %>
+													  		<%  @total_hours_final = @total_multi * @rates.to_f %>
+													  		<%=  number_to_currency( @total_hours_final, :unit => @units) %>
+													  	<% else %>
+													  		<%  @total_hours_final = @total_multi * laws.amount.to_f %>
+													  		<%=  number_to_currency( @total_hours_final, :unit => @units) %>
+													  	<% end %>
+													  	
 													  </td>
 													</tr>
 													<% @totals_all << @total_hours_final.to_f %>

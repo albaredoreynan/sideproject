@@ -1,11 +1,18 @@
 class ClientsController < ApplicationController
   def index
-    @clients = Client.paginate(:page => params[:page], :per_page => 50, :order => "name ASC")
-    
+    if params[:client].present?
+      @clients = Client.where("name ILIKE ?", "#{params[:client]}").paginate(:page => params[:page], :per_page => 50, :order => "name ASC")
+    else  
+      @clients = Client.paginate(:page => params[:page], :per_page => 50, :order => "name ASC")
+    end
+    @client_all = Client.order("name ASC")
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @clients }
-      format.csv  { render :csv => @clients, :except => [:id] }
+      format.csv { send_data @clients.to_csv }
+      format.xls do 
+        headers['Content-Disposition'] = "attachment; filename=\"BackupListClients_#{Date.today}.xls\""
+      end
       # format.pdf do 
       #   headers['Content-Disposition'] = "attachment; filename=\"#{params[:controller]}\""
       #   render :layout => false

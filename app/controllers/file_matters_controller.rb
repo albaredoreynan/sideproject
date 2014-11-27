@@ -1,7 +1,7 @@
 class FileMattersController < ApplicationController
   
   def index
-    if current_user.role == 'Administrator'
+    if current_user.role == 'Administrator' || current_user.role == 'Billing Clerk'
       if params[:file_code].present? || params[:title].present? 
         args = {}
         args.merge!(file_code: params[:file_code]) unless params[:file_code].blank?
@@ -25,11 +25,14 @@ class FileMattersController < ApplicationController
         @file_matters = FileMatter.paginate(:page => params[:page], :per_page => 20, :order => "file_code DESC")
       end
     end  
-    
+    @all_fm = FileMatter.order("id ASC")
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @file_matters }
       format.csv  { render :csv => @file_matters, :except => [:id] }
+      format.xls do 
+        headers['Content-Disposition'] = "attachment; filename=\"BackupFileMatters_#{Date.today}.xls\""
+      end
       # format.pdf do 
       #   headers['Content-Disposition'] = "attachment; filename=\"#{params[:controller]}\""
       #   render :layout => false

@@ -11,14 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141026122551) do
+ActiveRecord::Schema.define(:version => 20141127045945) do
 
   create_table "assigned_lawyers", :force => true do |t|
     t.integer  "lawyer_id"
     t.integer  "file_matter_id"
     t.integer  "client_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",                                                     :null => false
+    t.datetime "updated_at",                                                     :null => false
+    t.decimal  "amount",         :precision => 15, :scale => 2, :default => 0.0, :null => false
   end
 
   create_table "calls", :force => true do |t|
@@ -43,7 +44,7 @@ ActiveRecord::Schema.define(:version => 20141026122551) do
     t.datetime "updated_at",                                       :null => false
     t.string   "file_matter_case"
     t.integer  "lawyer_id"
-    t.string   "case_title"
+    t.text     "case_title"
     t.integer  "user_id"
     t.boolean  "create_multiple_lawyer_entries"
     t.string   "client_name"
@@ -72,7 +73,8 @@ ActiveRecord::Schema.define(:version => 20141026122551) do
     t.string   "case_date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "currency_used", :default => "Peso", :null => false
+    t.string   "currency_used",                                :default => "Peso", :null => false
+    t.decimal  "amount",        :precision => 15, :scale => 2, :default => 0.0,    :null => false
   end
 
   create_table "lawyers", :force => true do |t|
@@ -98,12 +100,13 @@ ActiveRecord::Schema.define(:version => 20141026122551) do
     t.integer  "num_page"
     t.integer  "num_copy"
     t.string   "paper_size"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",                                                       :null => false
+    t.datetime "updated_at",                                                       :null => false
     t.integer  "client_id"
     t.integer  "file_matter_id"
     t.string   "file_matter_case"
     t.integer  "lawyer_id"
+    t.decimal  "times_amount",     :precision => 15, :scale => 2, :default => 0.0, :null => false
   end
 
   create_table "users", :force => true do |t|

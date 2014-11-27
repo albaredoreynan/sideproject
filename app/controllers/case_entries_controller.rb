@@ -4,7 +4,7 @@ class CaseEntriesController < ApplicationController
   autocomplete :file_matter, :case_number, :full => true
 
   def index
-    if current_user.role == 'Administrator'
+    if current_user.role == 'Administrator' || current_user.role == 'Billing Clerk'
       # @case_entries = CaseEntry.find(:all, :order => "entry_date DESC")
       if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id]
         args = {}
@@ -29,7 +29,7 @@ class CaseEntriesController < ApplicationController
         @case_entries = CaseEntry.where(:lawyer_id => current_user.lawyer_id).paginate(:page => params[:page], :per_page => 20, :order => "entry_date DESC")
       end
     end
-    @all_case_entries = CaseEntry.order("entry_date DESC")
+    @all_case_entries = CaseEntry.order("entry_date DESC").limit(3)
     @lawyer = current_user.name
     respond_to do |format|
       format.html # index.html.erb
@@ -107,8 +107,14 @@ class CaseEntriesController < ApplicationController
 
         end
         respond_to do |format|
-          format.html { redirect_to case_entries_path(), notice: 'Case entries was successfully created.' }
-          format.json { render json: @case_entry, status: :created, location: @case_entry }
+          if params[:commit] == 'Submit & Add New Entry'
+            format.html { redirect_to new_case_entry_path, notice: "Entries for Case #{params[:case_entry][:case_title]} has been created." }
+          else
+            format.html { redirect_to case_entries_path(), notice: 'Case entry was successfully created.' }
+            format.json { render json: @case_entry, status: :created, location: @case_entry }
+          end
+          # format.html { redirect_to case_entries_path(), notice: 'Case entries was successfully created.' }
+          # format.json { render json: @case_entry, status: :created, location: @case_entry }
         end
 
     else
@@ -174,8 +180,14 @@ class CaseEntriesController < ApplicationController
 
 
       respond_to do |format|
-        format.html { redirect_to case_entries_path(), notice: 'Case entries was successfully created.' }
-        format.json { render json: @case_entry, status: :created, location: @case_entry }
+        # format.html { redirect_to case_entries_path(), notice: 'Case entries was successfully created.' }
+        # format.json { render json: @case_entry, status: :created, location: @case_entry }
+        if params[:commit] == 'Submit & Add New Entry'
+          format.html { redirect_to new_case_entry_path, notice: "Entries for Case #{params[:case_entry][:case_title]} has been created." }
+        else
+          format.html { redirect_to case_entries_path(), notice: 'Case entry was successfully created.' }
+          format.json { render json: @case_entry, status: :created, location: @case_entry }
+        end
       end
 
       # @case_entry = CaseEntry.new(params[:case_entry])
@@ -222,7 +234,7 @@ class CaseEntriesController < ApplicationController
     @case_entry.destroy
 
     respond_to do |format|
-      format.html { redirect_to case_entries_path, alert: 'Case entry has been deleted.' }
+      format.html { redirect_to request.referrer, alert: 'Case entry has been deleted.' }
       format.json { head :no_content }
     end
   end

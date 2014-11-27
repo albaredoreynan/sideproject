@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Worksheet ss:Name="Sheet1">
+   <Table>
+     <Row>
+       <Cell><Data ss:Type="String">ID</Data></Cell>
+       <Cell><Data ss:Type="String">Entry Date</Data></Cell>
+       <Cell><Data ss:Type="String">Work Particulars</Data></Cell>
+       <Cell><Data ss:Type="String">Client ID</Data></Cell>
+       <Cell><Data ss:Type="String">Client Name</Data></Cell>
+       <Cell><Data ss:Type="String">File Reference #</Data></Cell>
+       <Cell><Data ss:Type="String">Start Time</Data></Cell>
+       <Cell><Data ss:Type="String">End Time</Data></Cell>
+       <Cell><Data ss:Type="String">File Case #</Data></Cell>
+       <Cell><Data ss:Type="String">Case Title</Data></Cell>
+       <Cell><Data ss:Type="String">Lawyer ID</Data></Cell>
+       <Cell><Data ss:Type="String">Lawyer Name</Data></Cell>
+       <Cell><Data ss:Type="String">User ID</Data></Cell>
+       <Cell><Data ss:Type="String">Created At</Data></Cell>
+       <Cell><Data ss:Type="String">Updated At</Data></Cell>
+     </Row>
+     <Row>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+     </Row>
+     <Row>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+       <Cell><Data ss:Type="String"></Data></Cell>
+     </Row>
+      <% @all_case_entries.each do |case_entry| %>
+        <Row>
+          <Cell><Data ss:Type="String"><%= case_entry.id %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= case_entry.entry_date %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= case_entry.work_particulars %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= case_entry.client_id %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= case_entry.client_name %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= case_entry.file_matter_id %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= case_entry.time_spent_from %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= case_entry.time_spent_to %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= case_entry.file_matter_case %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= case_entry.case_title %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= case_entry.lawyer_id %></Data></Cell>
+          <Cell><Data ss:Type="String">
+            <% if case_entry.lawyer_id.nil? %>
+              Nothing to display
+            <% else %>  
+              <% @fullname = Lawyer.find(case_entry.lawyer_id) %>
+              <%= @fullname.first_name %>&nbsp;<%= @fullname.middle_name %>&nbsp;<%= @fullname.last_name %>
+            <% end %>
+          </Data></Cell>
+          <Cell><Data ss:Type="String"><%= case_entry.user_id %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= case_entry.created_at %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= case_entry.updated_at %></Data></Cell>
+        </Row> 
+      <% end %>     
+   </Table>
+ </Worksheet>
+</Workbook>

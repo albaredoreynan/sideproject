@@ -4,7 +4,7 @@
     <%= f.input :name, :required => true, :autofocus => true %>
     <%= f.input :email, :required => true, :autofocus => true %>
     <%= f.input :username, :required => true, :autofocus => true %>
-    <%= f.input :role, :collection => [ "Administrator", "User", "Encoder-Call", "Encoder-Print"] , :label =>  "Role" , :include_blank => false, :required => true  %>
+    <%= f.input :role, :collection => [ "Administrator", "User", "Billing Clerk", "Encoder-Call", "Encoder-Print"] , :label =>  "Role" , :include_blank => false, :required => true  %>
     <%= f.input :password, :required => true %>
     <%= f.input :password_confirmation, :required => true %>
   </div>
