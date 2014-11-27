@@ -29,13 +29,15 @@ class CaseEntriesController < ApplicationController
         @case_entries = CaseEntry.where(:lawyer_id => current_user.lawyer_id).paginate(:page => params[:page], :per_page => 20, :order => "entry_date DESC")
       end
     end
-    
+    @all_case_entries = CaseEntry.order("entry_date DESC")
     @lawyer = current_user.name
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @case_entries }
       # format.csv  { render :csv => @case_entries, :except => [:id] }
-      
+      format.xls do 
+        headers['Content-Disposition'] = "attachment; filename=\"BackupCaseEntries_#{Date.today}.xls\""
+      end
       format.pdf do 
         pdf = CaseEntriesPdf.new(@case_entries, @lawyer)
         send_data pdf.render, filename: "Case Entry " + Date.today.to_s + ".pdf", disposition: "inline"

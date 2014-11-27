@@ -64,8 +64,11 @@
           <% end %>
           <div id="lawyer_field" class="pads_up"></div>
           <%#= f.collection_select(:lawyer_id, @lawyers, :id, :full_name,  { :id => 'lawyer_id', :required => true, :prompt => "Select From List", :selected =>  current_user.lawyer_id } ) %>
-          <%= f.check_box :lawyer_id, :checked => true, :value => current_user.lawyer_id %><div style="margin-top: -17px; padding-left: 20px;"><%= current_user.lawyer.full_name %></div>
-          <br/>
+          <% if current_user.role != 'Administrator' %>
+	          <%= f.check_box :lawyer_id, :checked => true, :value => current_user.lawyer_id %><div style="margin-top: -17px; padding-left: 20px;"><%= current_user.lawyer.full_name %></div>
+	        <% else %>
+	        <% end %>
+	        <br/>
           <br/>
           <%= f.check_box :create_multiple_lawyer_entries %>
           <span style="margin-top: -10px;">Multiple Lawyer Entries</span>
