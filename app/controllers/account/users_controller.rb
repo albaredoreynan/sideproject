@@ -47,20 +47,30 @@ class Account::UsersController < AccountController
 	end
 
 	def activate_account
-		
+		@user = User.find(params[:id])
+    @user.update_attributes(:is_active => 'Yes')
+    respond_to do |format|
+      format.html { redirect_to request.referrer, alert: 'This user has been activate.' }
+      format.json { head :no_content }
+    end
 	end
 
 	def deactivate_account
-
+		@user = User.find(params[:id])
+    @user.update_attributes(:is_active => 'No')
+    respond_to do |format|
+      format.html { redirect_to request.referrer, alert: 'This user has been deactivate.' }
+      format.json { head :no_content }
+    end
 	end
 
-	# def destroy
-	# 	# @user = User.find(params[:id])
-	#  #    if @user.destroy
- #  #  			redirect_to account_users_path
-	# 	# else
-	# 	# 	redirect_to account_users_path
-	# 	# end
-	# end
+	def destroy
+		@user = User.find(params[:id])
+    if @user.destroy
+ 			redirect_to account_users_path
+		else
+			redirect_to account_users_path
+		end
+	end
 
 end

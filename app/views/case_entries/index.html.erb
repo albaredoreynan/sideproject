@@ -1,3 +1,6 @@
+<style>
+  .gray-data { background-color: #5bc0de !important; color: #ffffff;" }
+</style>
 <div class="panel">
   <div class="panel-heading"><h3>Case Entries</h3></div>
   <div class="panel panel-primary">
@@ -69,7 +72,7 @@
           </thead>
           <tbody>
             <% @case_entries.each do |case_entry| %>
-              <tr>
+              <tr class="<%= case_entry.remove_from_billing == 'Yes' ? 'error' : '' %>">
                 <td data-title=""><center><%= case_entry.entry_date %></center></td>
                 <td data-title=""><center><%= case_entry.file_matter_id %></center></td>
                 <% @client = Client.find(:all, :conditions => { :id => case_entry.client_id} ) %>
@@ -92,7 +95,7 @@
                   <div id="<%= case_entry.id %>" class="modal hide fade" style="width: 65%; height: auto; left:40%; overflow-y: hidden" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                      <h3 id="myModalLabel">Quick Edit of Case Entry</h3>
+                      <h3 id="myModalLabel">Quick Edit</h3>
                     </div>
                     <% @ce = CaseEntry.find(case_entry.id) %>                  
                     <%= simple_form_for(@ce, :url => modify_case_entry_path(@case_entry), :html => { :method => :post }) do |f| %>  

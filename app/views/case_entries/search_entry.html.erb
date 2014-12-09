@@ -172,7 +172,7 @@
 																				<div id="<%= ce.id %>" class="modal hide fade" style="width: 65%; height: auto; left:40%; overflow-y: hidden" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 																				  <div class="modal-header">
 																				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-																				    <h3 id="myModalLabel">Quick Edit of Case Entry</h3>
+																				    <h3 id="myModalLabel">Quick Edit</h3>
 																				  </div>
 																				  <% @case_entry = CaseEntry.find(ce.id) %>
 																				  <%= simple_form_for(@case_entry, :url => modify_case_entry_path(@case_entry), :html => { :method => :post }) do |f| %>	
@@ -211,19 +211,25 @@
 																									<%= hidden_field_tag :ending_date, params[:ending_date]%>
 																									<%= hidden_field_tag :pfr, params[:pfr] %>
 																								</div>
+																								<div class="span6">
+											                            <div class="input-append">
+											                              <%= f.label :remove_from_billing, "Exclude from Billing:"%> 
+											                              <%= f.text_field :remove_from_billing %>
+											                            </div>
+											                          </div>
 																					  	</div>
 																					  </div>
 																					  <div class="modal-footer">
 																					    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-																					    <!-- <button class="btn btn-primary">Save changes</button> -->
+																					    <%= link_to t('.destroy', :default => t("helpers.links.destroy")), case_entry_path(ce), :method => :delete, :class => 'btn btn-danger' %>
 																					    <%= f.button :submit, "Update Changes", :class => "btn btn-primary" %>
 																					  </div>
 																					<% end %>  
 																				</div>	
 
 																				<%= link_to "Exclude".html_safe, exclude_billing_path(params.merge(:edit_ent => 'Yes', :cei => ce.id)), title:"Exclude", class: 'btn btn-info btn-mini', :data => { :confirm => 'This entry will be excluded from the billing list. You can include it by going to the case entry list and edit the entry.' } %>
-																				&nbsp;
 																				<a href="#<%= ce.id %>" role="button" class="btn btn-success btn-mini" data-toggle="modal">Edit</a>
+																				<%= link_to t('.destroy', :default => t("helpers.links.destroy")), case_entry_path(ce), :method => :delete, :class => 'btn btn-danger btn-mini' %>
 																				<%#= link_to "Edit".html_safe, exclude_billing_path(params.merge(:edit_ent => 'Yes', :cei => ce.id)), class: 'btn btn-success btn-mini' %>
 																			</td>
 																		</tr>

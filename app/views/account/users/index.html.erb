@@ -21,7 +21,12 @@
               </thead>
               <tbody>
                 <% @user_list.each do |user_list| %>
-                  <tr>
+                  <% if user_list.is_active == 'No' %>
+                    <% @class = 'error' %>
+                  <% else %>
+                    <% @class = '' %>
+                  <% end %>
+                  <tr class="<%=@class%>">
                     <td><%= user_list.name %></td>
                     <td><%= user_list.username %></td>
                     <td><%= user_list.email %></td>
@@ -35,6 +40,11 @@
                                   :method => :delete,
                                   :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                                   :class => 'btn btn-mini btn-danger' %>
+                      <% if user_list.is_active == 'Yes' %>
+                        <%= link_to "Deactivate".html_safe, deactivate_account_path(params.merge(:id => user_list)), title:"Deactivate", class: 'btn btn-info btn-mini' %>
+                      <% else %>
+                        <%= link_to "Activate".html_safe, activate_account_path(params.merge(:id => user_list)), title:"Activate", class: 'btn btn-info btn-mini' %>
+                      <% end %>
                     </td>
                   </tr>
                 <% end %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141127045945) do
+ActiveRecord::Schema.define(:version => 20141204211635) do
 
   create_table "assigned_lawyers", :force => true do |t|
     t.integer  "lawyer_id"
@@ -84,11 +84,12 @@ ActiveRecord::Schema.define(:version => 20141127045945) do
     t.string   "mobile_number"
     t.string   "position"
     t.string   "email"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
     t.string   "rate"
     t.string   "initials"
     t.string   "dollar_rate"
+    t.string   "is_active",     :default => "Yes"
   end
 
   create_table "printouts", :force => true do |t|
@@ -110,8 +111,8 @@ ActiveRecord::Schema.define(:version => 20141127045945) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "email",                  :default => "",    :null => false
+    t.string   "encrypted_password",     :default => "",    :null => false
     t.string   "username"
     t.string   "name"
     t.string   "reset_password_token"
@@ -122,10 +123,11 @@ ActiveRecord::Schema.define(:version => 20141127045945) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.string   "role"
     t.integer  "lawyer_id"
+    t.string   "is_active",              :default => "Yes"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

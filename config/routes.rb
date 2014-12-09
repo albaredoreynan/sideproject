@@ -64,5 +64,8 @@ Case2::Application.routes.draw do
   match 'case_entries/search' => 'case_entries#search_entry'
   match 'file_matters/search' => 'file_matters#search_entry'
   match '/admin_side/search' => 'admin_side#index'
-  
+  match 'activate_account', :to =>  'account/users#activate_account'
+  match 'deactivate_account', :to =>  'account/users#deactivate_account'
+  match 'activate_lawyer', :to =>  'lawyers#activate_account'
+  match 'deactivate_lawyer', :to =>  'lawyers#deactivate_account'
 end

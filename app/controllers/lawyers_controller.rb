@@ -89,4 +89,22 @@ class LawyersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def activate_account
+    @lawyer = Lawyer.find(params[:id])
+    @lawyer.update_attributes(:is_active => 'Yes')
+    respond_to do |format|
+      format.html { redirect_to request.referrer, alert: 'This lawyer has been activate.' }
+      format.json { head :no_content }
+    end
+  end
+
+  def deactivate_account
+    @lawyer = Lawyer.find(params[:id])
+    @lawyer.update_attributes(:is_active => 'No')
+    respond_to do |format|
+      format.html { redirect_to request.referrer, alert: 'This lawyer has been deactivate.' }
+      format.json { head :no_content }
+    end
+  end
 end

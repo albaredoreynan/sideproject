@@ -42,16 +42,21 @@
               <thead>
                 <tr>
                   <th width="35%"><center>Name<center></th>
-                  <th width="10%"><center>Initial<center></th>
-                  <th width="15%"><center>Position<center></th>
+                  <th width="7%"><center>Initial<center></th>
+                  <th width="10%"><center>Position<center></th>
                   <th width="15%"><center>Email<center></th>
-                  <th width="15%"><center>Mobile<center></th>
-                  <th width="10%"><center>Actions<center></th>
+                  <th width="10%"><center>Mobile<center></th>
+                  <th width="23%"><center>Actions<center></th>
                 </tr>
               </thead>
               <tbody>
                 <% @lawyers.each do |lawyer| %>
-                  <tr>
+                  <% if lawyer.is_active == 'No' %>
+                    <% @class = 'error' %>
+                  <% else %>
+                    <% @class = '' %>
+                  <% end %>
+                  <tr class="<%=@class%>">
                     <td><%= lawyer.first_name+" "+lawyer.middle_name+" "+lawyer.last_name %> </td>
                     <td><center><%= lawyer.initials %></center></td>
                     <td><center><%= lawyer.position %></center></td>
@@ -65,6 +70,11 @@
                                   :method => :delete,
                                   :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                                   :class => 'btn btn-mini btn-danger' %>
+                      <% if lawyer.is_active == 'Yes' %>
+                        <%= link_to "Deactivate".html_safe, deactivate_lawyer_path(params.merge(:id => lawyer)), title:"Deactivate", class: 'btn btn-info btn-mini' %>
+                      <% else %>
+                        <%= link_to "Activate".html_safe, activate_lawyer_path(params.merge(:id => lawyer)), title:"Activate", class: 'btn btn-info btn-mini' %>
+                      <% end %>
                     </td>
                   </tr>
                 <% end %>
