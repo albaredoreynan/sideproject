@@ -1,9 +1,10 @@
 class ClientsController < ApplicationController
+  helper_method :sort_column, :sort_direction
   def index
     if params[:client].present?
-      @clients = Client.where("name ILIKE ?", "#{params[:client]}").paginate(:page => params[:page], :per_page => 50, :order => "name ASC")
+      @clients = Client.where("name ILIKE ?", "#{params[:client]}").paginate(:page => params[:page], :per_page => 50).order(sort_column + " " + sort_direction)
     else  
-      @clients = Client.paginate(:page => params[:page], :per_page => 50, :order => "name ASC")
+      @clients = Client.paginate(:page => params[:page], :per_page => 50).order(sort_column + " " + sort_direction)
     end
     @client_all = Client.order("name ASC")
     respond_to do |format|
@@ -79,4 +80,15 @@ class ClientsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+  
+  def sort_column
+    Client.column_names.include?(params[:sort]) ? params[:sort] : "name"
+  end
+  
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
+  end
+
 end

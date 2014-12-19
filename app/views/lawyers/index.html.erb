@@ -41,10 +41,10 @@
             <table class="table table-striped" id="lawyers">
               <thead>
                 <tr>
-                  <th width="35%"><center>Name<center></th>
-                  <th width="7%"><center>Initial<center></th>
-                  <th width="10%"><center>Position<center></th>
-                  <th width="15%"><center>Email<center></th>
+                  <th width="30%"><center><%= sortable "last_name", "Name" %><center></th>
+                  <th width="12%"><center><%= sortable "initials", "Initials" %><center></th>
+                  <th width="10%"><center><%= sortable "position", "Position" %><center></th>
+                  <th width="15%"><center><%= sortable "email", "Email" %><center></th>
                   <th width="10%"><center>Mobile<center></th>
                   <th width="23%"><center>Actions<center></th>
                 </tr>

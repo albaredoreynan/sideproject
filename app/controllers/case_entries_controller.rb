@@ -1,5 +1,6 @@
 class CaseEntriesController < ApplicationController
-  
+  helper_method :sort_column, :sort_direction
+
   autocomplete :file_matter, :file_code, :full => true
   autocomplete :file_matter, :case_number, :full => true
 
@@ -12,9 +13,9 @@ class CaseEntriesController < ApplicationController
         args.merge!(case_number: params[:case_number]) unless params[:case_number].blank?
         args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
         args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
-        @case_entries = CaseEntry.where(args).paginate(:page => params[:page], :per_page => 20, :order => "entry_date DESC")
+        @case_entries = CaseEntry.where(args).paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       else
-        @case_entries = CaseEntry.paginate(:page => params[:page], :per_page => 20, :order => "entry_date DESC")
+        @case_entries = CaseEntry.paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       end
     else
       if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id]
@@ -23,13 +24,13 @@ class CaseEntriesController < ApplicationController
         args.merge!(case_number: params[:case_number]) unless params[:case_number].blank?
         args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
         args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
-        @case_entries = CaseEntry.where(args).order("entry_date DESC").paginate(:page => params[:page], :per_page => 10)
+        @case_entries = CaseEntry.where(args).paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       else
         # @case_entries = CaseEntry.find(:all, :conditions => { :lawyer_id => current_user.lawyer_id }, :order => "entry_date DESC" ).paginate(:page => params[:page], :per_page => 10)
-        @case_entries = CaseEntry.where(:lawyer_id => current_user.lawyer_id).paginate(:page => params[:page], :per_page => 20, :order => "entry_date DESC")
+        @case_entries = CaseEntry.where(:lawyer_id => current_user.lawyer_id).paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       end
     end
-    @all_case_entries = CaseEntry.order("entry_date DESC").limit(3)
+    @all_case_entries = CaseEntry.order("entry_date DESC")
     @lawyer = current_user.name
     respond_to do |format|
       format.html # index.html.erb
@@ -59,7 +60,11 @@ class CaseEntriesController < ApplicationController
   # GET /case_entries/new
   # GET /case_entries/new.json
   def new
-    @case_entry = CaseEntry.new
+    if params[:last_id].present? || !params[:last_id].nil?
+      @case_entry = CaseEntry.find(params[:last_id])
+    else  
+      @case_entry = CaseEntry.new
+    end
     @file_matters = FileMatter.find(:all, :group => "file_code, id")
     @file_matter_case = FileMatter.find(:all, :group => "case_number, id")
     @lawyers = Lawyer.all
@@ -183,7 +188,7 @@ class CaseEntriesController < ApplicationController
         # format.html { redirect_to case_entries_path(), notice: 'Case entries was successfully created.' }
         # format.json { render json: @case_entry, status: :created, location: @case_entry }
         if params[:commit] == 'Submit & Add New Entry'
-          format.html { redirect_to new_case_entry_path, notice: "Entries for Case #{params[:case_entry][:case_title]} has been created." }
+          format.html { redirect_to new_case_entry_path(:last_id => @case_entry), notice: "Entries for Case #{params[:case_entry][:case_title]} has been created." }
         else
           format.html { redirect_to case_entries_path(), notice: 'Case entry was successfully created.' }
           format.json { render json: @case_entry, status: :created, location: @case_entry }
@@ -355,22 +360,32 @@ class CaseEntriesController < ApplicationController
         @case_number = params[:case_number]
 
       respond_to do |format|
-          format.html
+        format.html
 
-          format.pdf do 
-            if @file_matter_id.nil?
-              pdf = MultiCaseReportsAllPdf.new(@case_listings2, @file_matter_info, @start_date, @end_date)
-              send_data pdf.render, filename: "Case Reports " +@start_date+ "-"+@end_date+".pdf", disposition: "inline"
-            else
-              pdf = MultiCaseReportsPdf.new(@case_listings, @file_matter_info, @start_date, @end_date, @file_matter_id, @case_number)
-              send_data pdf.render, filename: "Case Reports " + @file_matter_id + ".pdf", disposition: "inline"
-            end
+        format.pdf do 
+          if @file_matter_id.nil?
+            pdf = MultiCaseReportsAllPdf.new(@case_listings2, @file_matter_info, @start_date, @end_date)
+            send_data pdf.render, filename: "Case Reports " +@start_date+ "-"+@end_date+".pdf", disposition: "inline"
+          else
+            pdf = MultiCaseReportsPdf.new(@case_listings, @file_matter_info, @start_date, @end_date, @file_matter_id, @case_number)
+            send_data pdf.render, filename: "Case Reports " + @file_matter_id + ".pdf", disposition: "inline"
           end
+        end
 
-          format.csv { send_data @case_entries.to_csv }
-          format.xls
+        format.csv { send_data @case_entries.to_csv }
+        format.xls
           
       end
       
+  end
+
+  private
+  
+  def sort_column
+    CaseEntry.column_names.include?(params[:sort]) ? params[:sort] : "entry_date"
+  end
+  
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
   end
 end

@@ -178,14 +178,31 @@
 																				  <%= simple_form_for(@case_entry, :url => modify_case_entry_path(@case_entry), :html => { :method => :post }) do |f| %>	
 																					  <div class="modal-body">
 																					  	<div class="form-inputs">
-																					  		<div class="span6">
+																					  		<!-- <div class="span6">
 																					  			<%= hidden_field_tag :id, ce.id %>
 																					  			<p><b>File Reference No. :</b>&nbsp;<%= @case_entry.file_matter_id %></p>
 																					  			<p><b>Client :</b>&nbsp;<%= Client.find(@case_entry.client_id).name %></p>
 																					  			<p><b>Case Title :</b>&nbsp;<%= @case_entry.case_title %></p>
 																					  			<p><b>Case No. :</b>&nbsp;<%= @case_entry.file_matter_case %></p>
 																					  			<p><b>Assigned Lawyer :</b>&nbsp;<%= @case_entry.lawyer.full_name %></p>
-																					  		</div>
+																					  		</div> -->
+																					  		<div class="span6">
+										                            <%= hidden_field_tag :id, ce.id %>
+										                            <p><b>File Reference No. :</b>
+										                              <%= f.autocomplete_field :file_matter_id, autocomplete_file_matter_file_code_case_entries_path, :required => true, :class => "case_entry_file_matter_id", :id => "#{ce.id}" %>
+										                            </p>
+										                            <p><b>Client :</b>&nbsp;<%= f.text_field :client_name, :readonly => true, :id => "client_name_#{ce.id}" %></p>
+										                              <%= f.hidden_field :client_id, :id => "client_id_#{ce.id}" %>
+										                            <p><b>Case Title :</b>&nbsp;<%= f.text_field :case_title, :readonly => true, :id => "case_title_#{ce.id}" %></p>
+										                            <p><b>Case No. :</b>&nbsp;<%= f.text_field :file_matter_case, :readonly => true, :id => "file_matter_case_#{ce.id}" %></p>
+										                            <p><b>Assigned Lawyer :</b>&nbsp;
+										                                <% if @case_entry.lawyer_id.nil? %>
+										                                  <%= "No info provided" %>
+										                                <% else %>
+										                                  <%= @case_entry.lawyer.full_name %>
+										                                <% end %>
+										                            </p>
+										                          </div>
 																					  		<div class="span2">
 																									<%= f.label :entry_date, "Date:" %>
 																									<%= f.text_field :entry_date, :id => 'datepicker123', :class => "entry_date", :required => true %>	
@@ -396,6 +413,24 @@
   		$('#case_entry_time_spent_from').ptTimeSelect();
   		$('#case_entry_time_spent_to').ptTimeSelect();
   	});
+
+	$(document).ready(function(){
+      $('.case_entry_file_matter_id').blur(function(){
+        var case_entry_value = $(this).val()
+        var case_entry_id = $(this).attr('id')
+        $.ajax({
+          url: "<%= update_case_entry_path %>",
+          data: {
+            file_matter_id : case_entry_value,
+            case_entry_id  : case_entry_id
+          },
+          dataType: "script"
+          // success: function(data){
+          //   console.log(data);
+          // }
+        });
+      });
+    });
 </script>
 										
 										

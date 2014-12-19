@@ -5,11 +5,11 @@ class GraphsController < ApplicationController
 		if params[:lawyer_id].blank?
 			@lawyers = Lawyer.where(:position => "Associate")
 		else
-			if params[:lawyer_id] == ["SENIOR ASSOCIATE"]
+			if params[:lawyer_id] == ["SENIOR ASSOCIATES"]
 				@lawyers = Lawyer.where(:position => 'Senior Associate')
-			elsif params[:lawyer_id] == ["ASSOCIATE"]
+			elsif params[:lawyer_id] == ["ASSOCIATES"]
 				@lawyers = Lawyer.where(:position => 'Associate')
-			elsif params[:lawyer_id] == ["PARTNER"]
+			elsif params[:lawyer_id] == ["PARTNERS"]
 				@lawyers = Lawyer.where(:position => 'Partner')	
 			else	
 				@lawyers = Lawyer.where(:id => params[:lawyer_id])
@@ -32,9 +32,9 @@ class GraphsController < ApplicationController
 		# @ending_date = Date.today.end_of_month.strftime('%b %d, %Y')
 		# @case_entries = @case_entries = CaseEntry.where(entry_date: @beginning_date..@ending_date)
 		@lawyers2 = Lawyer.all.map{|a|[a.full_name, a.id]}
-		@lawyers2 << ['SENIOR ASSOCIATE','SENIOR ASSOCIATE']
-		@lawyers2 << ['ASSOCIATE','ASSOCIATE']
-		@lawyers2 << ['PARTNER','PARTNER']
+		@lawyers2 << ['SENIOR ASSOCIATES','SENIOR ASSOCIATES']
+		@lawyers2 << ['ASSOCIATES','ASSOCIATES']
+		@lawyers2 << ['PARTNERS','PARTNERS']
 		
 	end
 

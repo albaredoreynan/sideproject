@@ -1,5 +1,5 @@
 class FileMattersController < ApplicationController
-  
+  helper_method :sort_column, :sort_direction
   def index
     if current_user.role == 'Administrator' || current_user.role == 'Billing Clerk'
       if params[:file_code].present? || params[:title].present? 
@@ -7,10 +7,10 @@ class FileMattersController < ApplicationController
         args.merge!(file_code: params[:file_code]) unless params[:file_code].blank?
         args.merge!(title: params[:title]) unless params[:title].blank?
         #@case_entries = CaseEntry.where(args).order("entry_date DESC")
-        @file_matters = FileMatter.where(args).paginate(:page => params[:page], :per_page => 20, :order => "file_code DESC")
+        @file_matters = FileMatter.where(args).paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       else
         #@case_entries = CaseEntry.find(:all, :conditions => { :lawyer_id => current_user.lawyer_id }, :order => "entry_date DESC" )
-        @file_matters = FileMatter.paginate(:page => params[:page], :per_page => 20, :order => "file_code DESC")
+        @file_matters = FileMatter.paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       end
       
     else
@@ -19,10 +19,10 @@ class FileMattersController < ApplicationController
         args.merge!(file_code: params[:file_code]) unless params[:file_code].blank?
         args.merge!(title: params[:title]) unless params[:title].blank?
         #@case_entries = CaseEntry.where(args).order("entry_date DESC")
-        @file_matters = FileMatter.where(args).paginate(:page => params[:page], :per_page => 20, :order => "file_code DESC")
+        @file_matters = FileMatter.where(args).paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       else
         #@case_entries = CaseEntry.find(:all, :conditions => { :lawyer_id => current_user.lawyer_id }, :order => "entry_date DESC" )
-        @file_matters = FileMatter.paginate(:page => params[:page], :per_page => 20, :order => "file_code DESC")
+        @file_matters = FileMatter.paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       end
     end  
     @all_fm = FileMatter.order("id ASC")
@@ -117,5 +117,15 @@ class FileMattersController < ApplicationController
   def autocomplete_file_matter_title
     render json: FileMatter.select("distinct title as value").where("title ILIKE ?", "%#{params[:term]}%")
     # render json: AnnualProcurementPlan.select("distinct version as value").where("version ILIKE ?", "%#{params[:term]}%").where(:agency_id => current_user.agency.id)
-  end	
+  end
+
+  private
+  
+  def sort_column
+    Client.column_names.include?(params[:sort]) ? params[:sort] : "file_code"
+  end
+  
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
+  end
 end

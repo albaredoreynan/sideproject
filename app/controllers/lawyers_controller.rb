@@ -1,7 +1,8 @@
 class LawyersController < ApplicationController
+  helper_method :sort_column, :sort_direction
   def index
     
-    @lawyers = Lawyer.paginate(:page => params[:page], :per_page => 25, :order => "last_name ASC")
+    @lawyers = Lawyer.paginate(:page => params[:page], :per_page => 25).order(sort_column + " " + sort_direction)
     @lawyer_all = Lawyer.order("last_name ASC")
     respond_to do |format|
       format.html # index.html.erb
@@ -106,5 +107,15 @@ class LawyersController < ApplicationController
       format.html { redirect_to request.referrer, alert: 'This lawyer has been deactivate.' }
       format.json { head :no_content }
     end
+  end
+
+  private
+  
+  def sort_column
+    Lawyer.column_names.include?(params[:sort]) ? params[:sort] : "last_name"
+  end
+  
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "desc"
   end
 end

@@ -41,9 +41,9 @@
             <table class="table table-striped" id="filematters">
               <thead>
                 <tr>
-                  <th width="15%"><center>File Reference No.</center></th>
-                  <th width="35%"><center>Case Title</center></th>
-                  <th width="35%"><center>Case No.</center></th>
+                  <th width="15%"><center><%= sortable "file_code", "File Reference No." %></center></th>
+                  <th width="35%"><center><%= sortable "title", "Case Title" %></center></th>
+                  <th width="35%"><center><%= sortable "case_number", "Case No." %></center></th>
                   <th width="15%"><center><%=t '.actions', :default => t("helpers.actions") %></center></th>
                 </tr>
               </thead>
