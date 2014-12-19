@@ -3,16 +3,18 @@ class GraphsController < ApplicationController
 	autocomplete :client, :name, :full => true
 	def index
 		if params[:lawyer_id].blank?
-			@lawyers = Lawyer.where(:position => "Associate")
+			@lawyers = Lawyer.where(:position => "Associate", is_active: 'Yes')
 		else
 			if params[:lawyer_id] == ["SENIOR ASSOCIATES"]
-				@lawyers = Lawyer.where(:position => 'Senior Associate')
+				@lawyers = Lawyer.where(:position => 'Senior Associate', is_active: 'Yes')
 			elsif params[:lawyer_id] == ["ASSOCIATES"]
-				@lawyers = Lawyer.where(:position => 'Associate')
+				@lawyers = Lawyer.where(:position => 'Associate', is_active: 'Yes')
 			elsif params[:lawyer_id] == ["PARTNERS"]
-				@lawyers = Lawyer.where(:position => 'Partner')	
+				@lawyers = Lawyer.where(:position => 'Partner', is_active: 'Yes')
+			elsif params[:lawyer_id] == ["SENIOR PARTNERS"]
+				@lawyers = Lawyer.where(:position => 'Senior Partner', is_active: 'Yes')	
 			else	
-				@lawyers = Lawyer.where(:id => params[:lawyer_id])
+				@lawyers = Lawyer.where(:id => params[:lawyer_id], is_active: 'Yes')
 			end
 		end	
 
@@ -31,10 +33,12 @@ class GraphsController < ApplicationController
 		# @beginning_date = Date.today.beginning_of_month.strftime('%b %d, %Y')
 		# @ending_date = Date.today.end_of_month.strftime('%b %d, %Y')
 		# @case_entries = @case_entries = CaseEntry.where(entry_date: @beginning_date..@ending_date)
-		@lawyers2 = Lawyer.all.map{|a|[a.full_name, a.id]}
+		@lawyers2 = Lawyer.where(is_active: 'Yes').map{|a|[a.full_name, a.id]}
 		@lawyers2 << ['SENIOR ASSOCIATES','SENIOR ASSOCIATES']
 		@lawyers2 << ['ASSOCIATES','ASSOCIATES']
+		@lawyers2 << ['SENIOR PARTNERS','SENIOR PARTNERS']
 		@lawyers2 << ['PARTNERS','PARTNERS']
+
 		
 	end
 
@@ -44,7 +48,7 @@ class GraphsController < ApplicationController
 		else
 			@file_matter_id = FileMatter.where(:file_code => params[:file_matter_id]).last
 			@assigned_lawyers = AssignedLawyer.where(:file_matter_id => @file_matter_id.id)	
-			@lawyers2 = Lawyer.all.map{|a|[a.full_name, a.id]}
+			@lawyers2 = Lawyer.where(is_active: 'Yes').map{|a|[a.full_name, a.id]}
 		end	
 
 		if params[:beginning_date].blank?
