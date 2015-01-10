@@ -11,7 +11,7 @@
             <th width="30%"><center>Client</center></th>
             <th width="10%"><center></center></th>
           </tr>
-          <% @file_matter = CaseEntry.select('DISTINCT(file_matter_id)').where("lawyer_id =? ", current_user.lawyer_id) %>
+          <% @file_matter = CaseEntry.select('DISTINCT(file_matter_id), created_at').where("lawyer_id =? ", current_user.lawyer_id).order("file_matter_id DESC","created_at DESC") %>
           <%# @file_matter = AssignedLawyer.where("lawyer_id =? ", current_user.lawyer_id) %>
           <% @file_matter_id = @file_matter.pluck(:file_matter_id) %>
           <% @file_matter_info = FileMatter.where(:file_code => @file_matter_id ) %>
@@ -21,7 +21,11 @@
               <td><%= fmi.title %></td>
               <td><%= fmi.case_number %></td>
               <% @client = Client.where(id: fmi.client_id)  %>
-              <td><%= @client.last.name  %></td>
+              <td>
+                <% @client.each do |x| %>
+                  <%= x.name %>
+                <% end %>
+              </td>
               <td>
                 <button class="btn btn-sm btn-info choose" data-dismiss="modal" id="choose" value="<%= fmi.file_code %>">
                   <i class="icon-plus"></i>

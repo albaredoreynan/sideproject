@@ -85,6 +85,7 @@ class CaseEntriesController < ApplicationController
     @clients = Client.all
   end
 
+
   def create
     if params[:case_entry][:create_multiple_lawyer_entries] == "1"
 
