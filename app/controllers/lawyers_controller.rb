@@ -57,6 +57,7 @@ class LawyersController < ApplicationController
         @user.username = @username
         @user.password = 'password'
         @user.role = 'User'
+        @user.lawyer_id = @lawyer.id
         @user.save
         format.html { redirect_to @lawyer, notice: 'Lawyer was successfully created.' }
         format.json { render json: @lawyer, status: :created, location: @lawyer }
