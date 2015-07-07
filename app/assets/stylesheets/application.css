@@ -12,9 +12,6 @@
  *= require jquery.ui.all
  *= require bootstrap-datepicker
  *= require chosen
- *= require dataTables/jquery.dataTables.bootstrap
- *= require dataTables/extras/TableTools
- *= require dataTables/extras/TableTools_JUI
  *= require_tree .
  */
 

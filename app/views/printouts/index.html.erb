@@ -59,7 +59,7 @@
                     <td><center><%= printout.num_page %></center></td>
                     <td><center><%= printout.document_name %></center></td>
                     <td>
-                      <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      <%= link_to 'Edit',
                                   edit_printout_path(printout), :class => 'btn btn-mini' %>
                       <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                                   printout_path(printout),

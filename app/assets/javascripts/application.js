@@ -17,9 +17,6 @@
 //= require bootstrap-datepicker
 //= require autocomplete-rails
 //= require chosen-jquery
-//= require dataTables/jquery.dataTables
-//= require dataTables/jquery.dataTables.bootstrap
-//= require dataTables/extras/TableTools 
 //= require cocoon
 
 

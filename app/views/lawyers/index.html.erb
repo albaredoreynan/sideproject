@@ -63,7 +63,7 @@
                     <td><center><%= lawyer.email %></center></td>
                     <td><center><%= lawyer.mobile_number %></center></td>
                     <td>
-                      <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      <%= link_to 'Edit',
                                   edit_lawyer_path(lawyer), :class => 'btn btn-mini' %>
                       <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                                   lawyer_path(lawyer),

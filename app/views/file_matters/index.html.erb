@@ -56,7 +56,7 @@
                     <td>
                       <% if current_user.role != 'User' %>
                         <center>
-                          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                          <%= link_to 'Edit',
                                       edit_file_matter_path(fm), :class => 'btn btn-mini' %>
                           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                                       file_matter_path(fm),

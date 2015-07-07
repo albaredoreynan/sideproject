@@ -54,7 +54,7 @@
                     <td><%= call.client %></td>
                     <td><%= call.number_of_minutes %></td>
                     <td>
-                      <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      <%= link_to 'Edit',
                                   edit_call_path(call), :class => 'btn btn-mini' %>
                       <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                                   call_path(call),
