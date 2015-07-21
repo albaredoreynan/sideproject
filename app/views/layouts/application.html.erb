@@ -68,11 +68,18 @@
               <% else %>
                 <li><%= link_to "Case Entries", case_entries_path %></li>
                 <li><%= link_to "File/Matters", file_matters_path %></li>
+                <li><%= link_to "Set Notification", notifications_path %></li>
               <% end %>
 
             </ul>
           
             <ul class="nav pull-right">
+              <% @notif = notification(current_user.id) %>
+              <% if @notif != 0 %>
+                <li>
+                  <div style="margin-top: 10px;" title="notification" id="notification" data-toggle="modal"><span class="badge badge-important"><%= @notif %>&nbsp;new</span></div>
+                </li>
+              <% end %>
               <li>
                 <%= link_to current_user.name, edit_user_registration_path(current_user) %>
               </li>
@@ -80,10 +87,41 @@
             </ul>
           <% end %>
         </div>
-        
       </div>
     </div>
   </div>
+  
+  <!-- notification container -->
+  <% if user_signed_in? %>
+    <div id="my_notification" class="modal hide fade" style="width: 65%; height: auto; left:40%; overflow-y: hidden" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header ">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Today's Notification</h3>
+      </div>
+      <div class="modal-body">
+        <table class="table ">
+          <tr>
+            <th class="text-center">Title</th>
+            <th class="text-center">Details</th>
+            <th class="text-center"></th>
+          </tr>
+          <% @list_notification = list_notification(current_user.id) %>
+          <% @list_notification.each do |ln| %>
+            <tr>
+              <td><%= ln.notification_title %></td>
+              <td><%= ln.details %></td>
+              <td>
+                <%= link_to "Notified".html_safe, notified_notifications_path(params.merge(:id => ln.id)), title:"Notified", class: 'btn btn-info btn-mini' %>
+              </td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+      <div class="modal-footer">
+      </div>  
+    </div>
+  <% end %>
+
 
   <div class="container">
     <div class="marginal_row">
@@ -106,4 +144,20 @@
     </div>
   </div>
 </body>
+<% if user_signed_in? %>  
+  <% @notif = notification(current_user.id) %>
+  <% if @notif != 0 %>
+    <script type="text/javascript">
+      $(function() {
+        $(document).ready(function() {
+          // $('#notification').css('cursor', 'pointer');
+          
+          // $("#notification").click(function(){ 
+          $('#my_notification').modal('show');
+          // });
+        });
+      });
+    </script>
+  <% end %>
+<% end %>
 </html>

@@ -1,0 +1,23 @@
+<%= simple_form_for @notification, :html => { :class => 'form-horizontal' } do |f| %>
+  	
+  	
+  	<%= f.input :notification_title, :label => 'Title', :required => true %>
+  	<%= f.label :call_date, "Notify Me on This Date:", :required => true %>
+		<%= f.text_field :start_date, :class => "entry_date" %>
+		<%= f.input :details, :as => :text, :label => 'Details',  :input_html => { :cols => 80, :rows => 3 } %>
+		<%= f.hidden_field :user_id, value: current_user.id %>
+		
+	  <br/>
+	  <div class="pull left">
+	    <%= f.button :submit, :class => 'btn btn-primary' %>
+	    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+	                notifications_path, :class => 'btn' %>
+	  </div>
+	
+<% end %>
+<script>
+	$(function() {
+  	$('.entry_date').datepicker({format: 'yyyy-mm-dd'});
+ 	});
+
+</script>

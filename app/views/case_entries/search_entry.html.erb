@@ -346,19 +346,24 @@
 													  <% @multiplier_hours =  ( @min_reg2.to_f / 60 ).round(2) %>
 													  <% @total_multi = @hr_reg2 + @multiplier_hours %>
 													  <td width="10%" ><center><%=  number_with_precision(@total_actual_hours.to_f, :precision => 2, :delimiter => ',') %></center></td>
-													  <% if fmi.currency_used == 'Dollar'%>
-													  	<% @rates = laws.lawyer.dollar_rate %>
-													  	<% @units = "USD " %>
+													  <% if fmi.fixed_rate == true %>
+													  	<% @rates = laws.file_matter_pricing %>
+														  <% @units = "PHP " %>
 													  <% else %>
-													  	<% @rates = laws.lawyer.rate %>
-													  	<% @units = "PHP " %>
-													  <% end %>
+														  <% if fmi.currency_used == 'Dollar'%>
+														  	<% @rates = laws.lawyer.dollar_rate %>
+														  	<% @units = "USD " %>
+														  <% else %>
+														  	<% @rates = laws.lawyer.rate %>
+														  	<% @units = "PHP " %>
+														  <% end %>
+														<% end %>
 
 													  <td width="20%"><center>
 													  	<% if laws.amount.nil? || laws.amount == 0 %>
 													  		<%=  number_to_currency( @rates, :unit => @units ) %>
 													  	<% else %>
-													  		<%=  number_to_currency( laws.amount, :unit => @units ) %>
+													  		<%#=  number_to_currency( laws.amount, :unit => @units ) %>
 													  	<% end %>
 													  </center></td>
 													  <td width="10%" style="text-align:right;padding-right:10px" >

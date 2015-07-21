@@ -222,4 +222,21 @@ module ApplicationHelper
     direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
     link_to "#{title} <i class='#{direction == "desc" ? "icon-chevron-down" : "icon-chevron-up"}'></i>".html_safe, {:sort => column, :direction => direction}, {:class => css_class}
 	end
+
+	def notification(user_id)
+		@today = Date.today
+		@notification = Notification.where({user_id: user_id, start_date: @today, notified: nil})
+		@notification.count
+	end
+
+	def notification_id(user_id)	
+		@today = Date.today
+		@notification = Notification.where({user_id: user_id, start_date: @today, notified: nil}).pluck(:id)
+	end
+
+	def list_notification(user_id)
+		@today = Date.today
+		@notification = Notification.where({user_id: user_id, start_date: @today, notified: nil})
+	end
+	
 end

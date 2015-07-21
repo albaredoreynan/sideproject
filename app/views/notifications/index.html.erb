@@ -1,0 +1,59 @@
+<div class="panel">
+  <div class="panel-heading"><h3>Notifications</h3></div>
+    
+  <div class="panel panel-primary">
+    <div class="panel-primary panel-heading">Notification Lists</div>
+    <div class="row">
+      <div class="span11">
+        <div class="pull-right">
+          <%#= link_to "Backup in EXCEL File <i class='icon-download-alt'></i>".html_safe, notifications_path(params.merge(format: 'xls')), :class => "btn btn-success" %>
+        </div>
+        <%= link_to "Create Entry",
+            new_notification_path,
+            :class => 'btn btn-primary' %>
+        <br/>
+        <br/>
+        <div class="row">
+          <div class="span11">
+            <table class="table table-striped" id="notifications">
+              <thead>
+                <tr>
+                  <th width="30%"><center><%= sortable "notification_title", "Title" %></center></th>
+                  <th width="15%"><center>Date Start</center></th>
+                  <th width="15%"><center>Date Finish</center></th>
+                  <th width="10%"><center>Action</center></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @notifications.each do |notification| %>
+                  <tr>
+                    <td><%= notification.notification_title %></td>
+                    <td><%= notification.start_date %></td>
+                    <td><%= notification.end_date %></td>
+                    <td>
+                      <%= link_to 'Edit',
+                                  edit_notification_path(notification), :class => 'btn btn-mini' %>
+                      <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                                  notification_path(notification),
+                                  :method => :delete,
+                                  :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                                  :class => 'btn btn-mini btn-danger' %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+            <div class="pull-right">
+              <%= will_paginate @notifications, :param_name => 'page', previous_label: "<i class='icon-chevron-left'></i>".html_safe, next_label: "<i class='icon-chevron-right'></i>".html_safe %>
+            </div>
+          </div>
+        </div>
+        <%= link_to "Create Entry",
+                    new_notification_path,
+                    :class => 'btn btn-primary' %>
+        <br>
+        <br>
+      </div>  
+    </div>
+  </div>  
+</div>

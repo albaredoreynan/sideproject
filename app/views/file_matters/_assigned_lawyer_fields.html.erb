@@ -3,7 +3,7 @@
 			<%= f.input :lawyer_id, :collection => @lawyers.map {|u| ["#{u.first_name+" "+u.middle_name+" "+u.last_name}", u.id] },  :prompt => "Select From List", :class => "listings" %>
 		</div>
 		<div class="span3">	
-			<%= f.input :amount %>
+			<%= f.input :file_matter_pricing, :label => "Lawyer Pricing Per File Matter (Optional)"  %>
 		</div>
 		<div class="span3" style="margin-top:6px;">
 			<br/>

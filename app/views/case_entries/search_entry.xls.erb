@@ -221,7 +221,7 @@
 
                   <% @total_actual_hours =  @hr_reg2.to_s+"."+@min_reg2.to_s %>
                   <% @multiplier_hours =  ( @min_reg2.to_f / 60 ).round(2) %>
-                  <% @total_multi = @hr_reg2 + @multiplier_hours %>
+                  <% @total_multi = @hr_reg2.to_f + @multiplier_hours.to_f %>
                   <% @total_hours_final = @total_multi * @rates.to_f %>
                   <% @tah = number_with_precision(@total_actual_hours.to_f, :precision => 2, :delimiter => ',') %>
                   <% @lr = number_to_currency( @rates, :unit => @units) %>

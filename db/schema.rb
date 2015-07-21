@@ -11,15 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141204211635) do
+ActiveRecord::Schema.define(:version => 20150720212016) do
 
   create_table "assigned_lawyers", :force => true do |t|
     t.integer  "lawyer_id"
     t.integer  "file_matter_id"
     t.integer  "client_id"
-    t.datetime "created_at",                                                     :null => false
-    t.datetime "updated_at",                                                     :null => false
-    t.decimal  "amount",         :precision => 15, :scale => 2, :default => 0.0, :null => false
+    t.datetime "created_at",                                                          :null => false
+    t.datetime "updated_at",                                                          :null => false
+    t.decimal  "amount",              :precision => 15, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "file_matter_pricing", :precision => 15, :scale => 2, :default => 0.0, :null => false
   end
 
   create_table "calls", :force => true do |t|
@@ -31,6 +32,42 @@ ActiveRecord::Schema.define(:version => 20141204211635) do
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
     t.integer  "client_id"
+  end
+
+  create_table "carl_entries", :force => true do |t|
+    t.date     "entry_date"
+    t.integer  "category_id"
+    t.integer  "user_id"
+    t.string   "assigned_person",       :limit => nil
+    t.integer  "case_reference_id"
+    t.string   "case_reference_number", :limit => nil
+    t.integer  "client_id"
+    t.string   "client_name",           :limit => nil
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
+    t.string   "tin_of_client",         :limit => nil
+    t.text     "address"
+    t.string   "bus_name_style",        :limit => nil
+    t.string   "terms_of_payment",      :limit => nil
+    t.string   "osc_pwd_id_no",         :limit => nil
+    t.string   "prepared_by",           :limit => nil
+    t.string   "approved_by",           :limit => nil
+    t.string   "request_for",           :limit => nil
+    t.string   "charge_to",             :limit => nil
+    t.string   "payment_method",        :limit => nil
+    t.string   "requested_by",          :limit => nil
+    t.datetime "request_date"
+    t.datetime "approved_date"
+  end
+
+  create_table "carl_fields", :force => true do |t|
+    t.date     "entry_date"
+    t.string   "check_num",     :limit => nil
+    t.text     "particular"
+    t.decimal  "amount",                       :precision => 15, :scale => 2, :default => 0.0, :null => false
+    t.integer  "carl_entry_id"
+    t.datetime "created_at",                                                                   :null => false
+    t.datetime "updated_at",                                                                   :null => false
   end
 
   create_table "case_entries", :force => true do |t|
@@ -49,6 +86,12 @@ ActiveRecord::Schema.define(:version => 20141204211635) do
     t.boolean  "create_multiple_lawyer_entries"
     t.string   "client_name"
     t.string   "remove_from_billing",            :default => "No"
+  end
+
+  create_table "categories", :force => true do |t|
+    t.string   "name",       :limit => nil
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
   create_table "clients", :force => true do |t|
@@ -75,6 +118,8 @@ ActiveRecord::Schema.define(:version => 20141204211635) do
     t.datetime "updated_at"
     t.string   "currency_used",                                :default => "Peso", :null => false
     t.decimal  "amount",        :precision => 15, :scale => 2, :default => 0.0,    :null => false
+    t.decimal  "case_pricing",  :precision => 15, :scale => 2, :default => 0.0,    :null => false
+    t.boolean  "fixed_rate"
   end
 
   create_table "lawyers", :force => true do |t|
@@ -90,6 +135,17 @@ ActiveRecord::Schema.define(:version => 20141204211635) do
     t.string   "initials"
     t.string   "dollar_rate"
     t.string   "is_active",     :default => "Yes"
+  end
+
+  create_table "notifications", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "notification_title"
+    t.text     "details"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.boolean  "notified"
   end
 
   create_table "printouts", :force => true do |t|

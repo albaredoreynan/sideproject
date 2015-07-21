@@ -41,6 +41,13 @@ Case2::Application.routes.draw do
     end
   end
   
+  resources :notifications do
+    collection do
+      get "list_notifications"
+      get "notified"
+    end
+  end
+  
   root :to => 'case_entries#new'
   
   # ajax

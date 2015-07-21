@@ -149,8 +149,8 @@ class CaseEntriesController < ApplicationController
             end
           else
             if current_user.lawyer_id == al.lawyer_id
-               @case_entry = CaseEntry.new(
-                 :file_matter_id => params[:case_entry][:file_matter_id],
+                @case_entry = CaseEntry.new(
+                  :file_matter_id => params[:case_entry][:file_matter_id],
                   :entry_date => params[:case_entry][:entry_date],
                   :time_spent_from => params[:case_entry][:time_spent_from],
                   :time_spent_to => params[:case_entry][:time_spent_to],
