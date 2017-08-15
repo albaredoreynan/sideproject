@@ -5,8 +5,8 @@
 	    	<div class="row">
 					<div class="span2">
 						<%#= f.input :ref_no, :label => 'Reference Number', :required => true %>
-						<%= f.label :file_matter_id, "File Reference Number:" %>
-						<%= f.autocomplete_field :file_matter_id, ac_file_code_printouts_path, :required => true, :class => "entry_date" %>
+						<%= f.label :ref_no, "File Reference Number:" %>
+						<%= f.autocomplete_field :ref_no, ac_file_code_printouts_path, :required => true, :class => "entry_date" %>
 						<%#= f.input :case_title, :label => 'Case Title' %>
 						<%#= f.input :client, :label => 'Client' %>
 					</div>	
@@ -20,6 +20,7 @@
 					</div>
 					<div class="span10">
 						<%= f.hidden_field :client_id %>
+						<%= f.hidden_field :file_matter_id %>
 					  <%= f.label :case_title, "Case Title:"%>
 					  <%= f.text_field :case_title,:readonly => true, :style => "width: 100%;" %>
 					</div>
@@ -67,11 +68,11 @@
 	});
 
 	$(document).ready(function() {
-		$('#printout_file_matter_id').blur(function(){
+		$('#printout_ref_no').blur(function(){
       $.ajax({
         url: "<%= printouts_entry_path %>",
         data: {
-          printout_file_matter_id : $('#printout_file_matter_id').val()
+          printout_file_matter_id : $('#printout_ref_no').val()
         },
         dataType: "script"
       });

@@ -3,13 +3,20 @@ class PrintoutsController < ApplicationController
   autocomplete :file_matter, :file_code, :full => true
 
 	def index
-    if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id]
+    raise
+    if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id].present?
       @beginning_date = params[:beginning_date]
       @ending_date = params[:ending_date]
+      @file_code = params[:file_matter_id]
       args = {}
-      args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank? 
-      # @calls = Call.where(args).paginate(:page => params[:page], :per_page => 50, :order => "call_date DESC")
-      @printouts = Printout.where(args).paginate(:page => params[:page], :per_page => 50, :order => "entry_date ASC")
+      if !@file_code.empty?
+        @fm = FileMatter.find_by_file_code(@file_code)
+        args.merge!(file_matter_id: @fm.id) 
+        # @calls = Call.where(args).paginate(:page => params[:page], :per_page => 50, :order => "call_date DESC")
+      end  
+        args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
+        @printouts = Printout.where(args).paginate(:page => params[:page], :per_page => 50, :order => "entry_date ASC")
+      
     else
       @beginning_date = Date.today.beginning_of_month.strftime('%b %d, %Y')
       @ending_date = Date.today.strftime('%b %d, %Y')
@@ -93,4 +100,6 @@ class PrintoutsController < ApplicationController
     render json: FileMatter.select("distinct file_code as value").where("file_code ILIKE ?", "%#{params[:term]}%")
     # render json: AnnualProcurementPlan.select("distinct version as value").where("version ILIKE ?", "%#{params[:term]}%").where(:agency_id => current_user.agency.id)
   end
+
+
 end
