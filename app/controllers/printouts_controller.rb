@@ -3,7 +3,6 @@ class PrintoutsController < ApplicationController
   autocomplete :file_matter, :file_code, :full => true
 
 	def index
-    raise
     if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id].present?
       @beginning_date = params[:beginning_date]
       @ending_date = params[:ending_date]
@@ -16,21 +15,22 @@ class PrintoutsController < ApplicationController
       end  
         args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
         @printouts = Printout.where(args).paginate(:page => params[:page], :per_page => 50, :order => "entry_date ASC")
-      
+        
     else
       @beginning_date = Date.today.beginning_of_month.strftime('%b %d, %Y')
       @ending_date = Date.today.strftime('%b %d, %Y')
       args = {}
       args.merge!(entry_date: @beginning_date..@ending_date)
       @printouts = Printout.paginate(:page => params[:page], :per_page => 50, :order => "entry_date ASC")
-    end  
-    
+    end
+
+    @file_matters =  @printouts.pluck(:file_matter_id).uniq
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @calls }
       format.csv  { render :csv => @calls, :except => [:id] }
       format.pdf do 
-        pdf = PrintEntriesPdf.new(@printouts, @beginning_date, @ending_date)
+        pdf = PrintEntriesPdf.new(@printouts, @beginning_date, @ending_date, @file_matters)
         send_data pdf.render, filename: "Calls Summary Report" + Date.today.to_s + ".pdf", disposition: "inline"
       end
     end

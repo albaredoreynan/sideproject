@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
     elsif user.role == 'Encoder-Call'
     	calls_path
     elsif user.role == 'Encoder-Print'
-      print_path
+      printouts_path
     elsif user.role == 'Billing Clerk'
       search_entry_path(:pfr => 1)
     else

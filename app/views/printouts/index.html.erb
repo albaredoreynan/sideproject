@@ -36,7 +36,7 @@
             :class => 'btn btn-primary' %>
         </div>
         <div class="pull-right" style="margin-right: -40px;">
-          <%= link_to "Download as PDF <i class='icon-download-alt'></i>".html_safe, printouts_path(params.merge(format: 'pdf')), :class => "btn btn-primary" %>   
+          <%= link_to "Download as PDF <i class='icon-download-alt'></i>".html_safe, printouts_path(params.merge(format: 'pdf')), :class => "btn btn-primary", target: 'blank' %>   
         </div>
         <br/>
         <br/>
