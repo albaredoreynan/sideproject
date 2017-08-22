@@ -20,6 +20,7 @@ class PrintEntriesPdf < Prawn::Document
 
 	def call_entry_listings
 		row1 = []
+		row2 = []
 		@grand_pages = Array.new
 		@file_matters.each do |fm|
 			@file_reference_code = FileMatter.select("file_code").find(fm)
@@ -31,10 +32,10 @@ class PrintEntriesPdf < Prawn::Document
 		  row1 << [{:content => "", :colspan => 3 }]
 		  row1 << [{:content => "", :colspan => 3 }]
 			row1 << [
-					{:content => 'Entry Date', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold },
-					{:content => 'Document Name', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold },
-					{:content => 'No. of Copies', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold },
-					{:content => 'No. of Pages', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold }
+					{:content => 'Entry Date', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold, :size => 8, :size => 8, :size => 8, :size => 8, :width => 60 },
+					{:content => 'Document Name', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold, :size => 8, :size => 8, :size => 8, :width => 260 },
+					{:content => 'No. of Copies', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold, :size => 8, :size => 8, :width => 80 },
+					{:content => 'No. of Pages', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold, :size => 8, :width => 80 }
 					]
 			@total_amount = Array.new
 			@tot_pages = Array.new
@@ -48,12 +49,13 @@ class PrintEntriesPdf < Prawn::Document
 			  	@pages_amount = number_to_currency(amount.to_f, :unit => "Php ")
 			  	# 
 					row1 << [
-						{:content => "#{printouts.entry_date}", :align => :center, :width => 100 },
-						{:content => "#{printouts.document_name}", :align => :center, :width => 100 },
+						{:content => "#{printouts.entry_date}", :align => :center, :width => 60 },
+						{:content => "#{printouts.document_name}", :align => :center, :size => 7, :width => 260 },
 						{:content => "#{printouts.num_copy}", :align => :center, :width => 80 },
 						{:content => "#{printouts.num_page}", :align => :center, :width => 80 }
 						
 					]
+					row1 << [{:content => "", :colspan => 3 }]
 				end		
 			end
 			@grand_pages << @tot_pages.inject(:+)
@@ -88,7 +90,7 @@ class PrintEntriesPdf < Prawn::Document
 	  row1 << [{:content => "", :colspan => 3 }] 	
 	  row1 << [{:content => "", :colspan => 3 }]
 		
-	  row1 << [
+	  row2 << [
 			{:content => 'FILE REFERENCE NO.', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold },
 			{:content => 'TOTAL PAGES', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold },
 			{:content => 'PRICE PER PAGE', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold },
@@ -100,24 +102,32 @@ class PrintEntriesPdf < Prawn::Document
 			@file_reference_code = FileMatter.select("file_code").find(fm)
 			@price_per_page = 2
 			@tot = @grand_pages[i] * @price_per_page
-			row1 << [
-				{:content => @file_reference_code.file_code, :background_color => "FFFFFF", :align => :center, :text_color => "000000"},
-				{:content => "#{@grand_pages[i]}", :background_color => "FFFFFF", :align => :center, :text_color => "000000" },
-				{:content => "#{number_to_currency(@price_per_page, unit: 'Php ')}", :background_color => "FFFFFF", :align => :center, :text_color => "000000"},
-				{:content => "#{number_to_currency(@tot, unit: 'Php ')}", :background_color => "FFFFFF", :align => :right, :text_color => "000000"}
+			row2 << [
+				{:content => @file_reference_code.file_code, :background_color => "FFFFFF", :align => :center, :text_color => "000000", :size => 8},
+				{:content => "#{@grand_pages[i]}", :background_color => "FFFFFF", :align => :center, :text_color => "000000", :size => 8 },
+				{:content => "#{number_to_currency(@price_per_page, unit: 'Php ')}", :background_color => "FFFFFF", :align => :center, :text_color => "000000", :size => 8},
+				{:content => "#{number_to_currency(@tot, unit: 'Php ')}", :background_color => "FFFFFF", :align => :right, :text_color => "000000", :size => 8}
 			]
 			@grand_tot << @tot	
 		end
-	  row1 << [{:content => "", :colspan => 3 }] 	
-	  row1 << [{:content => "", :colspan => 3 }]
+	  row2 << [{:content => "", :colspan => 3 }] 	
+	  row2 << [{:content => "", :colspan => 3 }]
 		@grand_total = number_to_currency(@grand_tot.inject(:+).to_f, :unit => "Php ")
-			row1 << [
-					{:content => 'Total Amounts', :align => :right, :font_style => :bold, :colspan => 3}, 
+			row2 << [
+					{:content => 'Total Amount', :align => :right, :font_style => :bold, :colspan => 3}, 
 					{:content => "#{@grand_total}", :align => :right, :font_style => :bold }
 					]
 		
 
-		table(row1, :width => 540, :cell_style => {:size => 10, :border_color => "FFFFFF", :padding => 1 } ) do
+		table(row1, :width => 540, :cell_style => {:size => 9, :border_color => "FFFFFF", :padding => 1 } ) do
+			# column(0).style :align => :center
+			# column(1).style :align => :center
+			# column(2).style :align => :center
+			self.row_colors = ["FFFFFF", "FFFFFF"]
+			self.header = false
+		end
+
+		table(row2, :width => 540, :cell_style => {:size => 9, :border_color => "FFFFFF", :padding => 1 } ) do
 			# column(0).style :align => :center
 			# column(1).style :align => :center
 			# column(2).style :align => :center
