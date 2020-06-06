@@ -235,6 +235,7 @@ DEPENDENCIES
   chosen-rails
   cocoon
   coffee-rails (~> 3.2.1)
+  compass-rails
   devise
   friendly_id
   jquery-datatables-rails!
