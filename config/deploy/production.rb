@@ -59,3 +59,4 @@
 #     auth_methods: %w(publickey password)
 #     # password: "please use keys"
 #   }
+server '202.91.163.129', user: 'platon-admin', roles: %w{app db web}
