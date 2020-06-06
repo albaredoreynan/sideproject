@@ -1,0 +1,30 @@
+<div class="panel">
+  <div class="panel-heading"><h3>Schedules</h3></div>
+  <div class="panel panel-primary">
+    <div class="panel-primary panel-heading">Weekly View</div>
+    <br>
+    <%= calendar number_of_days: 7, events: @schedules do |date, schedules| %>
+      <strong><%= date.day %></strong>
+      <br>
+
+      <% x = date.beginning_of_day + 6.hour %>
+      <% y = (date.end_of_day - 4.hour) - 59.minute %>
+      
+      <table class="table table-striped">
+        
+          <!-- <td>
+            <% x = x + 1.hour %>
+            <%= current_time = x.strftime("%I:%M %p") %>
+          </td> -->
+          <% schedules.each do |schedule| %>
+            <tr>
+              <td>
+                <p><%= schedule.schedule_time %></p>
+                <p><%= link_to schedule.sched_title, schedule_path(schedule), title: 'View Schedule Details' %></p>    
+              </td>
+            </tr>
+          <% end %>
+      </table>
+    <% end %>
+  </div>
+</div>

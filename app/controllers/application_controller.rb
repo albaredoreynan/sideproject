@@ -27,6 +27,8 @@ class ApplicationController < ActionController::Base
       printouts_path
     elsif user.role == 'Billing Clerk'
       search_entry_path(:pfr => 1)
+    elsif user.role == 'Front Desk'
+      schedules_path
     else
       graphs_path(:pfr => 1)
     end	

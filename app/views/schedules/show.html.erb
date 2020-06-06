@@ -1,0 +1,66 @@
+<div class="page-header">
+  <h3>Current Schedule</h3>
+</div>
+<div class="row">
+	<div class="span10">
+		<div class="panel panel-primary">
+			<div class="row">
+    		<div class="span2">
+	    		<h4>Client:</h4> 
+				</div>
+				<div class="span5">
+	    		<%= @schedule.client %> 
+				</div>
+			</div>
+			<div class="row">
+				<div class="span2">
+	    		<h4>Sched Title:</h4> 
+				</div>
+				<div class="span5">
+	    		<%= @schedule.sched_title %> 
+				</div>
+			</div>
+			<div class="row">
+				<div class="span2">
+	    		<h4>Date Schedule:</h4> 
+				</div>
+				<div class="span5">
+	    		<%= @schedule.start_time %> 
+				</div>
+			</div>
+			<div class="row">
+				<div class="span2">
+	    		<h4>Time:</h4> 
+				</div>
+				<div class="span5">
+	    		<%= @schedule.schedule_time %> 
+				</div>
+			</div>
+			<div class="row">
+				<div class="span2">
+	    		<h4>Assigned Lawyer:</h4> 
+				</div>
+				<div class="span5">
+	    		<%= @schedule.lawyer.full_name %> 
+				</div>
+			</div>
+			<div class="row">
+				<div class="span2">
+	    		<h4>Purpose:</h4> 
+				</div>
+				<div class="span5">
+	    		<%= @schedule.purpose %> 
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="span10 full-right">
+	    		<%= link_to '<< Back', schedules_path, :class => 'btn btn-warning' %>
+	    		<%= link_to 'Edit', edit_schedule_path(@schedule), :class => 'btn btn-success' %>
+					<%= link_to 'Delete', schedule_path(@schedule), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger' %>
+				</div>
+			</div>
+			<br>
+		</div>
+	</div>
+</div>

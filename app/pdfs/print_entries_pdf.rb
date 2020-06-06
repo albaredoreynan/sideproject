@@ -1,18 +1,20 @@
 class PrintEntriesPdf < Prawn::Document
 	include ActionView::Helpers::NumberHelper
-	def initialize(printouts, beginning_date, ending_date, file_matters)
+	def initialize(printouts, beginning_date, ending_date, file_matters, file_code)
 		super( :page_layout => :portrait, top_margin: 40)
 
 		@printouts = printouts
 		@beginning_date = beginning_date
 		@ending_date = ending_date
 		@file_matters = file_matters
-
+		@file_reference_info = FileMatter.find_by_file_code(file_code)
+    @client = Client.find(@file_reference_info.client_id.to_i)
 		text "PRINT/PHOTOCOPY CHARGES", :size => 16, :style => :bold, :align => :center
 		move_down(4)
 		text "From the period #{@beginning_date.to_time.strftime('%B %d, %Y')} to #{@ending_date.to_time.strftime('%B %d, %Y')}", :size => 11, :style => :normal, :align => :center
-
-		move_down(12)
+    move_down(4)
+    text "#{@client.name}", :size => 11, :style => :normal, :align => :center
+		move_down(22)
 		
 		call_entry_listings
 		
@@ -22,9 +24,19 @@ class PrintEntriesPdf < Prawn::Document
 		row1 = []
 		row2 = []
 		@grand_pages = Array.new
-		@file_matters.each do |fm|
+		row1 << [
+						{:content => "MATTER : ", :font_style => :bold},
+						{:content => "#{@file_reference_info.title}", :font_style => :bold, :colspan => 2}
+						]
+		row1 << [{:content => "", :colspan => 3 }] 	
+	  row1 << [{:content => "", :colspan => 3 }]
+	  row1 << [{:content => "", :colspan => 3 }]
+	  row1 << [{:content => "", :colspan => 3 }]
+	  row1 << [{:content => "", :colspan => 3 }]
+	  row1 << [{:content => "", :colspan => 3 }]
+	@file_matters.each do |fm|
 			@file_reference_code = FileMatter.select("file_code").find(fm)
-			row1 << [{:content => "FILE REF # : #{@file_reference_code.file_code}", :font_style => :bold, :colspan => 3} ]
+			row1 << [{:content => "FILE REF # :", :font_style => :bold}, {:content => "#{@file_reference_code.file_code}", :font_style => :bold, :colspan => 2} ]
 			row1 << [{:content => "", :colspan => 3 }] 	
 		  row1 << [{:content => "", :colspan => 3 }]
 		  row1 << [{:content => "", :colspan => 3 }]
@@ -32,30 +44,32 @@ class PrintEntriesPdf < Prawn::Document
 		  row1 << [{:content => "", :colspan => 3 }]
 		  row1 << [{:content => "", :colspan => 3 }]
 			row1 << [
-					{:content => 'Entry Date', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold, :size => 8, :size => 8, :size => 8, :size => 8, :width => 60 },
-					{:content => 'Document Name', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold, :size => 8, :size => 8, :size => 8, :width => 260 },
-					{:content => 'No. of Copies', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold, :size => 8, :size => 8, :width => 80 },
-					{:content => 'No. of Pages', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold, :size => 8, :width => 80 }
+					{:content => 'Entry Date', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold, :size => 8, :size => 8, :size => 8, :size => 8, :width => 70 },
+					{:content => 'Document Name', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold, :size => 8, :size => 8, :size => 8, :width => 290 },
+					{:content => 'No. of Pages', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold, :size => 8, :width => 90 },
+					{:content => 'No. of Copies', :background_color => "E8E8D0", :align => :center, :text_color => "001B76", :font_style => :bold, :size => 8, :size => 8, :width => 90 }
 					]
 			@total_amount = Array.new
 			@tot_pages = Array.new
 			@printouts.each do |printouts|
-				if printouts.file_matter_id == fm
-					@file_ref = FileMatter.select(:file_code).where(id: printouts.file_matter_id)
-					total_pages = printouts.num_copy * printouts.num_page
-					@tot_pages << total_pages
-					amount = printouts.times_amount.to_f * total_pages
-					@total_amount << amount.to_f
-			  	@pages_amount = number_to_currency(amount.to_f, :unit => "Php ")
-			  	# 
-					row1 << [
-						{:content => "#{printouts.entry_date}", :align => :center, :width => 60 },
-						{:content => "#{printouts.document_name}", :align => :center, :size => 7, :width => 260 },
-						{:content => "#{printouts.num_copy}", :align => :center, :width => 80 },
-						{:content => "#{printouts.num_page}", :align => :center, :width => 80 }
-						
-					]
-					row1 << [{:content => "", :colspan => 3 }]
+				if !printouts.entry_flag?
+					if printouts.file_matter_id == fm
+						@file_ref = FileMatter.select(:file_code).where(id: printouts.file_matter_id)
+						total_pages = printouts.num_copy * printouts.num_page
+						@tot_pages << total_pages
+						amount = printouts.times_amount.to_f * total_pages
+						@total_amount << amount.to_f
+				  	@pages_amount = number_to_currency(amount.to_f, :unit => "Php ")
+				  	# 
+						row1 << [
+							{:content => "#{printouts.entry_date}", :align => :center, :width => 70 },
+							{:content => "#{printouts.document_name}", :align => :left, :size => 7, :width => 290 },
+							{:content => "#{printouts.num_page}", :align => :center, :width => 90 },
+							{:content => "#{printouts.num_copy}", :align => :center, :width => 90 }
+							
+						]
+						row1 << [{:content => "", :colspan => 3 }]
+					end
 				end		
 			end
 			@grand_pages << @tot_pages.inject(:+)

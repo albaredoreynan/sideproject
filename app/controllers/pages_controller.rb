@@ -134,4 +134,16 @@ class PagesController < ApplicationController
     @my_lawyers_id = current_user.lawyer_id
   end
 
+  def schedule_entry
+    @file_matters = FileMatter.find(:all, :conditions => { :file_code => params[:printout_file_matter_id] } ).first
+    @my_clients =  Client.find(:all, :conditions => { :id => @file_matters.client_id } ).first
+    @file_matters_case_number = FileMatter.select("case_number").find(:all, :conditions => { :id => @file_matters } ).first
+    @file_matters2 = AssignedLawyer.find(:all, :conditions => { :file_matter_id => @file_matters } )
+    @lawyers = Array.new
+    @file_matters2.each do |fm|
+            @lawyers << fm.lawyer_id
+    end
+    @lawyer_selected = current_user.lawyer_id.to_i
+    @my_lawyers =  Lawyer.find(:all, :conditions => ["id IN (?)", @lawyers] ).map{|b| [b.full_name, b.id] }
+  end
 end

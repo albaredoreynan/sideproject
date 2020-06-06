@@ -3,6 +3,7 @@ class Lawyer < ActiveRecord::Base
   has_many :assigned_lawyers, :dependent => :destroy 
   has_one :user
   has_many :case_entries
+  has_many :schedules
   def full_name 
   	"#{first_name} #{middle_name} #{last_name}"
   end

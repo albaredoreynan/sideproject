@@ -1,0 +1,6 @@
+$('#schedule_file_matter_case').val("<%= escape_javascript(@file_matters.case_number)%>")
+$('#schedule_case_title').val("<%= escape_javascript(@file_matters.title)%>")
+$('#schedule_client_id').val("<%= @my_clients.id %>")
+$('#schedule_client').val("<%= escape_javascript(@my_clients.name) %>")
+$('#schedule_file_matter_id').val("<%= @file_matters.id %>")
+$('#schedule_lawyer_id').html("<%= escape_javascript(options_for_select(@my_lawyers)) %>")

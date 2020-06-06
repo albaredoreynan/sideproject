@@ -39,6 +39,7 @@ Case2::Application.routes.draw do
     collection do 
       get "ac_file_code"
     end
+
   end
   
   resources :notifications do
@@ -47,6 +48,8 @@ Case2::Application.routes.draw do
       get "notified"
     end
   end
+
+  resources :schedules
   
   root :to => 'case_entries#new'
   
@@ -58,6 +61,7 @@ Case2::Application.routes.draw do
   get 'pages/printouts_entry', :as => 'printouts_entry'
   get 'pages/update_cases', :as => 'update_cases'
   get 'pages/update_search_form', :as => 'update_search_form'
+  get 'pages/schedule_entry', :as => 'schedule_entry'
 
   # search
   # match '/all_employees_list', :to => 'labor_hours#all_employees_list'
@@ -75,4 +79,9 @@ Case2::Application.routes.draw do
   match 'deactivate_account', :to =>  'account/users#deactivate_account'
   match 'activate_lawyer', :to =>  'lawyers#activate_account'
   match 'deactivate_lawyer', :to =>  'lawyers#deactivate_account'
+  match 'exclude_printout', :to =>  'printouts#exclude_printout'
+  match 'include_printout', :to =>  'printouts#include_printout'
+  match 'search_by_client', :to => 'printouts#search_by_client'
+  match 'weekly_view', :to => 'schedules#weekly_view'
+  match 'daily_view', :to => 'schedules#daily_view'
 end

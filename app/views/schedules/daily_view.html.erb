@@ -1,0 +1,128 @@
+<% @meeting = @schedules.where(sched_title: "Meeting") %>
+<% @hearing = @schedules.where(sched_title: "Hearing") %>
+<% @deadline = @schedules.where(sched_title: "Deadline") %>
+<br>
+  
+<div class="panel">
+  <div class="panel panel-primary">
+    <div class="panel-primary panel-heading">Search</div>
+    <div class="row">
+
+      <div class="span11">
+      <%= form_for daily_view_path, :method => 'get' do %>
+          <div class="span3">    
+              File Reference Code:&nbsp;&nbsp;
+              <%= autocomplete_field_tag :file_matter_id, nil, ac_file_code_printouts_path, :required => false %>
+          </div>
+          <div class="span3">    
+              Date From:&nbsp;&nbsp;
+              <%= text_field_tag :beginning_date, nil,  :id => "datepicker_beg"%>
+          </div>
+          <div class="span3">
+              Date To:&nbsp;&nbsp;
+              <%= text_field_tag :ending_date, nil,  :id => "datepicker_end"%>
+              <%= hidden_field_tag :date, params[:date]%>
+          </div>
+          <div class="span10">
+            <div class="pull-right">
+                  <%= submit_tag "Search" %>
+            </div>
+          </div>
+          <div class="span10">
+            
+          </div>
+      <% end %>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+<% if @meeting.count != 0 || @meeting.count.nil? %>
+  <div class="panel-heading"><h3>Schedules - Daily View</h3></div>
+  <div class="panel panel-primary">
+    <div class="panel-primary panel-heading"><h4>Meeting</h4></div>
+      <table class="table table-striped">      
+        <tr>
+          <th>Lawyer Name</th>
+          <th>Time</th>
+          <th>Client</th>
+          <th>File Reference No.</th>
+          <th></th>
+        </tr>
+        <% @schedules.where(sched_title: "Meeting").each do |schedule| %>
+          <% @filemattercode = FileMatter.select(:file_code).where(id: schedule.file_matter_id) %>
+          <tr>
+            <td><%= schedule.lawyer.full_name %></td>
+            <td><%= schedule.schedule_time %></td>
+            <td><%= schedule.client %></td>
+            <td><%= @filemattercode.blank? ? '' : @filemattercode.last.file_code %></td>
+            <td><%= link_to "View", schedule_path(schedule), title: 'View Schedule Details' %></td>    
+            </td>
+          </tr>
+        <% end %>
+      </table>
+  </div>
+  <br>
+<% end %>
+
+<% if @hearing.count != 0 || @hearing.count.nil? %>
+  <div class="panel panel-primary">
+    <div class="panel-primary panel-heading"><h4>Hearing</h4></div>
+    <table class="table table-striped">      
+        <tr>
+          <th>Lawyer Name</th>
+          <th>Time</th>
+          <th>Client</th>
+          <th>File Reference No.</th>
+          <th></th>
+        </tr>
+        <% @schedules.where(sched_title: "Hearing").each do |schedule| %>
+          <% @filemattercode = FileMatter.select(:file_code).where(id: schedule.file_matter_id) %>
+          <tr>
+            <td><%= schedule.lawyer.full_name %></td>
+            <td><%= schedule.schedule_time %></td>
+            <td><%= schedule.client %></td>
+            <td><%= @filemattercode.blank? ? '' : @filemattercode.last.file_code %></td>
+            <td><%= link_to "View", schedule_path(schedule), title: 'View Schedule Details' %></td>    
+            </td>
+          </tr>
+        <% end %>
+      </table>
+  </div>
+  <br>
+<% end %>
+
+<% if @deadline.count != 0 || @deadline.count.nil? %>
+  <div class="panel panel-primary">
+    <div class="panel-primary panel-heading"><h4>Deadline</h4></div>
+    <table class="table table-striped">      
+        <tr>
+          <th>Lawyer Name</th>
+          <th>Time</th>
+          <th>Client</th>
+          <th>File Reference No.</th>
+          <th></th>
+        </tr>
+        <% @schedules.where(sched_title: "Deadline").each do |schedule| %>
+          <% @filemattercode = FileMatter.select(:file_code).where(id: schedule.file_matter_id) %>
+          <tr>
+            <td><%= schedule.lawyer.full_name %></td>
+            <td><%= schedule.schedule_time %></td>
+            <td><%= schedule.client %></td>
+            <td><%= @filemattercode.blank? ? '' : @filemattercode.last.file_code %></td>
+            <td><%= link_to "View", schedule_path(schedule), title: 'View Schedule Details' %></td>    
+            </td>
+          </tr>
+        <% end %>
+      </table>
+  </div>
+<% end %>
+
+</div>
+
+<script>
+  $(function() {
+      $('#datepicker_beg').datepicker({format: 'yyyy-mm-dd'});
+      $('#datepicker_end').datepicker({format: 'yyyy-mm-dd'});
+    });
+</script>

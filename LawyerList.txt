@@ -1,0 +1,55 @@
+Peter Mandac Bantilan
+lawyer_id: 8
+user_id: 8
+
+Ariane A. Tan
+lawyer_id: 
+user_id: 
+
+Carmen Cecilia T. Veneracion
+lawyer_id: 
+user_id: 
+
+Danielle Zerudo
+lawyer_id: 
+user_id: 
+
+Hannah Y. Ang
+lawyer_id: 
+user_id:
+
+Jayson Kyle M. Sarenas
+lawyer_id: 49
+user_id: 32
+
+Jenny R. Santiago
+lawyer_id: 46
+user_id: 29
+
+Kai A. Tanhueco
+lawyer_id: 62
+user_id: 39
+
+Maria G. Cervero
+lawyer_id: 
+user_id:
+
+Mia Martin
+lawyer_id: 33
+user_id: 16
+
+Narcisa T. Medina
+lawyer_id: 34
+user_id: 17
+
+Ralph T. Yu
+lawyer_id: 
+user_id:
+
+Riziel Cabreros
+lawyer_id: 
+user_id:
+
+R J Nunez
+lawyer_id: 
+user_id:

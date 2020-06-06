@@ -1,0 +1,20 @@
+<div class="panel">
+  <div class="panel-heading"><h3>Schedules</h3></div>
+  <div class="panel panel-primary">
+    <div class="panel-primary panel-heading">Monthly View</div>
+    <br>
+    <%= month_calendar events: @schedules do |date, schedules| %>
+      <span><%= date.day %></span>
+      <% if schedules.count != 0 %>
+        <span class="pull-right">
+          <%= link_to 'View', daily_view_path(date: date), :class => 'btn btn-mini btn-warning' %>
+        </span>
+      <% end %>  
+      <% schedules.each do |schedule| %>
+        <div>
+          <%= link_to schedule.sched_title, schedule_path(schedule), title: 'View Schedule Details' %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

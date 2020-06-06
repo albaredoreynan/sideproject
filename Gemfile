@@ -8,7 +8,9 @@ gem 'devise'
 gem 'rails3-jquery-autocomplete'
 gem 'nifty-generators'
 gem 'jquery-ui-rails'
-gem 'prawn', git: 'git://github.com/prawnpdf/prawn', branch: 'master' 
+# gem 'prawn', git: 'git://github.com/prawnpdf/prawn', branch: 'master'
+gem 'prawn', '~> 1.2.1'
+gem 'prawn-table', '~> 0.1.0'
 gem 'chosen-rails'
 gem 'jquery-datatables-rails', github: 'rweng/jquery-datatables-rails'
 gem 'will_paginate', '~> 3.0.0'
@@ -41,6 +43,12 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem "simple_calendar", "~> 2.0"
+
+gem 'capistrano', '~> 3.7', '>= 3.7.1'
+gem 'capistrano-rails', '~> 1.2'
+gem 'capistrano-passenger', '~> 0.2.0'
+gem 'capistrano-rvm'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

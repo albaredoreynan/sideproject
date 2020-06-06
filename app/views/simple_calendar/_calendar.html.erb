@@ -1,0 +1,44 @@
+<div class="simple-calendar">
+  <div class="calendar-heading">
+    <h4>
+      <% calendar.url_for_previous_view %>
+      <% x = calendar.url_for_previous_view.split("=") %>
+      <% @a = x[1].split("-") %>
+      <% @b = @a.map(&:to_i) %>
+      <% @c = Date.new(@b[0], @b[1], @b[2]) %>
+      <% @f = @c - 6.day %>
+      <% @d = @f.to_formatted_s(:db)%>
+      <% @url = "#{x[0]}=#{@d}" %>
+      <%= link_to t('simple_calendar.previous', default: '<<'), @url %>
+      <span class="calendar-title"><%= t('date.month_names')[start_date.month] %> <%= start_date.year %></span>
+      <%= link_to t('simple_calendar.next', default: '>>'), calendar.url_for_next_view %>
+      <%= link_to "Create Schedule", new_schedule_path, :class => 'btn btn-primary pull-right' %>
+    </h4>
+  </div>
+  <br>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <% date_range.slice(0, 7).each do |day| %>
+          <th><%= t('date.abbr_day_names')[day.wday] %></th>
+        <% end %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% date_range.each_slice(7) do |week| %>
+        <%= content_tag :tr, class: calendar.tr_classes_for(week) do %>
+          <% week.each do |day| %>
+            <%= content_tag :td, class: calendar.td_classes_for(day) do %>
+              <% if defined?(Haml) && respond_to?(:block_is_haml?) && block_is_haml?(block) %>
+                <% capture_haml(day, sorted_events.fetch(day, []), &block) %>
+              <% else %>
+                <% block.call day, sorted_events.fetch(day, []) %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -65,12 +65,16 @@
                 <li>  
                   <%= link_to "Prints", printouts_path %>
                 </li>
+              <% elsif current_user.role == 'Front Desk' %>
+                <li>  
+                  <%= link_to "Schedules", schedules_path %>
+                </li>  
               <% else %>
                 <li><%= link_to "Case Entries", case_entries_path %></li>
                 <li><%= link_to "File/Matters", file_matters_path %></li>
+                <li><%= link_to "Schedules", schedules_path %></li>
                 <li><%= link_to "Set Notification", notifications_path %></li>
-              <% end %>
-
+              <% end %>  
             </ul>
           
             <ul class="nav pull-right">

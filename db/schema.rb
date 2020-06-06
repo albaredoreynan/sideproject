@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150720212016) do
+ActiveRecord::Schema.define(:version => 20180731074013) do
 
   create_table "assigned_lawyers", :force => true do |t|
     t.integer  "lawyer_id"
@@ -157,13 +157,34 @@ ActiveRecord::Schema.define(:version => 20150720212016) do
     t.integer  "num_page"
     t.integer  "num_copy"
     t.string   "paper_size"
-    t.datetime "created_at",                                                       :null => false
-    t.datetime "updated_at",                                                       :null => false
+    t.datetime "created_at",                                                        :null => false
+    t.datetime "updated_at",                                                        :null => false
     t.integer  "client_id"
     t.integer  "file_matter_id"
     t.string   "file_matter_case"
     t.integer  "lawyer_id"
-    t.decimal  "times_amount",     :precision => 15, :scale => 2, :default => 0.0, :null => false
+    t.decimal  "times_amount",     :precision => 15, :scale => 2, :default => 0.0,  :null => false
+    t.boolean  "entry_flag",                                      :default => true
+  end
+
+  create_table "schedules", :force => true do |t|
+    t.integer  "lawyer_id"
+    t.datetime "schedule_date"
+    t.text     "purpose"
+    t.string   "status"
+    t.string   "schedule_time"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.string   "sched_title"
+    t.string   "client"
+    t.datetime "time_schedule"
+    t.integer  "client_id"
+    t.string   "file_matter_id"
+    t.string   "file_matter_case"
+    t.text     "case_title"
+    t.integer  "ref_no"
   end
 
   create_table "users", :force => true do |t|

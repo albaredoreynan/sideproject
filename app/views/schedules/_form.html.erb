@@ -1,0 +1,105 @@
+<%= simple_form_for @schedule, :html => { :class => 'form-horizontal' } do |f| %>
+	<div class="panel panel-primary">
+		<div class="row">
+    	<div class="span10">
+	    	<div class="row">
+					<div class="span3">
+						<%#= f.input :ref_no, :label => 'Reference Number', :required => true %>
+						<%= f.input :sched_title, :collection => ["Deadline", "Hearing", "Meeting", "Telecon"] , :label =>  "Sched Title:" , :include_blank => false, :required => true  %>
+						<%#= f.input :case_title, :label => 'Case Title' %>
+						<%#= f.input :client, :label => 'Client' %>
+					</div>	
+					<div class="span3">
+						<%#= f.input :ref_no, :label => 'Reference Number', :required => true %>
+						<%= f.label :ref_no, "File Reference Number:" %>
+						<%= f.autocomplete_field :ref_no, ac_file_code_printouts_path, :required => true, :class => "entry_date" %>
+						<%#= f.input :case_title, :label => 'Case Title' %>
+						<%#= f.input :client, :label => 'Client' %>
+					</div>	
+					<div class="span4">
+						<%= f.label :file_matter_case, "Case No.:"%>
+					  <%= f.text_field :file_matter_case,:readonly => true, :style => "width: 100%;" %>
+					</div>
+					<div class="span10">
+						<%= f.label :client, "Client:"%>
+					  <%= f.text_field :client, :readonly => true, :style => "width: 100%;" %>
+					</div>
+					<div class="span10">
+						<%= f.hidden_field :client_id %>
+						
+						<%= f.hidden_field :file_matter_id %>
+					  <%= f.label :case_title, "Case Title:"%>
+					  <%= f.text_field :case_title,:readonly => true, :style => "width: 100%;" %>
+					</div>	
+					<div class="span3">
+						<%#= f.label :lawyer_id, "Assigned to Lawyer:"%>
+					  <% if current_user.lawyer_id.nil? %>
+					  	<%= f.input :lawyer_id, :collection => Lawyer.all.map {|u| [u.full_name, u.id] },  :include_blank => false, :prompt => "---", :required => true %>
+					  <% else %>
+					  	<%= f.input :lawyer_id, :collection => Lawyer.where(id: current_user.lawyer_id).map {|u| [u.full_name, u.id] },  :include_blank => false, :required => true %>
+					  <% end %>
+					</div>
+					<div class="span3">
+						<%= f.label :start_time, "Schedule Date:"%>
+					  <%= f.text_field :start_time, :id => 'datepicker123', :style => "width: 100%;" %>
+					</div>
+					<div class="span2">
+						<%= f.label :schedule_time, "Time Start:"%>
+					  <%= f.text_field :schedule_time, :id => 'sched_time', :style => "width: 100%;" %>
+					</div>
+					<div class="span2">
+						<%= f.label :schedule_time, "Time End:"%>
+					  <%= f.text_field :schedule_time, :id => 'sched_time2', :style => "width: 100%;" %>
+					</div>
+					<div class="span10">
+<!-- 						<%#= f.hidden_field :client_id %>
+						<%#= f.hidden_field :file_matter_id %> -->
+					  <%= f.label :purpose, "Purpose:"%>
+					  <%= f.text_area :purpose, :rows => 8, :cols => 30, :class => "text_area", :style => "width: 100%;" %>
+					</div>
+					<div class="span10">
+							<br/>
+					    <div class="pull right">
+						    <%= f.button :submit, 'Create Entry', :class => 'btn btn-primary' %>
+						    <% if params[:ce] %>
+									<%= hidden_field_tag :ce, value: params[:ce] %>
+									<%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+						                new_case_entry_path, :class => 'btn' %>
+								<% else %>
+									<%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+						                schedules_path, :class => 'btn' %>
+								<% end %>
+						    
+					    </div>
+					  	<br/>
+				 	</div>
+				</div>
+			</div>
+			<br/>
+			<br/>
+		</div>
+	</div>
+<% end %>
+
+					
+
+<script>
+	$(function() {
+		$('#datepicker123').datepicker({format: 'yyyy-mm-dd'});
+		$('#sched_time').ptTimeSelect();
+		$('#sched_time2').ptTimeSelect();
+	});
+
+	$(document).ready(function() {
+		$('#schedule_ref_no').blur(function(){
+      $.ajax({
+        url: "<%= schedule_entry_path %>",
+        data: {
+          printout_file_matter_id : $('#schedule_ref_no').val()
+        },
+        dataType: "script"
+      });
+    });
+  });  
+
+</script>
