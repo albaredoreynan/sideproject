@@ -197,14 +197,26 @@ class CaseReportsPdf < Prawn::Document
 					else
 						@new_hr2 = @hr_reg2.to_s
 					end
-
-					if fmi.currency_used == 'Dollar'
-					  @rates = laws.lawyer.dollar_rate
-					  @units = "USD "
+					
+					if fmi.fixed_rate == true
+						if fmi.currency_used == 'Dollar'
+                        	@rates = laws.file_matter_pricing
+                        	@units = "USD "
+                        else     
+						    @rates = laws.file_matter_pricing
+						    @units = "PHP "
+						end
 					else
-					  @rates = laws.lawyer.rate
-					  @units = "PHP "
+						if fmi.currency_used == 'Dollar'
+						  @rates = laws.lawyer.dollar_rate
+						  @units = "USD "
+						else
+						  @rates = laws.lawyer.rate
+						  @units = "PHP "
+						end
 					end
+
+
 
 					@laws_lawyer_full_name = laws.lawyer.full_name
 					@total_actual_hours = @total_hours2.inject(:+)
