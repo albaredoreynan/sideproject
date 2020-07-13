@@ -347,8 +347,13 @@
 													  <% @total_multi = @hr_reg2 + @multiplier_hours %>
 													  <td width="10%" ><center><%=  number_with_precision(@total_actual_hours.to_f, :precision => 2, :delimiter => ',') %></center></td>
 													  <% if fmi.fixed_rate == true %>
-													  	<% @rates = laws.file_matter_pricing %>
+													    <% if fmi.currency_used == 'Dollar'%>
+													  	  <% @rates = laws.file_matter_pricing %>
+														  <% @units = "USD " %>
+                                                        <% else %>
+														  <% @rates = laws.file_matter_pricing %>
 														  <% @units = "PHP " %>
+                                                        <% end %>
 													  <% else %>
 														  <% if fmi.currency_used == 'Dollar'%>
 														  	<% @rates = laws.lawyer.dollar_rate %>
@@ -360,20 +365,21 @@
 														<% end %>
 
 													  <td width="20%"><center>
-													  	<% if laws.amount.nil? || laws.amount == 0 %>
-													  		<%=  number_to_currency( @rates, :unit => @units ) %>
-													  	<% else %>
+													  	<%# if laws.amount.nil? || laws.amount == 0 %>
+													  		<%#=  number_to_currency( @rates, :unit => @units ) %>
+													  	<%# else %>
 													  		<%#=  number_to_currency( laws.amount, :unit => @units ) %>
-													  	<% end %>
+													  	<%# end %>
+													  	<%=  number_to_currency( @rates, :unit => @units ) %>
 													  </center></td>
 													  <td width="10%" style="text-align:right;padding-right:10px" >
-													  	<% if laws.amount.nil? || laws.amount == 0 %>
+													  	<%# if laws.amount.nil? || laws.amount == 0 %>
 													  		<%  @total_hours_final = @total_multi * @rates.to_f %>
 													  		<%=  number_to_currency( @total_hours_final, :unit => @units) %>
-													  	<% else %>
-													  		<%  @total_hours_final = @total_multi * laws.amount.to_f %>
-													  		<%=  number_to_currency( @total_hours_final, :unit => @units) %>
-													  	<% end %>
+													  	<%# else %>
+													  		<%#  @total_hours_final = @total_multi * laws.amount.to_f %>
+													  		<%#=  number_to_currency( @total_hours_final, :unit => @units) %>
+													  	<%# end %>
 													  	
 													  </td>
 													</tr>
