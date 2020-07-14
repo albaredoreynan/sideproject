@@ -55,7 +55,7 @@ class PrintEntriesClientsPdf < Prawn::Document
 			@total_amount = Array.new
 			@tot_pages = Array.new
 			@printouts.each do |printouts|
-				if !printouts.entry_flag?
+				if printouts.entry_flag?
 					if printouts.file_matter_id == fm
 						@file_ref = FileMatter.select(:file_code).where(id: printouts.file_matter_id)
 						total_pages = printouts.num_copy * printouts.num_page
