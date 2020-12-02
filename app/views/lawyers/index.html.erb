@@ -57,7 +57,7 @@
                     <% @class = '' %>
                   <% end %>
                   <tr class="<%=@class%>">
-                    <td><%= lawyer.first_name+" "+lawyer.middle_name+" "+lawyer.last_name %> </td>
+                    <td><%= lawyer.last_name+", "+lawyer.first_name+" "+lawyer.middle_name %> </td>
                     <td><center><%= lawyer.initials %></center></td>
                     <td><center><%= lawyer.position %></center></td>
                     <td><center><%= lawyer.email %></center></td>
