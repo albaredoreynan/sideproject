@@ -19,5 +19,5 @@ production:
   database: case2_production
   pool: 5
   timeout: 5000
-  username: postgres
-  password: admin
+  username: dbadmin2020
+  password: admin2020

@@ -146,4 +146,26 @@ class PagesController < ApplicationController
     @lawyer_selected = current_user.lawyer_id.to_i
     @my_lawyers =  Lawyer.find(:all, :conditions => ["id IN (?)", @lawyers] ).map{|b| [b.full_name, b.id] }
   end
+
+  def add_client_code
+    @client = Client.find(:all, :conditions => { :id => params[:file_matter_client_id]} ).first
+  end
+
+  def pick_filematter
+    @file_matters = FileMatter.find(:all, :conditions => { :file_code => params[:case_entry_file_matter_case] } ).first
+    @my_clients =  Client.find(:all, :conditions => { :id => @file_matters.client_id } ).first
+    @file_matters_case_number = FileMatter.select("case_number").find(:all, :conditions => { :id => @file_matters } ).first
+    @file_matters2 = AssignedLawyer.find(:all, :conditions => { :file_matter_id => @file_matters } )
+    @lawyers = Array.new
+    @file_matters2.each do |fm|
+        if current_user.lawyer_id != fm.lawyer_id
+            @lawyers << fm.lawyer_id
+        else
+        end
+        # @lawyers << fm.lawyer_id
+    end
+    @lawyer_selected = current_user.lawyer_id.to_i
+    @my_lawyers =  Lawyer.find(:all, :conditions => ["id IN (?)", @lawyers] )
+    @my_lawyers_id = current_user.lawyer_id
+  end
 end

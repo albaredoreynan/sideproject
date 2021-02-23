@@ -1,0 +1,2 @@
+module PracticeTablesHelper
+end

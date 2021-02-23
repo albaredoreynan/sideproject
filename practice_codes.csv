@@ -1,0 +1,27 @@
+Num,Practice,Numeric Codes,Alpha Codes
+1,Corporate,,CORP
+2,Commercial ,,COMM
+3,CorpSec / Housekeeping,,CORPHK
+4,General File /Advisory,,GFA
+5,Special Projects,,SP
+6,Tax,,TX
+7,Tax - Audit,,TXAU
+8,Tax - Advisory,,TAXADV
+9,Tax - Refund,,TXRF
+10,Tax - Compliance,,TXCM
+11,Labor,,LBR
+12,Labor Relations,,LBRL
+13,Litigation - Criminal,,LTCR
+14,Litigation - Civil,,LTCV
+15,Litigation - Labor,,LTLB
+16,Litigation - Tax ,,LTX
+17,Intellectual Property,,IP 
+18,Data Privacy,,DATA
+19,Aviation,,AV
+20,Environmental Law,,ENV
+21,Energy,,NRG
+22,Family Law,,FML
+23,Property,,PROP
+24,Immigration,,IMG
+25,Insurance,,INS
+26,Alternative Dispute Resolution,,ADR

@@ -50,6 +50,8 @@ Case2::Application.routes.draw do
   end
 
   resources :schedules
+  resources :practice_tables 
+
   
   root :to => 'case_entries#new'
   
@@ -62,6 +64,8 @@ Case2::Application.routes.draw do
   get 'pages/update_cases', :as => 'update_cases'
   get 'pages/update_search_form', :as => 'update_search_form'
   get 'pages/schedule_entry', :as => 'schedule_entry'
+  get 'pages/add_client_code', :as => 'add_client_code'
+  get 'pages/pick_filematter', :as => 'pick_filematter'
 
   # search
   # match '/all_employees_list', :to => 'labor_hours#all_employees_list'
@@ -84,4 +88,10 @@ Case2::Application.routes.draw do
   match 'search_by_client', :to => 'printouts#search_by_client'
   match 'weekly_view', :to => 'schedules#weekly_view'
   match 'daily_view', :to => 'schedules#daily_view'
+
+  # recent modification for filtering data in case entries
+  match 'filter_by_workload', :to => 'case_entries#filter_by_workload'
+  match 'filter_by_client_code', :to => 'case_entries#filter_by_client_code'
+  match 'filter_by_practice_code', :to => 'case_entries#filter_by_practice_code'
+  match 'filter_by_period', :to => 'case_entries#filter_by_period'
 end

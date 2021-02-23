@@ -1,0 +1,14 @@
+<%= simple_form_for @practice_table, :html => { :class => 'form-horizontal' } do |f| %>
+  	
+  	
+  	<%= f.input :practice_name, :label => 'Practice Name', :required => true %>
+		<%= f.input :code_id, :label => ' Num Code', :required => true %>
+		<%= f.input :text_code, :label => 'Text Code', :required => true %>
+	  <br/>
+	  <div class="pull left">
+	    <%= f.button :submit, 'Create', :class => 'btn btn-primary' %>
+	    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+	                practice_tables_path, :class => 'btn' %>
+	  </div>
+	
+<% end %>

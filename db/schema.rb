@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20180731074013) do
+ActiveRecord::Schema.define(:version => 20210119011340) do
 
   create_table "assigned_lawyers", :force => true do |t|
     t.integer  "lawyer_id"
@@ -34,42 +34,6 @@ ActiveRecord::Schema.define(:version => 20180731074013) do
     t.integer  "client_id"
   end
 
-  create_table "carl_entries", :force => true do |t|
-    t.date     "entry_date"
-    t.integer  "category_id"
-    t.integer  "user_id"
-    t.string   "assigned_person",       :limit => nil
-    t.integer  "case_reference_id"
-    t.string   "case_reference_number", :limit => nil
-    t.integer  "client_id"
-    t.string   "client_name",           :limit => nil
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
-    t.string   "tin_of_client",         :limit => nil
-    t.text     "address"
-    t.string   "bus_name_style",        :limit => nil
-    t.string   "terms_of_payment",      :limit => nil
-    t.string   "osc_pwd_id_no",         :limit => nil
-    t.string   "prepared_by",           :limit => nil
-    t.string   "approved_by",           :limit => nil
-    t.string   "request_for",           :limit => nil
-    t.string   "charge_to",             :limit => nil
-    t.string   "payment_method",        :limit => nil
-    t.string   "requested_by",          :limit => nil
-    t.datetime "request_date"
-    t.datetime "approved_date"
-  end
-
-  create_table "carl_fields", :force => true do |t|
-    t.date     "entry_date"
-    t.string   "check_num",     :limit => nil
-    t.text     "particular"
-    t.decimal  "amount",                       :precision => 15, :scale => 2, :default => 0.0, :null => false
-    t.integer  "carl_entry_id"
-    t.datetime "created_at",                                                                   :null => false
-    t.datetime "updated_at",                                                                   :null => false
-  end
-
   create_table "case_entries", :force => true do |t|
     t.date     "entry_date"
     t.text     "work_particulars"
@@ -86,12 +50,8 @@ ActiveRecord::Schema.define(:version => 20180731074013) do
     t.boolean  "create_multiple_lawyer_entries"
     t.string   "client_name"
     t.string   "remove_from_billing",            :default => "No"
-  end
-
-  create_table "categories", :force => true do |t|
-    t.string   "name",       :limit => nil
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.string   "practice_code"
+    t.string   "client_code"
   end
 
   create_table "clients", :force => true do |t|
@@ -103,6 +63,8 @@ ActiveRecord::Schema.define(:version => 20180731074013) do
     t.string   "position"
     t.text     "address"
     t.string   "contact_person"
+    t.string   "cl_code_txt"
+    t.string   "cl_code_num"
   end
 
   create_table "file_matters", :force => true do |t|
@@ -116,10 +78,13 @@ ActiveRecord::Schema.define(:version => 20180731074013) do
     t.string   "case_date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "currency_used",                                :default => "Peso", :null => false
-    t.decimal  "amount",        :precision => 15, :scale => 2, :default => 0.0,    :null => false
-    t.decimal  "case_pricing",  :precision => 15, :scale => 2, :default => 0.0,    :null => false
+    t.string   "currency_used",                                    :default => "Peso", :null => false
+    t.decimal  "amount",            :precision => 15, :scale => 2, :default => 0.0,    :null => false
+    t.decimal  "case_pricing",      :precision => 15, :scale => 2, :default => 0.0,    :null => false
     t.boolean  "fixed_rate"
+    t.integer  "cl_code_num"
+    t.string   "cl_code_txt"
+    t.integer  "practice_table_id"
   end
 
   create_table "lawyers", :force => true do |t|
@@ -146,6 +111,14 @@ ActiveRecord::Schema.define(:version => 20180731074013) do
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
     t.boolean  "notified"
+  end
+
+  create_table "practice_tables", :force => true do |t|
+    t.integer  "code_id"
+    t.string   "practice_name"
+    t.string   "text_code"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "printouts", :force => true do |t|

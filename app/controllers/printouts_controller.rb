@@ -38,7 +38,7 @@ class PrintoutsController < ApplicationController
       format.csv  { render :csv => @calls, :except => [:id] }
       format.pdf do 
         pdf = PrintEntriesPdf.new(@printouts, @beginning_date, @ending_date, @file_matters, @file_code)
-        send_data pdf.render, filename: "Calls Summary Report" + Date.today.to_s + ".pdf", disposition: "inline"
+        send_data pdf.render, filename: "Print Summary Report" + Date.today.to_s + ".pdf", disposition: "inline"
       end
     end
   end

@@ -69,6 +69,7 @@ class CaseEntriesController < ApplicationController
     @file_matter_case = FileMatter.find(:all, :group => "case_number, id")
     @lawyers = Lawyer.all
     @clients = Client.all
+    @practicetables = PracticeTable.all
     lawyer = @case_entry.build_lawyer
 
     respond_to do |format|
@@ -427,6 +428,63 @@ class CaseEntriesController < ApplicationController
           
       end
       
+  end
+
+  # filtering functions
+  def filter_by_workload
+    
+  end
+
+  def filter_by_client_code
+    @clients = Client.all.map{|a|[a.cl_code_txt, a.cl_code_txt]}
+    @lawyers = Lawyer.all.map{|a|[a.full_name, a.id]}
+    if current_user.role == 'Administrator' || current_user.role == 'Billing Clerk'
+      # # @case_entries = CaseEntry.find(:all, :order => "entry_date DESC")
+      if params[:date_from].present? && params[:date_to].present? || params[:client_code]
+         args = {}
+         args.merge!(client_code: params[:client_code]) unless params[:client_code].blank?
+      #   args.merge!(case_number: params[:case_number]) unless params[:case_number].blank?
+         args.merge!(entry_date: params[:date_from]..params[:date_to]) unless params[:date_from].blank?
+         args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
+         @case_entries = CaseEntry.where(args).paginate(:page => params[:page], :per_page => 20)
+      # else
+      #   @case_entries = CaseEntry.paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
+      end
+    else
+      # if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id]
+      #   args = {}
+      #   args.merge!(file_matter_id: params[:file_matter_id]) unless params[:file_matter_id].blank?
+      #   args.merge!(case_number: params[:case_number]) unless params[:case_number].blank?
+      #   args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
+      #   args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
+      #   @case_entries = CaseEntry.where(args).paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
+      # else
+      #   # @case_entries = CaseEntry.find(:all, :conditions => { :lawyer_id => current_user.lawyer_id }, :order => "entry_date DESC" ).paginate(:page => params[:page], :per_page => 10)
+      #   @case_entries = CaseEntry.where(:lawyer_id => current_user.lawyer_id).paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
+      # end
+    end
+    # @all_case_entries = CaseEntry.order("entry_date DESC")
+    # @lawyer = current_user.name
+    # respond_to do |format|
+    #   format.html # index.html.erb
+    #   format.json { render json: @case_entries }
+    #   # format.csv  { render :csv => @case_entries, :except => [:id] }
+    #   format.xls do 
+    #     headers['Content-Disposition'] = "attachment; filename=\"BackupCaseEntries_#{Date.today}.xls\""
+    #   end
+    #   format.pdf do 
+    #     pdf = CaseEntriesPdf.new(@case_entries, @lawyer)
+    #     send_data pdf.render, filename: "Case Entry " + Date.today.to_s + ".pdf", disposition: "inline"
+    #   end
+    # end
+  end
+
+  def filter_by_practice_code
+    
+  end
+
+  def filter_by_period
+    
   end
 
   private

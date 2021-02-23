@@ -1,0 +1,59 @@
+<div class="panel panel-primary">
+  	<div class="panel-primary panel-heading">Search</div>
+	  <div class="row">
+	    <div class="span11">
+		    <%= form_for filter_by_client_code_path, :method => 'get' do %>
+					<table class="table" width="100%">
+					  <thead>		
+						<tr>
+							<td>Client Code:</td>
+							<td colspan='3'>
+								<%= select_tag :client_code, options_for_select(@clients), { "data-placeholder" => "", :multiple => true, id: 'chosen-select_cl', :include_blank => true, :style => "width: 100%;"} %>
+							</td>
+						</tr>
+						<!-- <tr>	
+							<td>Assigned Lawyer</td>
+							<td colspan='3'>
+								<%#= select_tag :lawyer_id, options_for_select(@lawyers), { "data-placeholder" => "", :multiple => true, id: 'chosen-select_law', :include_blank => true, :style => "width: 100%;"} %>
+							</td>
+						</tr> -->
+						.
+						<tr>
+							<td width="10%">Date From:</td>
+							<td width="10%">
+								<%= text_field_tag :date_from, nil,  :id => "datepicker_from"%>
+							</td>
+							<td width="10%">Date To:</td>	
+							<td width="70%">
+								<%= text_field_tag :date_to, nil,  :id => "datepicker_to"%>
+								<%= hidden_field_tag :pfr, 2%>
+							</td>
+						</tr>
+
+						<!-- <tr>
+							<td>Date From: </td>	
+							<td>
+								<%#= text_field_tag :beginning_date, nil,  :id => "datepicker_beg"%>
+							</td>
+							<td>Date To: </td>	
+							<td>
+								<%#= text_field_tag :ending_date, nil,  :id => "datepicker_end"%>
+								
+							</td>
+						</tr> -->
+						<tr><td colspan="4"><div class="pull-right">
+							    <%= submit_tag "Search" %>
+						</div></td></tr>
+					  </thead>		
+					</table>
+				<% end %>
+    	</div>
+  	</div>
+  </div>
+<script>
+	$("#chosen-select_law").chosen();
+	$("#chosen-select_cl").chosen();
+  $('#datepicker_from').datepicker({format: 'yyyy-mm-dd'});
+  $('#datepicker_to').datepicker({format: 'yyyy-mm-dd'});
+</script>
+  

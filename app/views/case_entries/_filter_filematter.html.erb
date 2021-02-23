@@ -1,0 +1,86 @@
+<% @file_matter = AssignedLawyer.where("lawyer_id =? ", current_user.lawyer_id) %>
+<% @file_matter_id = @file_matter.pluck(:file_matter_id) %>
+<% @file_matter_info = FileMatter.where(:id => @file_matter_id ) %>
+<% @practice_ids = @file_matter_info.pluck(:practice_table_id) %>
+<% @client_ids = @file_matter_info.pluck(:client_id) %>
+<% @practices = PracticeTable.where(:id => @practice_ids.uniq) %>
+<% @client_codes = Client.where(:id => @client_ids.uniq) %>
+<div class="panel panel-primary">
+  <div class="panel-primary panel-heading">Search</div>
+  <div class="row">
+    <div class="span10">
+      <form>
+        <table class="table" width="100%">
+          <thead>   
+          <tr>
+            <td>Practice Code :
+            <%= select_tag "practice_id", options_from_collection_for_select(@practices, "id", "text_code") %>  
+            </td>
+            <td>Client Code :
+              <%= select_tag "client_code", options_from_collection_for_select(@client_codes, "cl_code_num", "cl_code_txt") %>  
+            </td>
+            <td colspan=>
+              <div class="pull-right">
+                <%= submit_tag "Search" %>
+              </div>
+            </td>
+          </tr>
+          </thead>    
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="panel panel-primary">
+  <div class="panel-primary panel-heading">List of Filematters</div>
+  <div class="row">
+    <div class="span10">
+      <table class="table table-striped" id="filematters" width="100%">
+        <thead>
+          <tr>
+            <th width="20%"><center>File Reference No.</center></th>
+            <th width="20%"><center>Practice Code</center></th>
+            <th width="20%"><center>Client Code</center></th>
+            <th width="30%"><center>Client</center></th>
+            <th width="10%"><center></center></th>
+          </tr>
+          <%# @file_matter = CaseEntry.select('DISTINCT(file_matter_id), created_at').where("lawyer_id =? ", current_user.lawyer_id).order("file_matter_id DESC","created_at DESC") %>
+          
+          <% @file_matter_info.each do |fmi| %>
+            <tr>
+              <td><%= fmi.file_code %><%= hidden_field_tag :file_code, fmi.file_code, :id => "file_code" %></td>
+              <td><%= fmi.practice_table.text_code %></td>
+              <% @client = Client.where(id: fmi.client_id)  %>
+              <% @client.each do |x| %>
+                <td><%= x.cl_code_txt%></td>
+                <td><%= x.name %></td>
+              <% end %>
+              
+              <td>
+                <button class="btn btn-sm btn-info choose" data-dismiss="modal" id="choose" value="<%= fmi.file_code %>">
+                  <i class="icon-plus"></i>
+                  Select
+                </button>
+              </td>
+            </tr>
+          <% end %>
+        </thead>
+        <tbody>  
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function(){
+    $('.choose').click(function(){
+      var file_code = $(this).val()
+      $.ajax({
+        url: "<%= pick_filematter_path %>",
+        data: {
+          case_entry_file_matter_case : file_code
+        },
+        dataType: "script"
+      });
+    });
+  });
+</script>

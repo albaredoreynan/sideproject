@@ -52,6 +52,7 @@ class FileMattersController < ApplicationController
   def new
     @file_matter = FileMatter.new
     @clients = Client.find(:all, :order => "name ASC")
+    @practice_tables = PracticeTable.find(:all, :order => "practice_name ASC")
     @lawyers = Lawyer.find(:all, :order => "first_name ASC")
     @file_matter.assigned_lawyers.build
     
@@ -63,6 +64,7 @@ class FileMattersController < ApplicationController
 
   def edit
     @file_matter = FileMatter.find(params[:id])
+    @practice_tables = PracticeTable.find(:all, :order => "practice_name ASC")
     @clients = Client.find(:all)
     @lawyers = Lawyer.find(:all)
     # 5.times {

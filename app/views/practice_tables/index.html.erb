@@ -1,0 +1,62 @@
+<div class="panel">
+  <div class="panel-heading"><h3>List Of Practices</h3></div>
+    
+  
+  <div class="panel panel-primary">
+    <div class="panel-primary panel-heading">PracticeTable Lists</div>
+    <div class="row">
+      <div class="span11">
+        <div class="pull-right">
+          <%= link_to "Backup in EXCEL File <i class='icon-download-alt'></i>".html_safe, practice_tables_path(params.merge(format: 'xls')), :class => "btn btn-success" %>
+        </div>
+        <%= link_to "Create Entry",
+            new_practice_table_path,
+            :class => 'btn btn-primary' %>
+        <br/>
+        <br/>
+        <div class="row">
+          <div class="span11">
+            <table class="table table-striped" id="practice_tables">
+              <thead>
+                <tr>
+                  <th width="30%"><center><%= sortable "practice_name", "Practices" %></center></th>
+                  <th width="15%"><center>Code</center></th>
+                  <th width="15%"><center>Text Code</center></th>
+                  <th width="10%"><center>Action</center></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @practice_tables.each do |practice_table| %>
+                  <tr>
+                    <td><%= practice_table.practice_name %></td>
+                    <td><%= practice_table.code_id %></td>
+                    <td><%= practice_table.text_code %></td>
+                    <td>
+                      <%= link_to 'Edit',
+                                  edit_practice_table_path(practice_table), :class => 'btn btn-mini' %>
+                      <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                                  practice_table_path(practice_table),
+                                  :method => :delete,
+                                  :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                                  :class => 'btn btn-mini btn-danger' %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+            <div class="pull-right">
+              <%= will_paginate @practice_tables, :param_name => 'page', previous_label: "<i class='icon-chevron-left'></i>".html_safe, next_label: "<i class='icon-chevron-right'></i>".html_safe %>
+            </div>
+          </div>
+        </div>
+        <%= link_to "Create Entry",
+                    new_practice_table_path,
+                    :class => 'btn btn-primary' %>
+        <br>
+        <br>
+      </div>  
+    </div>
+  </div>  
+</div>
+
+

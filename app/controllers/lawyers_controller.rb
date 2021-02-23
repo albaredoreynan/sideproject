@@ -3,7 +3,7 @@ class LawyersController < ApplicationController
   def index
     
     @lawyers = Lawyer.paginate(:page => params[:page], :per_page => 25).order(sort_column + " " + sort_direction)
-    @lawyer_all = Lawyer.order("last_name ASC")
+    @lawyer_all = Lawyer.order("id DESC")
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @lawyers }
