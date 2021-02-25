@@ -18,15 +18,16 @@
             <%= link_to "<i class='icon-th'>&nbsp;Column</i>".html_safe, filter_by_client_code_path(params.merge(pfr:"2", type:"line")), class: "btn btn-xs btn-danger", data: {rel: "tooltip", title: "Column", toggle: "modal"} %>
           </div>
           <div class="span11 well">
-            <% if params[:type] == 'bar' %>
-              <%= render "client_code_bar" %>
-            <% elsif params[:type] == 'pie' %>
-              <%= render "client_code_pie" %>
-            <% elsif params[:type] == 'column' %>
-              <%= render "client_code_column" %>
-            <% else %>  
-              <%= render "client_code_table" %>
-            <% end %>
+            <h2>PAGE UNDERCONSTRUCTION</h2>
+            <%# if params[:type] == 'bar' %>
+              <%#= render "client_code_bar" %>
+            <%# elsif params[:type] == 'pie' %>
+              <%#= render "client_code_pie" %>
+            <%# elsif params[:type] == 'column' %>
+              <%#= render "client_code_column" %>
+            <%# else %>  
+              <%#= render "client_code_table" %>
+            <%# end %>
           </div>
         </div>
       </div>
