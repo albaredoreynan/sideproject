@@ -1,7 +1,7 @@
 $('#case_entry_file_matter_case').val("<%= escape_javascript(@file_matters.case_number)%>")
 $('#case_entry_case_title').val("<%= escape_javascript(@file_matters.title)%>")
 $('#case_entry_client_id').val("<%= @my_clients.id %>")
-
+$('#case_entry_client_code').val("<%= @my_clients.cl_code_txt %>")
 $('#filematter_id').val("<%= @file_matters.id %>")
 $('#case_entry_client_name').val("<%= escape_javascript(@my_clients.name) %>")
 
