@@ -13,14 +13,15 @@
 				<div class="span4">
 					<div class="input-append" style="padding-left: 10px;">
 						<%= f.label :practice_code, "Practice Code:", style:"font-weight: bold;" %>
-						<%= f.collection_select(:practice_code, @practicetables, :id, :practice_name,  { :id => 'client_id', :required => true, :prompt => "Select From List", :readonly => true } ) %>
+						<%= f.text_field :practice_code, :class => "input-small", :readonly => true  %>
+						<%#= f.collection_select(:practice_code, @practicetables, :id, :practice_name,  { :id => 'client_id', :required => true, :prompt => "Select From List", :readonly => true } ) %>
 						<%#= f.text_field :practice_code, :class => "input-small", :required => true %>	
 						<!-- :code_id, :practice_name, :text_code -->
 					</div>
 
 					<div class="input-append" style="padding-left: 30px;">
 						<%= f.label :client_code, "Client Code:", style:"font-weight: bold;" %>
-						<%= f.text_field :client_code, :class => "input-small" %>
+						<%= f.text_field :client_code, :class => "input-small", :readonly => true  %>
 					</div>
 				</div>
 			</div>
@@ -62,7 +63,7 @@
 
           <%= f.hidden_field :client_id %>
           <%= f.label :case_title, "Case Title:", style:"font-weight: bold;" %>
-          <%= f.text_field :case_title,:readonly => true %>
+          <%= f.text_field :case_title, :readonly => true %>
 
           <%= f.label :file_matter_case, "Case No.:", style:"font-weight: bold;" %>
           <%= f.text_field :file_matter_case,:readonly => true %>
