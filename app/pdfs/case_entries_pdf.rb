@@ -30,6 +30,18 @@ class CaseEntriesPdf < Prawn::Document
 			@client.each do |x|
               @client_name = x.name
             end
+      # Year-Series-Client Code-Practice Code
+      if !case_entries.client_code.nil? || !case_entries.client_code.blank?
+      	@filerefno = case_entries.file_matter_id+"-"+case_entries.client_code
+      else
+      	@filerefno = case_entries.file_matter_id
+      end
+
+      if !case_entries.practice_code.nil? || !case_entries.practice_code.blank?
+      	@filerefno = @filerefno+"-"+case_entries.practice_code
+      else
+      	@filerefno = @filerefno
+      end
 
 			row1 << [
 				{:content => "#{case_entries.entry_date}", :align => :center, :width => 70 },
@@ -38,7 +50,7 @@ class CaseEntriesPdf < Prawn::Document
 				case_entries.work_particulars,
 				@client_name,
 				case_entries.case_title,
-				{:content => "#{case_entries.file_matter_id}", :align => :center }
+				{:content => "#{@filerefno}", :align => :center }
 			]		
 		end 
 			#row1 << [{:content => 'Employee Name', :colspan => 2 }, {:content => 'Client', :colspan => 2 }, {:content => 'Brand', :colspan => 2 }, {:content => 'Branch', :colspan => 2 }, {:content => 'Date Employed', :colspan => 2 } ]
