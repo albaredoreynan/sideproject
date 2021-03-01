@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20210119011340) do
+ActiveRecord::Schema.define(:version => 20210301002738) do
 
   create_table "assigned_lawyers", :force => true do |t|
     t.integer  "lawyer_id"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(:version => 20210119011340) do
     t.integer  "cl_code_num"
     t.string   "cl_code_txt"
     t.integer  "practice_table_id"
+    t.string   "practice_code"
   end
 
   create_table "lawyers", :force => true do |t|

@@ -151,6 +151,10 @@ class PagesController < ApplicationController
     @client = Client.find(:all, :conditions => { :id => params[:file_matter_client_id]} ).first
   end
 
+  def add_practice_code
+    @practices = PracticeTable.find(:all, :conditions => { :id => params[:file_matter_practice_table_id]} ).first
+  end
+
   def pick_filematter
     @file_matters = FileMatter.find(:all, :conditions => { :file_code => params[:case_entry_file_matter_case] } ).first
     @my_clients =  Client.find(:all, :conditions => { :id => @file_matters.client_id } ).first

@@ -9,13 +9,13 @@
 					<%= f.input :client_id, :collection => @clients.map {|u| [u.name, u.id] },  :include_blank => false, :prompt => "---", :required => true %>
 				</div>
 				<div class="span3">	
-					<%= f.input :cl_code_num, :label => "Client Code Num", :required => true %>
-				</div>
-				<div class="span3">	
-					<%= f.input :cl_code_txt, :label => "Client Code Txt", :required => true %>
+					<%= f.input :cl_code_txt, :label => "Client Code Txt", :readonly => true  %>
 				</div>
 				<div class="span3">	
 					<%= f.input :practice_table_id, :collection => @practice_tables.map {|u| [u.practice_name, u.id] },  :include_blank => false, :prompt => "---", :required => true %>
+				</div>
+				<div class="span3">	
+					<%= f.input :practice_code, :label => "Practice Code", :readonly => true  %>
 				</div>
 				<div class="span3">	
 					<%= f.input :title, :label => "Case Title", :required => true %>
@@ -75,6 +75,16 @@
 	        url: "<%= add_client_code_path %>",
 	        data: {
 	          file_matter_client_id : $('#file_matter_client_id').val()
+	        },
+	        dataType: "script"
+	      });
+	    });
+
+	    $('#file_matter_practice_table_id').blur(function(){
+	      $.ajax({
+	        url: "<%= add_practice_code_path %>",
+	        data: {
+	          file_matter_practice_table_id : $('#file_matter_practice_table_id').val()
 	        },
 	        dataType: "script"
 	      });
