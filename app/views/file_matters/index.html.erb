@@ -43,7 +43,6 @@
                 <tr>
                   <th width="15%"><center><%= sortable "file_code", "File Reference No." %></center></th>
                   <th width="35%"><center><%= sortable "title", "Case Title" %></center></th>
-                  <th width="35%"><center><%= sortable "case_number", "Case No." %></center></th>
                   <th width="15%"><center><%=t '.actions', :default => t("helpers.actions") %></center></th>
                 </tr>
               </thead>
@@ -65,7 +64,6 @@
                     %>
                     <td><%= @filerefno %></td>
                     <td><%= fm.title %></td>
-                    <td><%= fm.case_number %></td>
                     <td>
                       <% if current_user.role != 'User' %>
                         <center>

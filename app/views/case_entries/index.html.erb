@@ -4,44 +4,7 @@
 <div class="panel">
   <div class="panel-heading"><h3>Case Entries</h3></div>
   <% if current_user.role == 'Administrator' %>
-    <ul class="nav nav-tabs">
-      <% if params[:pfr] == '1' %>
-        <% cl = 'active' %>
-      <% else %>
-        <% cl = '' %>
-      <% end %>
-
-      <% if params[:pfr] == '2' %>
-        <% cl2 = 'active' %>
-      <% else %>
-        <% cl2 = '' %>
-      <% end %>
-
-      <% if params[:pfr] == '3' %>
-        <% cl3 = 'active' %>
-      <% else %>
-        <% cl3 = '' %>
-      <% end %>
-
-      <% if params[:pfr] == '4' %>
-        <% cl3 = 'active' %>
-      <% else %>
-        <% cl3 = '' %>
-      <% end %>
-
-      <li class="<%= cl %>" >
-        <%= link_to "Filter By Workload", case_entries_path(pfr:"1"), style:"font-weight: bold;" %>
-      </li>
-      <li class="<%= cl2 %>" >
-        <%= link_to "Filter By Client Code", filter_by_client_code_path(pfr:"2"), style:"font-weight: bold;" %>
-      </li>
-      <li class="<%= cl3 %>" >
-        <%= link_to "Filter By Practice Code", search_entry_other_graph2_path(pfr:"3"), style:"font-weight: bold;" %>
-      </li>
-      <li class="<%= cl3 %>" >
-        <%= link_to "Filter By Period", search_entry_other_graph2_path(pfr:"4"), style:"font-weight: bold;" %>
-      </li>
-    </ul>
+    <%= render "filter_nav" %>
   <% else %>
 
   <% end %>
