@@ -106,6 +106,8 @@ class CaseEntriesController < ApplicationController
               :case_title => params[:case_entry][:case_title],
               :file_matter_case => params[:case_entry][:file_matter_case],
               :lawyer_id => al.lawyer_id,
+              :client_code => params[:case_entry][:client_code],
+              :practice_code => params[:case_entry][:practice_code],
               :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
               :user_id => usr.id
             )
@@ -143,6 +145,8 @@ class CaseEntriesController < ApplicationController
                 :case_title => params[:case_entry][:case_title],
                 :file_matter_case => params[:case_entry][:file_matter_case],
                 :lawyer_id => al.lawyer_id,
+                :client_code => params[:case_entry][:client_code],
+                :practice_code => params[:case_entry][:practice_code],
                 :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
                 :user_id => usr.id
               )
@@ -160,6 +164,8 @@ class CaseEntriesController < ApplicationController
                   :case_title => params[:case_entry][:case_title],
                   :file_matter_case => params[:case_entry][:file_matter_case],
                   :lawyer_id => current_user.lawyer_id,
+                  :client_code => params[:case_entry][:client_code],
+                  :practice_code => params[:case_entry][:practice_code],
                   :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
                   :user_id => current_user.id
                 )
@@ -178,6 +184,8 @@ class CaseEntriesController < ApplicationController
           :case_title => params[:case_entry][:case_title],
           :file_matter_case => params[:case_entry][:file_matter_case],
           :lawyer_id => current_user.lawyer_id,
+          :client_code => params[:case_entry][:client_code],
+          :practice_code => params[:case_entry][:practice_code],
           :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
           :user_id => current_user.id
         )
@@ -226,6 +234,8 @@ class CaseEntriesController < ApplicationController
                 :case_title => params[:case_entry][:case_title],
                 :file_matter_case => params[:case_entry][:file_matter_case],
                 :lawyer_id => al.lawyer_id,
+                :client_code => params[:case_entry][:client_code],
+                :practice_code => params[:case_entry][:practice_code],
                 :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
                 :user_id => usr.id
               )
@@ -243,6 +253,8 @@ class CaseEntriesController < ApplicationController
                   :case_title => params[:case_entry][:case_title],
                   :file_matter_case => params[:case_entry][:file_matter_case],
                   :lawyer_id => current_user.lawyer_id,
+                  :client_code => params[:case_entry][:client_code],
+                  :practice_code => params[:case_entry][:practice_code],
                   :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
                   :user_id => current_user.id
                 )
@@ -261,6 +273,8 @@ class CaseEntriesController < ApplicationController
           :case_title => params[:case_entry][:case_title],
           :file_matter_case => params[:case_entry][:file_matter_case],
           :lawyer_id => current_user.lawyer_id,
+          :client_code => params[:case_entry][:client_code],
+          :practice_code => params[:case_entry][:practice_code],
           :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
           :user_id => current_user.id
         )

@@ -50,7 +50,20 @@
               <tbody>
                 <% @file_matters.each do |fm| %>
                   <tr>
-                    <td><center><%= fm.file_code %></center></td>
+                    <% 
+                      if !fm.cl_code_txt.nil? || !fm.cl_code_txt.blank?
+                        @filerefno = fm.file_code+"-"+fm.cl_code_txt
+                      else
+                        @filerefno = fm.file_code
+                      end
+
+                      if !fm.practice_code.nil? || !fm.practice_code.blank?
+                        @filerefno = @filerefno+"-"+fm.practice_code
+                      else
+                        @filerefno = @filerefno
+                      end
+                    %>
+                    <td><%= @filerefno %></td>
                     <td><%= fm.title %></td>
                     <td><%= fm.case_number %></td>
                     <td>

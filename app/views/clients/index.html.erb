@@ -59,7 +59,6 @@
                 <tr>
                   <th width="30%"><center><%= sortable "name", "Name" %></center></th>
                   <th width="15%"><center>Client Code</center></th>
-                  <th width="15%"><center>Text Code</center></th>
                   <!-- <th width="15%"><center>Contact Person</center></th>
                   <th width="15%"><center>Position</center></th>
                   <th width="15%"><center>Contact Number</center></th>
@@ -71,7 +70,6 @@
                 <% @clients.each do |client| %>
                   <tr>
                     <td><%= client.name %></td>
-                    <td><center><%= client.cl_code_num %></center></td>
                     <td><center><%= client.cl_code_txt %></center></td>
                     <!-- <td><%#= client.contact_person %></td>
                     <td><%#= client.position %></td>
