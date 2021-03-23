@@ -80,16 +80,15 @@
               <tr class="<%= case_entry.remove_from_billing == 'Yes' ? 'error' : '' %>">
                 <td data-title=""><center><%= case_entry.entry_date %></center></td>
 
-                <% if !case_entry.client_code.nil? || !case_entry.client_code.blank? %>
-                  <% @filerefno = case_entry.file_matter_id+"-"+case_entry.client_code %>
-                <% else %>
+                <% if case_entry.client_code.nil? || case_entry.client_code.blank? %>
                   <% @filerefno = case_entry.file_matter_id %>
-                <% end %>
-
-                <% if !case_entry.practice_code.nil? || !case_entry.practice_code.blank? %>
-                  <% @filerefno = @filerefno+"-"+case_entry.practice_code %>
                 <% else %>
-                  <% @filerefno = @filerefno %>
+                  <% @filerefno = case_entry.file_matter_id+"-"+case_entry.client_code %> 
+                  <% if !case_entry.practice_code.nil? || !case_entry.practice_code.blank?%>
+                    <% @filerefno = @filerefno+"-"+case_entry.practice_code %>
+                  <% else %>
+                    <% @filerefno = @filerefno %>
+                  <% end %>  
                 <% end %>
 
                 <td data-title=""><center><%= @filerefno %><%#= case_entry.file_matter_id %></center></td>
@@ -126,8 +125,12 @@
                             </p>
                             <p><b>Client :</b>&nbsp;<%= f.text_field :client_name, :readonly => true, :id => "client_name_#{case_entry.id}" %></p>
                               <%= f.hidden_field :client_id, :id => "client_id_#{case_entry.id}" %>
+                            <p><b>Client Code :</b>&nbsp;<%= f.text_field :client_code, :readonly => true, :id => "client_code_#{case_entry.id}" %></p>
+                            <p><b>Practice Code :</b>&nbsp;<%= f.text_field :practice_code, :readonly => true, :id => "practice_code_#{case_entry.id}" %></p>
+                            
                             <p><b>Case Title :</b>&nbsp;<%= f.text_field :case_title, :readonly => true, :id => "case_title_#{case_entry.id}" %></p>
                             <p><b>Case No. :</b>&nbsp;<%= f.text_field :file_matter_case, :readonly => true, :id => "file_matter_case_#{case_entry.id}" %></p>
+                            
                             <p><b>Assigned Lawyer :</b>&nbsp;
                                 <% if @ce.lawyer_id.nil? %>
                                   <%= "No info provided" %>

@@ -4,3 +4,5 @@ $('#file_matter_case_<%= @case_entry %>').val("<%= escape_javascript(@file_matte
 $('#case_title_<%= @case_entry %>').val("<%= escape_javascript(@file_matters.title)%>")
 $('#client_name_<%= @case_entry %>').val("<%= @my_clients.name %>")
 $('#client_id_<%= @case_entry %>').val("<%= @my_clients.id %>")
+$('#client_code_<%= @case_entry %>').val("<%= @file_matters.cl_code_txt %>")
+$('#practice_code_<%= @case_entry %>').val("<%= @file_matters.practice_code %>")

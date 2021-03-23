@@ -99,7 +99,17 @@
 									<td width="80%">
 										<%= fmi.title %><br/>
 										<%= fmi.case_number %><br/>
-										<%= fmi.file_code %>
+										<!-- need to modify the new filematter here -->
+										<!-- :cl_code_txt, :practice_table_id, :practice_code -->
+										<% if fmi.cl_code_txt.nil? || fmi.cl_code_txt.blank? %>
+											<% @filerefno = fmi.file_code %>
+										<% else %>
+										  <% @filerefno = fmi.file_code+"-"+fmi.cl_code_txt %> 
+											<% if !fmi.practice_code.nil? || !fmi.practice_code.blank?%>
+												<% @filerefno = @filerefno+"-"+fmi.practice_code %>
+											<% end %>
+										<% end %>
+										<%= @filerefno %>
 									</td>
 								</tr>
 								<tr>

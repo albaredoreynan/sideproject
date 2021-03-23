@@ -34,11 +34,14 @@
                 <li>  
                   <%= link_to "Graphs", graphs_path(pfr: 1) %>
                 </li>
-                <li>  
-                  <%= link_to "Calls", calls_path %>
-                </li>
+                <!-- <li>  
+                  <%#= link_to "Calls", calls_path %>
+                </li> -->
                 <li>  
                   <%= link_to "Prints", printouts_path %>
+                </li>
+                <li>  
+                  <%= link_to "Practices", practice_tables_path %>
                 </li>
               <% elsif current_user.role == 'Encoder-Call' %>
                 <li>  
@@ -64,6 +67,9 @@
                 </li>
                 <li>  
                   <%= link_to "Prints", printouts_path %>
+                </li>
+                <li>  
+                  <%= link_to "Practices", practice_tables_path %>
                 </li>
               <% elsif current_user.role == 'Front Desk' %>
                 <li>  
