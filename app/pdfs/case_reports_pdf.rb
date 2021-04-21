@@ -6,7 +6,7 @@ class CaseReportsPdf < Prawn::Document
 
 		@case_listings = case_listings
 		@file_matter_info = file_entries
-
+    @filerefno = ""
 		@start_date = start_date
 		@end_date = end_date
 		@file_matter_id = file_matter_id
@@ -28,7 +28,16 @@ class CaseReportsPdf < Prawn::Document
 		@file_matter_info.each do |fmi|
 		  row1 << ["MATTER :", {:content => fmi.title, :font_style => :bold, :colspan => 5 } ]
 		  row1 << [" ", {:content => fmi.case_number, :font_style => :bold, :colspan => 5 } ]
-		  row1 << [" ", {:content => fmi.file_code, :font_style => :bold, :colspan => 5 } ]
+		  
+		  if fmi.cl_code_txt.nil? || fmi.cl_code_txt.blank?
+				@filerefno = fmi.file_code
+			else
+			  @filerefno = fmi.file_code+"-"+fmi.cl_code_txt 
+				if !fmi.practice_code.nil? || !fmi.practice_code.blank?
+					@filerefno = @filerefno+"-"+fmi.practice_code
+				end
+			end
+		  row1 << [" ", {:content => @filerefno, :font_style => :bold, :colspan => 5 } ]
 		  move_down(2)
 		  @client_name = Client.find(fmi.client_id)
 		  row1 << ["CLIENT :", {:content => @client_name.name, :font_style => :bold, :colspan => 5 } ]
