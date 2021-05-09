@@ -94,7 +94,8 @@ class FileMattersController < ApplicationController
         @case_entries = CaseEntry.where(file_matter_id: params[:file_matter][:file_code])
         # @case_entries.practice_code = params[:file_matter][:practice_code]
         # @case_entries.client_code = params[:file_matter][:cl_code_txt]
-        @case_entries.update_all(:practice_code => params[:file_matter][:practice_code], :client_code => params[:file_matter][:cl_code_txt])
+        @client_name = Client.find(params[:file_matter][:client_id])
+        @case_entries.update_all(:practice_code => params[:file_matter][:practice_code], :client_code => params[:file_matter][:cl_code_txt], :client_id => params[:file_matter][:client_id], :client_name => @client_name.name)
         format.html { redirect_to @file_matter, notice: 'File entry was successfully updated.' }
         format.json { head :no_content }
       else

@@ -6,7 +6,6 @@
   <% if current_user.role == 'Administrator' %>
     <%= render "filter_nav" %>
   <% else %>
-
   <% end %>
   <div class="panel panel-primary">
     <div class="panel-primary panel-heading">Search</div>
@@ -118,13 +117,16 @@
                         <div class="form-inputs">
                           <div class="span6">
                             <%= hidden_field_tag :id, case_entry.id %>
+                            <% @client_name = Client.find(case_entry.client_id) %>
+                            <% @file_matter = FileMatter.where(:file_code => case_entry.file_matter_id).first %>
+
                             <p><b>File Reference No. :</b>
                               <%= f.autocomplete_field :file_matter_id, autocomplete_file_matter_file_code_case_entries_path, :required => true, :class => "case_entry_file_matter_id", :id => "#{case_entry.id}" %>
                             </p>
-                            <p><b>Client :</b>&nbsp;<%= f.text_field :client_name, :readonly => true, :id => "client_name_#{case_entry.id}" %></p>
+                            <p><b>Client :</b>&nbsp;<%= f.text_field :client_name, value: @client_name.name, :readonly => true, :id => "client_name_#{case_entry.id}" %></p>
                               <%= f.hidden_field :client_id, :id => "client_id_#{case_entry.id}" %>
-                            <p><b>Client Code :</b>&nbsp;<%= f.text_field :client_code, :readonly => true, :id => "client_code_#{case_entry.id}" %></p>
-                            <p><b>Practice Code :</b>&nbsp;<%= f.text_field :practice_code, :readonly => true, :id => "practice_code_#{case_entry.id}" %></p>
+                            <p><b>Client Code :</b>&nbsp;<%= f.text_field :client_code, value: @file_matter.cl_code_txt, :readonly => true, :id => "client_code_#{case_entry.id}" %></p>
+                            <p><b>Practice Code :</b>&nbsp;<%= f.text_field :practice_code, value: @file_matter.practice_code, :readonly => true, :id => "practice_code_#{case_entry.id}" %></p>
                             
                             <p><b>Case Title :</b>&nbsp;<%= f.text_field :case_title, :readonly => true, :id => "case_title_#{case_entry.id}" %></p>
                             <p><b>Case No. :</b>&nbsp;<%= f.text_field :file_matter_case, :readonly => true, :id => "file_matter_case_#{case_entry.id}" %></p>
@@ -187,7 +189,6 @@
                               edit_case_entry_path(case_entry), :class => 'btn btn-mini' %>
                     <!-- <a href="#<%= case_entry.id %>" role="button" class="btn btn-success btn-mini" data-toggle="modal">Edit</a> -->
                   <%# end %>
-
                   <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                               case_entry_path(case_entry),
                               :method => :delete,
@@ -254,4 +255,4 @@
         });
       });
     });  
-  </script>            
+  </script>  
