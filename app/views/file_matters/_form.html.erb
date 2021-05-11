@@ -9,16 +9,16 @@
 					<%= f.input :client_id, :collection => @clients.map {|u| [u.name, u.id] },  :include_blank => false, :prompt => "---", :required => true %>
 				</div>
 				<div class="span3">	
-					<%= f.input :cl_code_txt, :label => "Client Code Txt", :readonly => true  %>
+					<%= f.input :cl_code_txt, :label => "Client Code", :readonly => true  %>
 				</div>
 				<div class="span3">	
-					<%= f.input :practice_table_id, :collection => @practice_tables.map {|u| [u.practice_name, u.id] },  :include_blank => false, :prompt => "---", :required => true %>
+					<%= f.input :practice_table_id, :collection => @practice_tables.map {|u| [u.practice_name, u.id] },  :include_blank => false, :label => "Practice Area", :prompt => "---", :required => true %>
 				</div>
 				<div class="span3">	
-					<%= f.input :practice_code, :label => "Practice Code", :readonly => true  %>
+					<%= f.input :practice_code, :label => "Practice Area Code", :readonly => true  %>
 				</div>
 				<div class="span3">	
-					<%= f.input :title, :label => "Case Title", :required => true %>
+					<%= f.input :title, :label => "Case Title / Matter", :required => true %>
 				</div>
 				
 				<div class="span3">
