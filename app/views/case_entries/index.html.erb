@@ -126,9 +126,9 @@
                             <p><b>Client :</b>&nbsp;<%= f.text_field :client_name, value: @client_name.name, :readonly => true, :id => "client_name_#{case_entry.id}" %></p>
                               <%= f.hidden_field :client_id, :id => "client_id_#{case_entry.id}" %>
                             <p><b>Client Code :</b>&nbsp;<%= f.text_field :client_code, value: @file_matter.cl_code_txt, :readonly => true, :id => "client_code_#{case_entry.id}" %></p>
-                            <p><b>Practice Code :</b>&nbsp;<%= f.text_field :practice_code, value: @file_matter.practice_code, :readonly => true, :id => "practice_code_#{case_entry.id}" %></p>
+                            <p><b>Practice Area Code :</b>&nbsp;<%= f.text_field :practice_code, value: @file_matter.practice_code, :readonly => true, :id => "practice_code_#{case_entry.id}" %></p>
                             
-                            <p><b>Case Title :</b>&nbsp;<%= f.text_field :case_title, :readonly => true, :id => "case_title_#{case_entry.id}" %></p>
+                            <p><b>Case Title / Matter :</b>&nbsp;<%= f.text_field :case_title, :readonly => true, :id => "case_title_#{case_entry.id}" %></p>
                             <p><b>Case No. :</b>&nbsp;<%= f.text_field :file_matter_case, :readonly => true, :id => "file_matter_case_#{case_entry.id}" %></p>
                             
                             <p><b>Assigned Lawyer :</b>&nbsp;

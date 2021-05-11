@@ -12,7 +12,7 @@
 				</div>
 				<div class="span4">
 					<div class="input-append" style="padding-left: 10px;">
-						<%= f.label :practice_code, "Practice Code:", style:"font-weight: bold;" %>
+						<%= f.label :practice_code, "Practice Area Code:", style:"font-weight: bold;" %>
 						<%= f.text_field :practice_code, :class => "input-small", :readonly => true  %>
 						<%#= f.collection_select(:practice_code, @practicetables, :id, :practice_name,  { :id => 'client_id', :required => true, :prompt => "Select From List", :readonly => true } ) %>
 						<%#= f.text_field :practice_code, :class => "input-small", :required => true %>	
@@ -62,7 +62,7 @@
 
 
           <%= f.hidden_field :client_id %>
-          <%= f.label :case_title, "Case Title:", style:"font-weight: bold;" %>
+          <%= f.label :case_title, "Case Title / Matter:", style:"font-weight: bold;" %>
           <%= f.text_field :case_title, :readonly => true %>
 
           <%= f.label :file_matter_case, "Case No.:", style:"font-weight: bold;" %>
