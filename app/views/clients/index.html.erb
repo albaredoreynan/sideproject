@@ -23,11 +23,17 @@
             <table class="table" width="100%">
               <thead>   
               <tr>
-                <td>Client :</td>
-                <td>
-                  <%= autocomplete_field_tag :client, nil, ac_client_gr_graphs_path, :required => true, :style => "width: 100%;" %>
+                <td width="10%"><center>Client Code:</center></td>
+                <td width="10%">
+                  <%= text_field_tag :client_code, nil, :style => "width: 100%;" %>
                 </td>
-                <td colspan=>
+                <td width="10%"><center>Client :</center></td>
+                <td width="70%">
+                  <%= autocomplete_field_tag :client, nil, ac_client_gr_graphs_path, :style => "width: 100%;" %>
+                </td>
+              </tr>
+              <tr>  
+                <td colspan="4" >
                   <div class="pull-right">
                     <%= submit_tag "Search" %>
                   </div>
