@@ -450,17 +450,19 @@ class CaseEntriesController < ApplicationController
   end
 
   def filter_by_client_code
-    @clients = Client.all.map{|a|[a.cl_code_txt, a.cl_code_txt]}
+    @clients = Client.order('cl_code_txt ASC').map{|a|[a.cl_code_txt, a.cl_code_txt]}
     @lawyers = Lawyer.all.map{|a|[a.full_name, a.id]}
+    @file_references = {}
     if current_user.role == 'Administrator' || current_user.role == 'Billing Clerk'
       # # @case_entries = CaseEntry.find(:all, :order => "entry_date DESC")
       if params[:date_from].present? && params[:date_to].present? || params[:client_code]
          args = {}
          args.merge!(client_code: params[:client_code]) unless params[:client_code].blank?
-      #   args.merge!(case_number: params[:case_number]) unless params[:case_number].blank?
+         args.merge!(file_matter_id: params[:file_ref]) unless params[:file_ref].blank?
          args.merge!(entry_date: params[:date_from]..params[:date_to]) unless params[:date_from].blank?
-         args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
+         # args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
          @case_entries = CaseEntry.where(args).paginate(:page => params[:page], :per_page => 20)
+       
       # else
       #   @case_entries = CaseEntry.paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       end

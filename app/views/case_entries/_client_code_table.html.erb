@@ -4,10 +4,10 @@
               new_case_entry_path,
               :class => 'btn btn-primary' %>
   </div>
-  <div class="pull-right">
-    <%= link_to "Download as PDF <i class='icon-download-alt'></i>".html_safe, case_entries_path(params.merge(format: 'pdf')), :class => "btn btn-primary" %>
-    <%= link_to "Backup in EXCEL File <i class='icon-download-alt'></i>".html_safe, case_entries_path(params.merge(format: 'xls')), :class => "btn btn-success" %>
-  </div>
+  <!-- <div class="pull-right">
+    <%#= link_to "Download as PDF <i class='icon-download-alt'></i>".html_safe, case_entries_path(params.merge(format: 'pdf')), :class => "btn btn-primary" %>
+    <%#= link_to "Backup in EXCEL File <i class='icon-download-alt'></i>".html_safe, case_entries_path(params.merge(format: 'xls')), :class => "btn btn-success" %>
+  </div> -->
 
 </div>
 <br/>
@@ -46,22 +46,9 @@
                 <%= initials.initials %>
               <% end %>
             </center></td>
-            <td><center><%= case_entry.time_spent_from %></center></td>
-            <td><center><%= case_entry.time_spent_to %></center></td>
+            <td><center></center></td>
+            <td><center></center></td>
             <td><center>
-              <%# if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id].present? || params[:client].present? || params[:case_title].present? %>
-                <a href="#<%= case_entry.id %>" role="button" class="btn btn-success btn-mini" data-toggle="modal">Edit</a>
-              <%# else %>
-                <%#= link_to t('.edit', :default => t("helpers.links.edit")),
-                          edit_case_entry_path(case_entry), :class => 'btn btn-mini' %>
-                <!-- <a href="#<%= case_entry.id %>" role="button" class="btn btn-success btn-mini" data-toggle="modal">Edit</a> -->
-              <%# end %>
-
-              <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                          case_entry_path(case_entry),
-                          :method => :delete,
-                          :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                          :class => 'btn btn-mini btn-danger' %>
               </center>
             </td>
           </tr>

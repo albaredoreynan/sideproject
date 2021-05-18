@@ -67,6 +67,7 @@ Case2::Application.routes.draw do
   get 'pages/add_client_code', :as => 'add_client_code'
   get 'pages/pick_filematter', :as => 'pick_filematter'
   get 'pages/add_practice_code', :as => 'add_practice_code'
+  get 'pages/select_file_matters', :as => 'select_file_matters'
 
   # search
   # match '/all_employees_list', :to => 'labor_hours#all_employees_list'

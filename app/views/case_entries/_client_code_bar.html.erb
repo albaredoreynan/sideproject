@@ -1,13 +1,25 @@
-feba12
 <% @arr = Array.new %>
 <% @arr2 = Array.new %>
+<% @lawyers = Array.new %>
+<% @beginning_date = params[:date_from] %>
+<% @ending_date = params[:date_to] %>
+<% file_matter = FileMatter.where(file_code: params[:file_ref] )%>
+<% al = AssignedLawyer.where(file_matter_id: file_matter.last.id) %>
+<% al.each do |lawyer| %>
+   <% x = Lawyer.find(lawyer.lawyer_id) %> 
+   <% @lawyers << x.full_name %>   
+   <% @arr2 << calculate_time_per_filematter(lawyer.lawyer_id, @beginning_date, @ending_date, params[:file_ref]) %>
+<% end%>
+
 <% @case_entries.each do |ca| %>
+
   <% @arr << ca.client_code %>
   <%# @arr << ca.lawyer_id %>
-  <% @beginning_date = "Jan 1, 2020" %>
-  <% @ending_date = "Jan 1, 2021" %>
+  
   <%# @arr2 << calculate_time(lawyer.id, @beginning_date, @ending_date) %>
 <% end %>
+<% @client = @case_entries.first %>
+<% @client_name = Client.find(@client.client_id) %>
 <script>
   $(function () {
       $('#container').highcharts({
@@ -15,14 +27,14 @@ feba12
               type: 'bar'
           },
           title: {
-              text: 'Client Case Entries'
+              text: 'Case Entries For Client <%= @client_name.name %> (<%= @client_name.cl_code_txt %>) '
           },
           subtitle: {
               text: 'Period Covers: <%=raw(@beginning_date)%> - <%=raw(@ending_date)%>'
           },
           xAxis: {
               // categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
-              categories: <%= raw(@arr) %>,
+              categories: <%= raw(@lawyers) %>,
               title: {
                   text: null
               }
@@ -63,8 +75,8 @@ feba12
           },
           series: [{
               name: 'Accumulated Hours',
-              data: [107, 31, 835, 203, 2, 50, 33, 23, 34, 12]
-              // data: <%= raw(@arr2) %>
+              //data: [107, 31, 835, 203, 2]
+              data: <%= raw(@arr2) %>
           }
           // }, 
 

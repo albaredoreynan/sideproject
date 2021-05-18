@@ -1,0 +1,518 @@
+<style type="text/css">
+    .select_bg option{
+        background-color: rgba(40,40,40,0.9);
+    }
+    
+    .select_bg optgroup{
+        color: #fff;
+        background-color: rgba(40,40,40,0.9);
+    }
+</style>
+
+<script>
+    jQuery(document).ready(function($) {
+        $('#pick_up_location_div').hide();
+        $('#drop_off_location_div').hide();
+        $('#vehicle_type_div').hide();
+        $('#fare_matrix_div').hide();
+        $('#main_booking_div').show();
+        $('#main_booking_div_det').hide();
+        $('#hid_div').hide();
+        $('select').on('change', function() {
+				  $('option').prop('disabled', false); //reset all the disabled options on every change event
+				  $('select').each(function() { //loop through all the select elements
+				    var val = this.value;
+				    $('select').not(this).find('option').filter(function() { //filter option elements having value as selected option
+				      return this.value === val;
+				    }).prop('disabled', true); //disable those option elements
+				  });
+				}).change();
+
+        $('#transfer_field').on('change', function() {
+          if ( !$('#transfer_field').val() ){
+          	$('#pick_up_location_div').hide();
+          	$('#drop_off_location_div').hide();
+            $('#vehicle_type_div').hide();
+            $('#fare_matrix_div').hide();
+          }else{
+	          $('#pick_up_location_div').show();
+	          $('#drop_off_location_div').hide();
+	          $('#vehicle_type_div').hide();
+	          $('#fare_matrix_div').hide();
+	          $('#area_group_a option:first').prop('selected',true);
+	          $('#area_group_b option:first').prop('selected',true);
+	          $('#vehicle option:first').prop('selected',true);
+	        }
+        });
+        
+
+        $('#area_group_a').on('change', function() {
+        	var pickuparea = $('#area_group_a').val();
+        	// if (pickuparea != "Cabo San Lucas (SJD Airport)"){
+        	// 	 $('#area_group_b option:first').prop('selected',true);
+        	// 	  $('#area_group_b option').removeAttr('selected').filter('[value=' + $(this).val() + ']').attr('selected', true);
+        	// }
+          $('#drop_off_location_div').show();
+          $('#fare_matrix_div').hide();
+          $('#vehicle_type_div').hide();
+          $('#area_group_b option:first').prop('selected',true);
+          $('#vehicle option:first').prop('selected',true);
+        });        
+        
+        $('#area_group_b').on('change', function() {
+		  		$('#vehicle_type_div').show();
+		  		$('#fare_matrix_div').hide();
+          $('#vehicle_type_div option:first').prop('selected',true);
+        });
+
+
+        if ()  
+        $('#vehicle').on('change', function() {
+          var pick_up_opt = $('#area_group_a :selected').parent().attr('label');
+		      var drop_off_opt = $('#area_group_b :selected').parent().attr('label');
+          if (( (drop_off_opt == "San Jose Del Cabo Zone 1") && ( pick_up_opt  == "Airport")) || ( (pick_up_opt == "San Jose Del Cabo Zone 1") && (drop_off_opt  == "Airport") ) ){
+          	var min_pass_1 = 55;
+            var min_pass_2 = 65;
+            var min_pass_3 = 145;
+            var total_one_way_1 = 100;
+            var total_one_way_2 = 120;
+            var total_one_way_3 = 280;
+            var vehicle_selected = $('#vehicle').val();
+          	if (vehicle_selected == "Suburban (6 Passengers)") {
+          	  $('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_1);
+              $('#round_trip span').text('USD $' + total_one_way_1);
+              $('#tot_one_way').text(min_pass_1);
+              $('#tot_round').text(total_one_way_1);
+          	}else if(vehicle_selected == "Passenger Van (10 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_2);
+              $('#round_trip span').text('USD $' + total_one_way_2);
+              $('#tot_one_way').text(min_pass_2);
+              $('#tot_round').text(total_one_way_2);
+          	}else if(vehicle_selected == "Sprinter Mercedes (16 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_3);
+              $('#round_trip span').text('USD $' + total_one_way_3);
+              $('#tot_one_way').text(min_pass_3);
+              $('#tot_round').text(total_one_way_3);
+          	}else{
+
+          	}
+          }else if ( ((drop_off_opt == "Puerto Los Cabos Zone 2") && (pick_up_opt  == "Airport")) || ((pick_up_opt == "Puerto Los Cabos Zone 2") && (drop_off_opt  == "Airport")) ){
+          	var min_pass_1 = 75;
+            var min_pass_2 = 80;
+            var min_pass_3 = 160;
+            var total_one_way_1 = 140;
+            var total_one_way_2 = 150;
+            var total_one_way_3 = 310;
+            var vehicle_selected = $('#vehicle').val();
+          	if (vehicle_selected === "Suburban (6 Passengers)") {
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_1);
+              $('#round_trip span').text('USD $' + total_one_way_1);
+              $('#tot_one_way').text(min_pass_1);
+              $('#tot_round').text(total_one_way_1);
+          	}else if(vehicle_selected === "Passenger Van (10 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_2);
+              $('#round_trip span').text('USD $' + total_one_way_2);
+              $('#tot_one_way').text(min_pass_2);
+              $('#tot_round').text(total_one_way_2);
+          	}else if(vehicle_selected === "Sprinter Mercedes (16 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_3);
+              $('#round_trip span').text('USD $' + total_one_way_3);
+              $('#tot_one_way').text(min_pass_3);
+              $('#tot_round').text(total_one_way_3);
+          	}else{
+
+          	}
+          }else if ( ((drop_off_opt == "The Corridor Zone 2") && (pick_up_opt  == "Airport")) || ((pick_up_opt == "The Corridor Zone 2") && (drop_off_opt  == "Airport")) ){
+          	var min_pass_1 = 75;
+            var min_pass_2 = 80;
+            var min_pass_3 = 160;
+            var total_one_way_1 = 140;
+            var total_one_way_2 = 150;
+            var total_one_way_3 = 310;
+            var vehicle_selected = $('#vehicle').val();
+          	if (vehicle_selected === "Suburban (6 Passengers)") {
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_1);
+              $('#round_trip span').text('USD $' + total_one_way_1);
+              $('#tot_one_way').text(min_pass_1);
+              $('#tot_round').text(total_one_way_1);
+          	}else if(vehicle_selected === "Passenger Van (10 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_2);
+              $('#round_trip span').text('USD $' + total_one_way_2);
+              $('#tot_one_way').text(min_pass_2);
+              $('#tot_round').text(total_one_way_2);
+          	}else if(vehicle_selected === "Sprinter Mercedes (16 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_3);
+              $('#round_trip span').text('USD $' + total_one_way_3);
+              $('#tot_one_way').text(min_pass_3);
+              $('#tot_round').text(total_one_way_3);
+          	}else{
+
+          	}
+
+          }else if ( ((drop_off_opt == "Cabo San Lucas Zone 3") && (pick_up_opt  == "Airport")) || ((pick_up_opt == "Cabo San Lucas Zone 3") && (drop_off_opt  == "Airport")) ){
+          	var min_pass_1 = 85;
+            var min_pass_2 = 95;
+            var min_pass_3 = 175;
+            var total_one_way_1 = 160;
+            var total_one_way_2 = 180;
+            var total_one_way_3 = 340;
+            var vehicle_selected = $('#vehicle').val();
+          	if (vehicle_selected === "Suburban (6 Passengers)") {
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_1);
+              $('#round_trip span').text('USD $' + total_one_way_1);
+              $('#tot_one_way').text(min_pass_1);
+              $('#tot_round').text(total_one_way_1);
+          	}else if(vehicle_selected === "Passenger Van (10 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_2);
+              $('#round_trip span').text('USD $' + total_one_way_2);
+              $('#tot_one_way').text(min_pass_2);
+              $('#tot_round').text(total_one_way_2);
+          	}else if(vehicle_selected === "Sprinter Mercedes (16 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_3);
+              $('#round_trip span').text('USD $' + total_one_way_3);
+              $('#tot_one_way').text(min_pass_3);
+              $('#tot_round').text(total_one_way_3);
+          	}else{
+
+          	}
+
+          }else  if ( ((drop_off_opt == "Pacific Side Zone 4") && (pick_up_opt  == "Airport")) || ((pick_up_opt == "Pacific Side Zone 4") && (drop_off_opt  == "Airport")) ){
+          	var min_pass_1 = 90;
+            var min_pass_2 = 100;
+            var min_pass_3 = 180;
+            var total_one_way_1 = 170;
+            var total_one_way_2 = 190;
+            var total_one_way_3 = 350;
+            var vehicle_selected = $('#vehicle').val();
+          	if (vehicle_selected === "Suburban (6 Passengers)") {
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_1);
+              $('#round_trip span').text('USD $' + total_one_way_1);
+              $('#tot_one_way').text(min_pass_1);
+              $('#tot_round').text(total_one_way_1);
+          	}else if(vehicle_selected === "Passenger Van (10 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_2);
+              $('#round_trip span').text('USD $' + total_one_way_2);
+              $('#tot_one_way').text(min_pass_2);
+              $('#tot_round').text(total_one_way_2);
+          	}else if(vehicle_selected === "Sprinter Mercedes (16 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_3);
+              $('#round_trip span').text('USD $' + total_one_way_3);
+              $('#tot_one_way').text(min_pass_3);
+              $('#tot_round').text(total_one_way_3);
+          	}else{
+
+          	}
+          }else if ( ((drop_off_opt == "Los Barriles") && (pick_up_opt  == "Airport")) || ((pick_up_opt == "Los Barriles") && (drop_off_opt  == "Airport")) ){
+          	var min_pass_1 = 220;
+            var min_pass_2 = 235;
+            var min_pass_3 = 340;
+            var total_one_way_1 = 440;
+            var total_one_way_2 = 470;
+            var total_one_way_3 = 665;
+            var vehicle_selected = $('#vehicle').val();
+          	if (vehicle_selected === "Suburban (6 Passengers)") {
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_1);
+              $('#round_trip span').text('USD $' + total_one_way_1);
+              $('#tot_one_way').text(min_pass_1);
+              $('#tot_round').text(total_one_way_1);
+          	}else if(vehicle_selected === "Passenger Van (10 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_2);
+              $('#round_trip span').text('USD $' + total_one_way_2);
+              $('#tot_one_way').text(min_pass_2);
+              $('#tot_round').text(total_one_way_2);
+          	}else if(vehicle_selected === "Sprinter Mercedes (16 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_3);
+              $('#round_trip span').text('USD $' + total_one_way_3);
+              $('#tot_one_way').text(min_pass_3);
+              $('#tot_round').text(total_one_way_3);
+          	}else{
+
+          	}
+          }else if ( ((drop_off_opt == "Todos Santos") && (pick_up_opt  == "Airport")) || ((pick_up_opt == "Todos Santos") && (drop_off_opt  == "Airport")) ){
+          	var min_pass_1 = 240;
+            var min_pass_2 = 260;
+            var min_pass_3 = 360;
+            var total_one_way_1 = 480;
+            var total_one_way_2 = 500;
+            var total_one_way_3 = 700;
+            var vehicle_selected = $('#vehicle').val();
+          	if (vehicle_selected === "Suburban (6 Passengers)") {
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_1);
+              $('#round_trip span').text('USD $' + total_one_way_1);
+              $('#tot_one_way').text(min_pass_1);
+              $('#tot_round').text(total_one_way_1);
+          	}else if(vehicle_selected === "Passenger Van (10 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_2);
+              $('#round_trip span').text('USD $' + total_one_way_2);
+              $('#tot_one_way').text(min_pass_2);
+              $('#tot_round').text(total_one_way_2);
+          	}else if(vehicle_selected === "Sprinter Mercedes (16 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_3);
+              $('#round_trip span').text('USD $' + total_one_way_3);
+              $('#tot_one_way').text(min_pass_3);
+              $('#tot_round').text(total_one_way_3);
+          	}else{
+
+          	}
+          }else if ( ((drop_off_opt == "La Paz") && (pick_up_opt  == "Airport")) || ((pick_up_opt == "La Paz") && (drop_off_opt  == "Airport")) ){
+          	var min_pass_1 = 325;
+            var min_pass_2 = 345;
+            var min_pass_3 = 450;
+            var total_one_way_1 = 650;
+            var total_one_way_2 = 690;
+            var total_one_way_3 = 885;
+            var vehicle_selected = $('#vehicle').val();
+          	if (vehicle_selected === "Suburban (6 Passengers)") {
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_1);
+              $('#round_trip span').text('USD $' + total_one_way_1);
+              $('#tot_one_way').text(min_pass_1);
+              $('#tot_round').text(total_one_way_1);
+          	}else if(vehicle_selected === "Passenger Van (10 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_2);
+              $('#round_trip span').text('USD $' + total_one_way_2);
+              $('#tot_one_way').text(min_pass_2);
+              $('#tot_round').text(total_one_way_2);
+          	}else if(vehicle_selected === "Sprinter Mercedes (16 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_3);
+              $('#round_trip span').text('USD $' + total_one_way_3);
+              $('#tot_one_way').text(min_pass_3);
+              $('#tot_round').text(total_one_way_3);
+          	}else{
+
+          	}
+          }else if ( ((drop_off_opt == "Encanto La Laguna") && (pick_up_opt  == "Airport")) || ((pick_up_opt == "Encanto La Laguna") && (drop_off_opt  == "Airport")) ){
+          	var min_pass_1 = 90;
+            var min_pass_2 = 100;
+            var min_pass_3 = 180;
+            var total_one_way_1 = 170;
+            var total_one_way_2 = 190;
+            var total_one_way_3 = 350;
+            var vehicle_selected = $('#vehicle').val();
+          	if (vehicle_selected === "Suburban (6 Passengers)") {
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_1);
+              $('#round_trip span').text('USD $' + total_one_way_1);
+              $('#tot_one_way').text(min_pass_1);
+              $('#tot_round').text(total_one_way_1);
+          	}else if(vehicle_selected === "Passenger Van (10 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_2);
+              $('#round_trip span').text('USD $' + total_one_way_2);
+              $('#tot_one_way').text(min_pass_2);
+              $('#tot_round').text(total_one_way_2);
+          	}else if(vehicle_selected === "Sprinter Mercedes (16 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_3);
+              $('#round_trip span').text('USD $' + total_one_way_3);
+              $('#tot_one_way').text(min_pass_3);
+              $('#tot_round').text(total_one_way_3);
+          	}else{
+
+          	}
+          }else if ( ((drop_off_opt == "Diamante Zone 5") && (pick_up_opt  == "Airport")) || ((pick_up_opt == "Diamante Zone 5") && (drop_off_opt  == "Airport")) ){
+          	var min_pass_1 = 110;
+            var min_pass_2 = 120;
+            var min_pass_3 = 190;
+            var total_one_way_1 = 210;
+            var total_one_way_2 = 230;
+            var total_one_way_3 = 370;
+            var vehicle_selected = $('#vehicle').val();
+            alert(vehicle_selected);
+          	if (vehicle_selected === "Suburban (6 Passengers)") {
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_1);
+              $('#round_trip span').text('USD $' + total_one_way_1);
+              $('#tot_one_way').text(min_pass_1);
+              $('#tot_round').text(total_one_way_1);
+          	}else if(vehicle_selected === "Passenger Van (10 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_2);
+              $('#round_trip span').text('USD $' + total_one_way_2);
+              $('#tot_one_way').text(min_pass_2);
+              $('#tot_round').text(total_one_way_2);
+          	}else if(vehicle_selected === "Sprinter Mercedes (16 Passengers)"){
+          		$('#fare_matrix_div').show();
+              $('#one_way span').text('USD $' + min_pass_3);
+              $('#round_trip span').text('USD $' + total_one_way_3);
+              $('#tot_one_way').text(min_pass_3);
+              $('#tot_round').text(total_one_way_3);
+          	}else{
+
+          	}
+          }else{
+
+          }
+          
+        });
+        
+        $('#book_now').click(function() {
+          var selector
+        	if ( !$('#transfer_field').val() || !$('#area_group_a').val() || !$('#area_group_b').val() || !$('#vehicle').val()){
+        		alert("Some of the required fields (*) are left blank/empty. Please fill this field to proceed with the booking.");
+        	}else{
+	          var transfer_field = $('#transfer_field').val();
+	          $('#main_booking_div_1').hide();
+	          $('#main_booking_div_2').hide();
+	          $('#main_booking_div_3').hide();
+	          $('#main_booking_div_det').show();
+	          
+	          var pul = $('#area_group_a option:selected').text();
+	          var dol = $('#area_group_b option:selected').text();
+	          var vt = $('#vehicle option:selected').text();
+	          var tf = $('#transfer_field option:selected').text();
+	          var trip1_text = 'Trip #1: '+pul+'-'+dol;
+              var trip2_text = 'Trip #2: '+dol+'-'+pul;
+             
+	          $('#bd_transfer_type span').text(tf);
+	          $('#bd_pick_up_location span').text(pul);
+	          $('#bd_drop_off_location span').text(dol);
+	          $('#bd_vehicle_type span').text(vt);
+	          
+	          $('#sentence_2_1').text(tf);
+	          $('#sentence_2_2').text(pul);
+	          $('#sentence_2_3').text(dol);
+	          $('#sentence_2_4').text(vt);
+
+						$('#sentence_4_1').text(tf);
+	          $('#sentence_4_2').text(pul);
+	          $('#sentence_4_3').text(dol);
+	          $('#sentence_4_4').text(vt);	          
+	          
+              $('#trip1 span').text(trip1_text);
+              $('#trip2 span').text(trip2_text);
+              
+              
+              var tot_amt_in = $('#tot_one_way').text();
+              var deduct = parseFloat(tot_amt_in)
+              var grand_tot = deduct * 0.1
+              var tot2 = deduct - grand_tot;
+              var grand_tot2 = Math.ceil(tot2);
+              $('#total_amount input').val(grand_tot2.toFixed(2));
+              $('#total_amount input').prop( "readonly", true );
+              $('#total_amount_paypal input').val(deduct.toFixed(2));
+              $('#total_amount_paypal input').prop( "readonly", true );
+              
+              $('#paypal_pay').hide();
+          }
+        });
+        
+        $('#back_button').click(function() {
+          var transfer_field = $('#transfer_field').val();
+          $('#main_booking_div_1').show();
+          $('#main_booking_div_2').show();
+          $('#main_booking_div_3').show();
+          $('#main_booking_div_det').hide();
+          $('#hid_div').hide();
+        });
+        
+        $('#trip2_div').hide();
+        $('#trip2_div_2').hide();
+        $('#trip2_div_3').hide();
+        $('#trip2_div_1').hide();
+        
+        
+        $("#trip_type input:radio").change(function () {
+    		if ($(this).val() === "One Way") {
+    		    var tot_amt1 = $('#tot_one_way').text();
+    		    var deduct1 = parseFloat(tot_amt1).toFixed(2)
+                var grand_tot1 = deduct1 * 0.1
+                var tot12 = deduct1 - grand_tot1
+                var grand_tot12 = Math.ceil(tot12)
+                $('#total_amount input').val(grand_tot12.toFixed(2));
+    		    $('#trip2_div').hide();
+    		    $('#trip2_div_2').hide();
+    		    $('#trip2_div_3').hide();
+    		    $('#trip2_div_1').hide();
+    		    $("input[name=amount]").val(deduct1);
+    		    $('#total_amount_paypal input').val(deduct1);
+    		} else {
+                var tot_amt2 = $('#tot_round').text();
+                var deduct2 = parseFloat(tot_amt2).toFixed(2)
+                var grand_tot22 = deduct2 * 0.1
+                var tot23 = deduct2 - grand_tot22
+                var grand_tot23 = Math.ceil(tot23)
+    		    $('#trip2_div').show();
+    		    $('#trip2_div_2').show();
+    		    $('#trip2_div_3').show();
+    		    $('#trip2_div_1').show();
+    		    $('#total_amount input').val(grand_tot23.toFixed(2));
+    		    $('#total_amount_paypal input').val(deduct2);
+    		    $("input[name=amount]").val(deduct2);
+    		}
+    		
+    		    $('#sentence_2_6').text($(this).val());
+    		    $('#sentence_4_6').text($(this).val());
+    	});
+        
+        $('#total_amount').show();
+        $('#total_amount_paypal').hide();
+		$('#cash_button').hide();
+		$('#paypal_button').hide();
+		$('#submit_book_now').show();
+		
+       $("#mode_of_payment input:radio").change(function () {
+			if ($(this).val() === "Cash Payment") {
+				$('#total_amount').show();
+				$('#total_amount_paypal').hide();
+				$('#cash_button').hide();
+				$('#submit_book_now').show();
+				$('#paypal_button').hide();
+				
+			} else {
+				$('#total_amount').hide();
+				$('#total_amount_paypal').show();
+				$('#cash_button').hide();
+				$('#paypal_button').show();
+				$('#submit_book_now').hide();
+			}
+		    $('#sentence_2_5').text($('#num_traveller input').val());
+    		$('#sentence_2_7').text($('#trip1_div_2 input').val());
+    		$('#sentence_2_8').text($('#trip1_div_3 input').val());
+    		$('#sentence_2_9').text($('#airline_trip1').val());
+    		$('#sentence_2_10').text($('#flight_number_trip1').val());
+    		$('#sentence_2_11').text($('#full_name_div input').val());
+    		$('#sentence_2_12').text($('#email_div input').val());
+    		$('#sentence_2_13').text($('#contact_div input').val());
+    		$('#sentence_2_14').text('$'+$('#total_amount input').val());
+
+    		$('#sentence_4_5').text($('#num_traveller input').val());
+    		$('#sentence_4_7').text($('#trip1_div_2 input').val());
+    		$('#sentence_4_8').text($('#trip1_div_3 input').val());
+    		$('#sentence_4_9').text($('#airline_trip1').val());
+    		$('#sentence_4_10').text($('#flight_number_trip1').val());
+    		$('#sentence_4_11').text($('#full_name_div input').val());
+    		$('#sentence_4_12').text($('#email_div input').val());
+    		$('#sentence_4_13').text($('#contact_div input').val());
+    		$('#sentence_4_14').text('$'+$("input[name=amount]").val());
+		});
+		
+// 		$( "#booknow_button" ).click(function() {
+//           $(this).closest("form").submit();
+//         });
+		
+    });
+</script>

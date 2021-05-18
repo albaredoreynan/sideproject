@@ -6,9 +6,13 @@
 					<table class="table" width="100%">
 					  <thead>		
 						<tr>
-							<td>Client Code:</td>
-							<td colspan='3'>
-								<%= select_tag :client_code, options_for_select(@clients), { "data-placeholder" => "", :multiple => true, id: 'chosen-select_cl', :include_blank => true, :style => "width: 100%;"} %>
+							<td width="20%">Client Code:</td>
+							<td>
+								<%= select_tag :client_code, options_for_select(@clients), { "data-placeholder" => "", :multiple => false, id: 'chosen-select_cl', :include_blank => true, :style => "width: 50%;"} %>
+							</td>
+							<td width="20%">File Reference No:</td>
+							<td>
+								<%= select_tag :file_ref, options_for_select(@file_references), { "data-placeholder" => "", :multiple => false, id: 'chosen-select_file_ref', :include_blank => true, :style => "width: 50%;"} %>
 							</td>
 						</tr>
 						<!-- <tr>	
@@ -55,5 +59,27 @@
 	$("#chosen-select_cl").chosen();
   $('#datepicker_from').datepicker({format: 'yyyy-mm-dd'});
   $('#datepicker_to').datepicker({format: 'yyyy-mm-dd'});
+
+  $(document).ready(function() {
+    $('#chosen-select_cl').change(function(){
+      $.ajax({
+        url: "<%= select_file_matters_path %>",
+        data: {
+          client_code : $('#chosen-select_cl').val()
+        },
+        dataType: "script"
+      });
+    });
+
+		// $('#case_entry_file_matter_case').change(function(){
+  //     $.ajax({
+  //       url: "<%= update_songs2_path %>",
+  //       data: {
+  //         case_entry_file_matter_case : $('#case_entry_file_matter_case').val()
+  //       },
+  //       dataType: "script"
+  //     });
+  //   });	    
+	});
 </script>
   

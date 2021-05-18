@@ -172,4 +172,9 @@ class PagesController < ApplicationController
     @my_lawyers =  Lawyer.find(:all, :conditions => ["id IN (?)", @lawyers] )
     @my_lawyers_id = current_user.lawyer_id
   end
+
+  def select_file_matters
+     @datas = CaseEntry.select(:file_matter_id).where(client_code: params[:client_code]).pluck(:file_matter_id)
+     @file_references = @datas.uniq
+  end
 end
