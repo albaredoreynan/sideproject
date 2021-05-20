@@ -1,8 +1,16 @@
 <% @arr = Array.new %>
 <% @arr2 = Array.new %>
 <% @lawyers = Array.new %>
-<% @beginning_date = params[:date_from] %>
-<% @ending_date = params[:date_to] %>
+<%  if params[:date_from].nil? || params[:date_from].empty? 
+      @beginning_date = Date.today.at_beginning_of_month
+      @ending_date = Date.today
+    else 
+      @beginning_date = params[:date_from]
+      @ending_date = params[:date_to]
+    end
+%>
+
+
 <% file_matter = FileMatter.where(file_code: params[:file_ref] )%>
 <% al = AssignedLawyer.where(file_matter_id: file_matter.last.id) %>
 <% al.each do |lawyer| %>

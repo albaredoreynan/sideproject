@@ -1,0 +1,83 @@
+<% @arr = Array.new %>
+<% @arr2 = Array.new %>
+<% @lawyers = Array.new %>
+<%  if params[:date_from].nil? || params[:date_from].empty? 
+      @beginning_date = Date.today.at_beginning_of_month
+      @ending_date = Date.today
+    else 
+      @beginning_date = params[:date_from]
+      @ending_date = params[:date_to]
+    end
+%>
+<% file_matter = FileMatter.where(file_code: params[:file_ref] )%>
+<% al = AssignedLawyer.where(file_matter_id: file_matter.last.id) %>
+<% al.each do |lawyer| %>
+   <% x = Lawyer.find(lawyer.lawyer_id) %> 
+   <%# @lawyers << x.full_name %>   
+   <% @arr2 << [x.full_name, calculate_time_per_filematter(lawyer.lawyer_id, @beginning_date, @ending_date, params[:file_ref]).to_f ] %>
+<% end%>
+<% @case_entries.each do |ca| %>
+
+  <% @arr << ca.client_code %>
+  <%# @arr << ca.lawyer_id %>
+  
+  <%# @arr2 << calculate_time(lawyer.id, @beginning_date, @ending_date) %>
+<% end %>
+<% @fileref = params[:file_ref]%>
+<% @client = @case_entries.first %>
+<% @client_name = Client.find(@client.client_id) %>
+<script>
+$(function () {
+    $('#container').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Case Entries For Client <%= @client_name.name %> (<%= @client_name.cl_code_txt %>) '
+        },
+        subtitle: {
+            text: 'Period Covers: <%=raw(@beginning_date)%> - <%=raw(@ending_date)%>'
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                rotation: -45,
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'List Of Lawyers Time Accumulation for File Reference No: <%= @fileref %>'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: 'Lawyers Time Recorded: <b>{point.y:.1f} hours</b>'
+        },
+        series: [{
+            name: 'Lawyers',
+            data: <%= raw(@arr2) %>,
+            dataLabels: {
+                enabled: true,
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                x: 4,
+                y: 10,
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif',
+                    textShadow: '0 0 3px black'
+                }
+            }
+        }]
+    });
+});
+</script>
+<div id="container" style="width: 100%; height: 600px; margin: 0 auto"></div>
