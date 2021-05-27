@@ -69,6 +69,7 @@
               <!-- <th width="17%"><center>Client Code</center></th> -->
               <th width="21%"><center><%= sortable "case_title", "Case Title"%></center></th>
               <th width="24%"><center>Client</center></th>
+              <th width="7%"><center>Initials</center></th>
               <th width="7%"><center>Start Time</center></th>
               <th width="7%"><center>End Time</center></th>
               <th width="10%"><center>Action</center></th>
@@ -101,6 +102,7 @@
                 <td><% @client.each do |x| %>
                       <%= x.name %>
                     <% end %></td>
+                <td><%= case_entry.lawyer.initials %></td>    
                 <td><center><%= case_entry.time_spent_from %></center></td>
                 <td><center><%= case_entry.time_spent_to %></center></td>
                 

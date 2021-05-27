@@ -238,5 +238,43 @@ module ApplicationHelper
 		@today = Date.today
 		@notification = Notification.where({user_id: user_id, start_date: @today, notified: nil})
 	end
-	
+
+	def total_number_of_case_entries(lawyer_id, beginning_date, ending_date, file_ref)
+		@case = CaseEntry.where("lawyer_id =? AND entry_date >= ? AND entry_date <= ? AND file_matter_id =? ", lawyer_id, beginning_date, ending_date, file_ref)
+  	return @case.count
+	end
+
+	def count_case_entries(file_ref_no, beg_date, end_date)
+		@case_entries = CaseEntry.where(file_matter_id: file_ref_no).where(entry_date: beg_date...end_date)
+		counter = @case_entries.count
+		return counter
+	end
+
+	def extract_year(year, file_matter_id, lawyer_id)
+		@case = CaseEntry.where('EXTRACT(YEAR from entry_date) = ? AND file_matter_id = ? AND lawyer_id = ?' , year, file_matter_id, lawyer_id)
+		if @case.nil? || @case.empty?
+			return 0
+		else
+			return @case.count
+		end
+	end
+
+	def count_per_year(year, file_matter_id)
+		@case = CaseEntry.where('EXTRACT(YEAR from entry_date) = ? AND file_matter_id = ? ' , year, file_matter_id)
+		if @case.nil? || @case.empty?
+			return 0
+		else
+			return @case.count
+		end
+	end
+
+	def load_year(file_ref_no, beg_date, end_date)
+		years = CaseEntry.select(:entry_date).where(entry_date: beg_date...end_date).where(file_matter_id: file_ref_no).pluck(:entry_date).map{ |dt| dt.year }.uniq
+		return years
+	end
+  
+  def load_year_per_lawyer(file_ref_no, beg_date, end_date, lawyer_id)
+  	years = CaseEntry.select(:entry_date).where(entry_date: beg_date...end_date).where(file_matter_id: file_ref_no).where(lawyer_id: lawyer_id).pluck(:entry_date).map{ |dt| dt.year }.uniq
+		return years
+  end
 end

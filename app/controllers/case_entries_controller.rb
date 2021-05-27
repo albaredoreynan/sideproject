@@ -458,11 +458,10 @@ class CaseEntriesController < ApplicationController
       if params[:date_from].present? && params[:date_to].present? || params[:client_code]
          args = {}
          args.merge!(client_code: params[:client_code]) unless params[:client_code].blank?
-         args.merge!(file_matter_id: params[:file_ref]) unless params[:file_ref].blank?
+         # args.merge!(file_matter_id: params[:file_ref]) unless params[:file_ref].blank?
          args.merge!(entry_date: params[:date_from]..params[:date_to]) unless params[:date_from].blank?
          # args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
-         @case_entries = CaseEntry.where(args).paginate(:page => params[:page], :per_page => 20)
-       
+         @case_entries = CaseEntry.where(args).paginate(:page => params[:page], :per_page => 20).pluck(:file_matter_id)
       # else
       #   @case_entries = CaseEntry.paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       end

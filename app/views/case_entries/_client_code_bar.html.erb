@@ -1,5 +1,9 @@
-<% @arr = Array.new %>
-<% @arr2 = Array.new %>
+<% @arr = Array.new 
+   @arr2 = Array.new 
+   @total_count_case_entries = Array.new
+%>
+
+
 <% @lawyers = Array.new %>
 <%  if params[:date_from].nil? || params[:date_from].empty? 
       @beginning_date = Date.today.at_beginning_of_month
@@ -10,24 +14,24 @@
     end
 %>
 
+<% 
+  ca = @case_entries.uniq 
+  ca.each do |frn| 
+    @total_count_case_entries << count_case_entries(frn, @beginning_date, @ending_date)    
+  end
+%>
 
-<% file_matter = FileMatter.where(file_code: params[:file_ref] )%>
-<% al = AssignedLawyer.where(file_matter_id: file_matter.last.id) %>
-<% al.each do |lawyer| %>
-   <% x = Lawyer.find(lawyer.lawyer_id) %> 
-   <% @lawyers << x.full_name %>   
-   <% @arr2 << calculate_time_per_filematter(lawyer.lawyer_id, @beginning_date, @ending_date, params[:file_ref]) %>
-<% end%>
 
-<% @case_entries.each do |ca| %>
-
-  <% @arr << ca.client_code %>
-  <%# @arr << ca.lawyer_id %>
-  
-  <%# @arr2 << calculate_time(lawyer.id, @beginning_date, @ending_date) %>
-<% end %>
-<% @client = @case_entries.first %>
-<% @client_name = Client.find(@client.client_id) %>
+<%  
+    # file_matter = FileMatter.where(file_code: params[:file_ref] )
+    # al = AssignedLawyer.where(file_matter_id: file_matter.last.id)
+    # al.each do |lawyer|
+    #   x = Lawyer.find(lawyer.lawyer_id) 
+    #   @lawyers << x.full_name
+    #   @arr2 << calculate_time_per_filematter(lawyer.lawyer_id, @beginning_date, @ending_date, params[:file_ref])
+    # end
+%>
+<% @client_name = Client.find_by_cl_code_txt(params[:client_code]) %>
 <script>
   $(function () {
       $('#container').highcharts({
@@ -42,7 +46,7 @@
           },
           xAxis: {
               // categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
-              categories: <%= raw(@lawyers) %>,
+              categories: <%= raw(ca) %>,
               title: {
                   text: null
               }
@@ -50,7 +54,7 @@
           yAxis: {
               min: 0,
               title: {
-                  text: 'List Of Lawyers Time Accumulation',
+                  text: 'List Of Lawyers Case Entries Accumulation',
                   align: 'high'
               },
               labels: {
@@ -58,7 +62,7 @@
               }
           },
           tooltip: {
-              valueSuffix: ' hours'
+              valueSuffix: ' Case Entries'
           },
           plotOptions: {
               bar: {
@@ -81,10 +85,11 @@
           credits: {
               enabled: false
           },
-          series: [{
-              name: 'Accumulated Hours',
+          series: [
+          {
+              name: 'Accumulated Entries',
               //data: [107, 31, 835, 203, 2]
-              data: <%= raw(@arr2) %>
+              data: <%= raw(@total_count_case_entries) %>
           }
           // }, 
 

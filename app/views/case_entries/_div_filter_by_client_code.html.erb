@@ -6,32 +6,26 @@
 					<table class="table" width="100%">
 					  <thead>		
 						<tr>
-							<td width="20%">Client Code:</td>
-							<td>
-								<%= select_tag :client_code, options_for_select(@clients), { "data-placeholder" => "", :multiple => false, id: 'chosen-select_cl', :include_blank => true, :style => "width: 50%;"} %>
+							<td width="25%"><center>Client Code:</center></td>
+							<td width="20%">
+								<%= select_tag :client_code, options_for_select(@clients), { "data-placeholder" => "", :multiple => false, id: 'chosen-select_cl', :include_blank => true} %>
 							</td>
-							<td width="20%">File Reference No:</td>
+							<!-- <td width="20%">File Reference No:</td>
 							<td>
-								<%= select_tag :file_ref, options_for_select(@file_references), { "data-placeholder" => "", :multiple => false, id: 'chosen-select_file_ref', :include_blank => true, :style => "width: 50%;"} %>
+								<%#= select_tag :file_ref, options_for_select(@file_references), { "data-placeholder" => "", :multiple => false, id: 'chosen-select_file_ref', :include_blank => true, :style => "width: 50%;"} %>
 							</td>
 						</tr>
-						<!-- <tr>	
-							<td>Assigned Lawyer</td>
-							<td colspan='3'>
-								<%#= select_tag :lawyer_id, options_for_select(@lawyers), { "data-placeholder" => "", :multiple => true, id: 'chosen-select_law', :include_blank => true, :style => "width: 100%;"} %>
-							</td>
-						</tr> -->
-						.
-						<tr>
-							<td width="10%">Date From:</td>
-							<td width="10%">
+						<tr> -->
+							<td width="20%"><center>Date From:</center></td>
+							<td width="20%">
 								<%= text_field_tag :date_from, nil,  :id => "datepicker_from"%>
 							</td>
-							<td width="10%">Date To:</td>	
-							<td width="70%">
+							<td width="20%"><center>Date To:</center></td>	
+							<td width="20%">
 								<%= text_field_tag :date_to, nil,  :id => "datepicker_to"%>
 								<%= hidden_field_tag :pfr, 2%>
 							</td>
+							<td width="10%"><div class="pull-right"><%= submit_tag "Search" %></div></td>
 						</tr>
 
 						<!-- <tr>
@@ -45,9 +39,9 @@
 								
 							</td>
 						</tr> -->
-						<tr><td colspan="4"><div class="pull-right">
-							    <%= submit_tag "Search" %>
-						</div></td></tr>
+						<!-- <tr><td colspan="4"><div class="pull-right">
+							    <%#= submit_tag "Search" %>
+						</div></td></tr> -->
 					  </thead>		
 					</table>
 				<% end %>
