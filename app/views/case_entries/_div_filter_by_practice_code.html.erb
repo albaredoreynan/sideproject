@@ -1,0 +1,79 @@
+<div class="panel panel-primary">
+  	<div class="panel-primary panel-heading">Search</div>
+	  <div class="row">
+	    <div class="span11">
+		    <%= form_for filter_by_practice_code_path, :method => 'get' do %>
+					<table class="table" width="100%">
+					  <thead>		
+						<tr>
+							<td width="25%"><center>Practice Area Code:</center></td>
+							<td width="20%">
+								<%= select_tag :practice_code, options_for_select(@practices), { "data-placeholder" => "", :multiple => false, id: 'chosen-select_cl', :include_blank => true} %>
+							</td>
+							<!-- <td width="20%">File Reference No:</td>
+							<td>
+								<%#= select_tag :file_ref, options_for_select(@file_references), { "data-placeholder" => "", :multiple => false, id: 'chosen-select_file_ref', :include_blank => true, :style => "width: 50%;"} %>
+							</td>
+						</tr>
+						<tr> -->
+							<td width="20%"><center>Date From:</center></td>
+							<td width="20%">
+								<%= text_field_tag :date_from, nil,  :id => "datepicker_from"%>
+							</td>
+							<td width="20%"><center>Date To:</center></td>	
+							<td width="20%">
+								<%= text_field_tag :date_to, nil,  :id => "datepicker_to"%>
+								<%= hidden_field_tag :pfr, 3%>
+							</td>
+							<td width="10%"><div class="pull-right"><%= submit_tag "Search" %></div></td>
+						</tr>
+
+						<!-- <tr>
+							<td>Date From: </td>	
+							<td>
+								<%#= text_field_tag :beginning_date, nil,  :id => "datepicker_beg"%>
+							</td>
+							<td>Date To: </td>	
+							<td>
+								<%#= text_field_tag :ending_date, nil,  :id => "datepicker_end"%>
+								
+							</td>
+						</tr> -->
+						<!-- <tr><td colspan="4"><div class="pull-right">
+							    <%#= submit_tag "Search" %>
+						</div></td></tr> -->
+					  </thead>		
+					</table>
+				<% end %>
+    	</div>
+  	</div>
+  </div>
+<script>
+	$("#chosen-select_law").chosen();
+	$("#chosen-select_cl").chosen();
+  $('#datepicker_from').datepicker({format: 'yyyy-mm-dd'});
+  $('#datepicker_to').datepicker({format: 'yyyy-mm-dd'});
+
+  $(document).ready(function() {
+    $('#chosen-select_cl').change(function(){
+      $.ajax({
+        url: "<%= select_file_matters_path %>",
+        data: {
+          client_code : $('#chosen-select_cl').val()
+        },
+        dataType: "script"
+      });
+    });
+
+		// $('#case_entry_file_matter_case').change(function(){
+  //     $.ajax({
+  //       url: "<%= update_songs2_path %>",
+  //       data: {
+  //         case_entry_file_matter_case : $('#case_entry_file_matter_case').val()
+  //       },
+  //       dataType: "script"
+  //     });
+  //   });	    
+	});
+</script>
+  

@@ -13,18 +13,18 @@
       <div class="span11">
         <div class="row">
           <div class="pull-right" style="padding-bottom: 20px;">
-            <%= link_to "<i class='icon-th'>&nbsp;Bar</i>".html_safe, filter_by_client_code_path(params.merge(pfr:"2", type:"bar")), class: "btn btn-xs btn-danger", data: {rel: "tooltip", title: "Bar", toggle: "modal"} %>
-            <%= link_to "<i class='icon-th'>&nbsp;Pie</i>".html_safe, filter_by_client_code_path(params.merge(pfr:"2", type:"pie")), class: "btn btn-xs btn-danger", data: {rel: "tooltip", title: "Pie", toggle: "modal"} %>
-            <%= link_to "<i class='icon-th'>&nbsp;Column</i>".html_safe, filter_by_client_code_path(params.merge(pfr:"2", type:"line")), class: "btn btn-xs btn-danger", data: {rel: "tooltip", title: "Column", toggle: "modal"} %>
+            <%= link_to "<i class='icon-th'>&nbsp;Show Graph (Bar)</i>".html_safe, filter_by_client_code_path(params.merge(pfr:"2", type:"bar")), class: "btn btn-xs btn-danger", data: {rel: "tooltip", title: "Bar", toggle: "modal"} %>
+            <%#= link_to "<i class='icon-th'>&nbsp;Pie</i>".html_safe, filter_by_client_code_path(params.merge(pfr:"2", type:"pie")), class: "btn btn-xs btn-danger", data: {rel: "tooltip", title: "Pie", toggle: "modal"} %>
+            <%#= link_to "<i class='icon-th'>&nbsp;Column</i>".html_safe, filter_by_client_code_path(params.merge(pfr:"2", type:"line")), class: "btn btn-xs btn-danger", data: {rel: "tooltip", title: "Column", toggle: "modal"} %>
           </div>
           <div class="span11 well">
             <!-- <h2>PAGE UNDERCONSTRUCTION</h2> -->
             <% if params[:type] == 'bar' %>
               <%= render "client_code_bar" %>
-            <% elsif params[:type] == 'pie' %>
-              <%= render "client_code_pie" %>
-            <% elsif params[:type] == 'line' %>
-              <%= render "client_code_line" %>
+            <%# elsif params[:type] == 'pie' %>
+              <%#= render "client_code_pie" %>
+            <%# elsif params[:type] == 'line' %>
+              <%#= render "client_code_line" %>
             <% else %>  
               <%= render "client_code_table" %>
             <% end %>

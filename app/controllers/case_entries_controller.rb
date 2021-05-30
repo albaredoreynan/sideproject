@@ -495,7 +495,24 @@ class CaseEntriesController < ApplicationController
   end
 
   def filter_by_practice_code
-    
+    # @clients = Client.order('cl_code_txt ASC').map{|a|[a.cl_code_txt, a.cl_code_txt]}
+    @practices = PracticeTable.order('practice_name ASC').map{|a|[a.practice_name+'('+a.text_code+')', a.text_code]}
+    @lawyers = Lawyer.all.map{|a|[a.full_name, a.id]}
+    @file_references = {}
+    if current_user.role == 'Administrator' || current_user.role == 'Billing Clerk'
+      # # @case_entries = CaseEntry.find(:all, :order => "entry_date DESC")
+      if params[:date_from].present? && params[:date_to].present? || params[:client_code]
+         args = {}
+         args.merge!(practice_code: params[:practice_code]) unless params[:practice_code].blank?
+         # args.merge!(file_matter_id: params[:file_ref]) unless params[:file_ref].blank?
+         args.merge!(entry_date: params[:date_from]..params[:date_to]) unless params[:date_from].blank?
+         # args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
+         @case_entries = CaseEntry.where(args).paginate(:page => params[:page], :per_page => 20).pluck(:file_matter_id)
+      # else
+      #   @case_entries = CaseEntry.paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
+      end
+    else
+    end
   end
 
   def filter_by_period

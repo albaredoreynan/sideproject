@@ -34,7 +34,7 @@
         <% @ca = @case_entries.uniq %>
         <% @ca.each do |case_entry| %>
           <tr>
-            <td colspan=5 align="left"><strong>FILE REFERENCE NO:</strong>&nbsp;<%= case_entry %></td>
+            <td colspan=5 align="left"><strong>FILE REFERENCE NO:</strong>&nbsp;<%= case_entry %>&nbsp;<strong>PRACTICE AREA CODE:</strong>&nbsp;<%= params[:practice_code] %></td>
             <!-- <td><%#= load_year(case_entry, params[:date_from], params[:date_to]) %></td> -->
           </tr>
           <tr class="pretty">

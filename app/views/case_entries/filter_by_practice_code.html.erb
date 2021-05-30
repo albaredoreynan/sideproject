@@ -6,28 +6,27 @@
 <div class="panel">
   <div class="panel-heading"><h3>Case Entries</h3></div>
   <%= render "filter_nav" %>
-  <%#= render "div_filter_by_client_code" %>
+  <%= render "div_filter_by_practice_code" %>
   <div class="panel panel-primary">
     <div class="panel-primary panel-heading">Results</div>
     <div class="row">
       <div class="span11">
         <div class="row">
           <div class="pull-right" style="padding-bottom: 20px;">
-            <%= link_to "<i class='icon-th'>&nbsp;Bar</i>".html_safe, filter_by_client_code_path(params.merge(pfr:"2", type:"bar")), class: "btn btn-xs btn-danger", data: {rel: "tooltip", title: "Bar", toggle: "modal"} %>
-            <%= link_to "<i class='icon-th'>&nbsp;Pie</i>".html_safe, filter_by_client_code_path(params.merge(pfr:"2", type:"pie")), class: "btn btn-xs btn-danger", data: {rel: "tooltip", title: "Pie", toggle: "modal"} %>
-            <%= link_to "<i class='icon-th'>&nbsp;Column</i>".html_safe, filter_by_client_code_path(params.merge(pfr:"2", type:"line")), class: "btn btn-xs btn-danger", data: {rel: "tooltip", title: "Column", toggle: "modal"} %>
+            <%= link_to "<i class='icon-th'>&nbsp;Bar</i>".html_safe, filter_by_practice_code_path(params.merge(pfr:"3", type:"bar")), class: "btn btn-xs btn-danger", data: {rel: "tooltip", title: "Bar", toggle: "modal"} %>
+            <%#= link_to "<i class='icon-th'>&nbsp;Pie</i>".html_safe, filter_by_practice_code_path(params.merge(pfr:"2", type:"pie")), class: "btn btn-xs btn-danger", data: {rel: "tooltip", title: "Pie", toggle: "modal"} %>
+            <%#= link_to "<i class='icon-th'>&nbsp;Column</i>".html_safe, filter_by_practice_code_path(params.merge(pfr:"2", type:"line")), class: "btn btn-xs btn-danger", data: {rel: "tooltip", title: "Column", toggle: "modal"} %>
           </div>
           <div class="span11 well">
-            <h2>PAGE UNDERCONSTRUCTION</h2>
-            <%# if params[:type] == 'bar' %>
-              <%#= render "client_code_bar" %>
+            <% if params[:type] == 'bar' %>
+              <%= render "practice_code_bar" %>
             <%# elsif params[:type] == 'pie' %>
               <%#= render "client_code_pie" %>
             <%# elsif params[:type] == 'column' %>
               <%#= render "client_code_column" %>
-            <%# else %>  
-              <%#= render "client_code_table" %>
-            <%# end %>
+            <% else %>  
+              <%= render "practice_code_table" %>
+            <% end %>
           </div>
         </div>
       </div>
