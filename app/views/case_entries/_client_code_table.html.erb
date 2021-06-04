@@ -34,99 +34,66 @@
         <% @ca = @case_entries.uniq %>
         <% @ca.each do |case_entry| %>
           <tr>
-            <td colspan=5 align="left"><strong>FILE REFERENCE NO:</strong>&nbsp;<%= case_entry %></td>
-            <!-- <td><%#= load_year(case_entry, params[:date_from], params[:date_to]) %></td> -->
+            <td colspan="2" align="left"><strong>FILE REFERENCE NO:</strong>&nbsp;<%= case_entry %></td>
+            
+            <td colspan="3" align="left"><strong>Total Case Entries:</strong>&nbsp;<%= count_case_entries(case_entry, params[:date_from], params[:date_to]) %></td>
           </tr>
           <tr class="pretty">
             <td width="10%"><strong>CASE OPENED</strong></td>
             <td width="35%"><strong>CASE TITLE</strong></td>
+            <td width="12%"><strong>PRACTICE CODE</strong></td>
             <td width="35%"><strong>CLIENT</strong></td>
             <td width="8%"><strong>CLIENT CODE</strong></td>
-            <td width="12%"><strong>INITIAL</strong></td>
           </tr>
           <% @fileref_info =  FileMatter.where(file_code: case_entry) %>  
           <% @fileref_info.each do |fileref_info| %>
             <tr>
               <td><%= fileref_info.case_date %></td>
               <td><%= fileref_info.title %></td>
+              <td><%= fileref_info.practice_code %></td>
               <td><%= fileref_info.client.name %></td>
               <td><%= fileref_info.cl_code_txt %></td>
-              <td>
-                <% @al = AssignedLawyer.where(file_matter_id: fileref_info.id) %>
-                <% @al.each do |al| %>
-                  <p>
-                    <%= al.lawyer.initials %>
-                    <a href="#<%=al.id%>-<%=case_entry%>" role="button" class="btn btn-success btn-mini" data-toggle="modal">SHOW GRAPH</a>
-                  </p>
-                  <div id="<%=al.id%>-<%=case_entry%>" class="modal hide fade" style="width: 50%; height: 100%; left:40%; overflow-y: hidden" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                      <h5 id="myModalLabel">FILE REFERENCE NO: <%= case_entry %> - (<%= al.lawyer.initials %>)</h5>
-                    </div>
-                    <div class="modal-body">
-                      <% @years = Array.new %>
-                      <% @data = Array.new %>
-                      <% @data_per_year = Array.new %>
-                      <% @years = load_year_per_lawyer(case_entry, params[:date_from], params[:date_to], al.lawyer.id) %>
-                      <%
-                         @years.each do |y|
-                            @data_per_year << extract_year(y, case_entry, al.lawyer.id)
-                            @data << [y.to_s, extract_year(y, case_entry, al.lawyer.id)]
-                         end 
-                      %>
-                      <script>
-                        $(function () {
-                            $('#container-<%=al.id%>-<%=case_entry%>').highcharts({
-                                chart: {
-                                    plotBackgroundColor: null,
-                                    plotBorderWidth: 1,//null,
-                                    plotShadow: false
-                                },
-                                title: {
-                                    text: 'Case Entries for Client: <%= fileref_info.client.name %>(<%= fileref_info.cl_code_txt %>)'
-                                },
-                                subtitle:{
-                                    text: 'Period Covers: <%=raw(params[:date_from])%> - <%=raw(params[:date_to])%>'
-                                },
-                                tooltip: {
-                                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                                },
-                                plotOptions: {
-                                    pie: {
-                                        allowPointSelect: true,
-                                        cursor: 'pointer',
-                                        dataLabels: {
-                                            enabled: true,
-                                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                                            style: {
-                                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                                            }
-                                        }
-                                    }
-                                },
-                                series: [{
-                                    type: 'pie',
-                                    name: 'Number of Case Entries',
-                                    data: <%= raw(@data) %>
-                                    // data:  
-                                    // [ 
-                                    //     ['Firefox',   45.0],
-                                    //     ['IE',       26.8],
-                                    //     ['Safari',    8.5],
-                                    //     ['Opera',     6.2],
-                                    //     ['Others',   0.7]
-                                    // ]
-                                }]
-                            });
-                        });
-                        </script>
-                      <div id="container-<%=al.id%>-<%=case_entry%>" style="width: auto; height: auto; margin: 0 auto"></div>
-                    </div>    
-                    <div class="modal-footer"></div> 
-                  </div>    
-                <% end%>
+            </tr>
+            <% @year_per_fr = load_year(case_entry, params[:date_from], params[:date_to]) %>  
+            <tr>
+              <td colspan="5">
+                <table class="table table-bordered" id="case_entries">
+                  <tr>
+                    <% @year_per_fr.each do |y| %>
+                      <td><strong>YEAR ( <%= y %> )</strong></td>
+                      <td><strong>TOTAL ENTRIES: <%= count_per_year(y, case_entry) %></strong></td>
+                    <% end %>
+                  </tr>
+                </table>
+                <table class="table table-bordered" id="case_entries">
+                  
+                    <% @al = AssignedLawyer.where(file_matter_id: fileref_info.id) %>
+                    <% @al.each do |al| %>
+                      <tr>
+                        <td><strong><%= al.lawyer.full_name %> (<%= al.lawyer.initials %>)</strong></td>
+                        <%  @years = load_year_per_lawyer(case_entry, params[:date_from], params[:date_to], al.lawyer.id) %>
+                        <%  @years.each do |y| %>
+                              <td><strong>YEAR ( <%= y %> )</strong></td>
+                              <td><strong>TOTAL ENTRIES: <%= extract_year(y, case_entry, al.lawyer.id) %></strong></td>
+                        <%  end %>
+                      </tr>
+                    <% end %>
+                  </tr>
+
+                </table>
               </td>
             </tr>
+
+            <%# @years = Array.new %>
+            <%# @data = Array.new %>
+            <%# @data_per_year = Array.new %>
+            <%# @years = load_year_per_lawyer(case_entry, params[:date_from], params[:date_to], al.lawyer.id) %>
+            <%#
+               @years.each do |y|
+                  @data_per_year << extract_year(y, case_entry, al.lawyer.id)
+                  @data << [y.to_s, extract_year(y, case_entry, al.lawyer.id)]
+               end 
+            %>
           <% end%>  
         <% end%>
       <% end%>

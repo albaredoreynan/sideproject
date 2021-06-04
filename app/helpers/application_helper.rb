@@ -269,12 +269,12 @@ module ApplicationHelper
 	end
 
 	def load_year(file_ref_no, beg_date, end_date)
-		years = CaseEntry.select(:entry_date).where(entry_date: beg_date...end_date).where(file_matter_id: file_ref_no).pluck(:entry_date).map{ |dt| dt.year }.uniq
+		years = CaseEntry.select(:entry_date).where(entry_date: beg_date...end_date).where(file_matter_id: file_ref_no).order('entry_date ASC').pluck(:entry_date).map{ |dt| dt.year }.uniq
 		return years
 	end
   
   def load_year_per_lawyer(file_ref_no, beg_date, end_date, lawyer_id)
-  	years = CaseEntry.select(:entry_date).where(entry_date: beg_date...end_date).where(file_matter_id: file_ref_no).where(lawyer_id: lawyer_id).pluck(:entry_date).map{ |dt| dt.year }.uniq
+  	years = CaseEntry.select(:entry_date).where(entry_date: beg_date...end_date).where(file_matter_id: file_ref_no).where(lawyer_id: lawyer_id).order('entry_date ASC').pluck(:entry_date).map{ |dt| dt.year }.uniq
 		return years
   end
 end

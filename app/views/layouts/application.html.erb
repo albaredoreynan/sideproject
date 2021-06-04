@@ -41,7 +41,7 @@
                   <%= link_to "Prints", printouts_path %>
                 </li>
                 <li>  
-                  <%= link_to "Practices", practice_tables_path %>
+                  <%= link_to "Practice Area", practice_tables_path %>
                 </li>
               <% elsif current_user.role == 'Encoder-Call' %>
                 <li>  
@@ -69,7 +69,7 @@
                   <%= link_to "Prints", printouts_path %>
                 </li>
                 <li>  
-                  <%= link_to "Practices", practice_tables_path %>
+                  <%= link_to "Practice Area", practice_tables_path %>
                 </li>
               <% elsif current_user.role == 'Front Desk' %>
                 <li>  
@@ -80,6 +80,10 @@
                 <li><%= link_to "File/Matters", file_matters_path %></li>
                 <li><%= link_to "Schedules", schedules_path %></li>
                 <li><%= link_to "Set Notification", notifications_path %></li>
+                <li><%= link_to "Clients", clients_path %></li>
+                <li><%= link_to "Practice Area", practice_tables_path %>
+                </li>
+
               <% end %>  
             </ul>
           

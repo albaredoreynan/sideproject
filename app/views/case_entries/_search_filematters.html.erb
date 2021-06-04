@@ -14,7 +14,7 @@
           <% @file_matter = CaseEntry.select('DISTINCT(file_matter_id), created_at').where("lawyer_id =? ", current_user.lawyer_id).order("file_matter_id DESC","created_at DESC") %>
           <%# @file_matter = AssignedLawyer.where("lawyer_id =? ", current_user.lawyer_id) %>
           <% @file_matter_id = @file_matter.pluck(:file_matter_id) %>
-          <% @file_matter_info = FileMatter.where(:file_code => @file_matter_id ) %>
+          <% @file_matter_info = FileMatter.where(:file_code => @file_matter_id ).order('file_code DESC') %>
           <% @file_matter_info.each do |fmi| %>
             <tr>
               <td><%= fmi.file_code %><%= hidden_field_tag :file_code, fmi.file_code, :id => "file_code" %></td>
