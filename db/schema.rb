@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20210301002738) do
+ActiveRecord::Schema.define(:version => 20210605102035) do
 
   create_table "assigned_lawyers", :force => true do |t|
     t.integer  "lawyer_id"
@@ -65,6 +65,13 @@ ActiveRecord::Schema.define(:version => 20210301002738) do
     t.string   "contact_person"
     t.string   "cl_code_txt"
     t.string   "cl_code_num"
+  end
+
+  create_table "doc_abbreviations", :force => true do |t|
+    t.string   "document_name"
+    t.string   "doc_abbreviation"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "file_matters", :force => true do |t|

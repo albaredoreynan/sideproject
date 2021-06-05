@@ -51,7 +51,7 @@ Case2::Application.routes.draw do
 
   resources :schedules
   resources :practice_tables 
-
+  resources :doc_abbreviations
   
   root :to => 'case_entries#new'
   

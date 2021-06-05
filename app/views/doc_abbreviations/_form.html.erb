@@ -1,0 +1,13 @@
+<%= simple_form_for @doc_abbreviation, :html => { :class => 'form-horizontal' } do |f| %>
+  	
+  	
+  	<%= f.input :document_name, :label => 'Document Name', :required => true %>
+		<%= f.input :doc_abbreviation, :label => ' Abbreviation', :required => true %>
+	  <br/>
+	  <div class="pull left">
+	    <%= f.button :submit, 'Create', :class => 'btn btn-primary' %>
+	    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+	                doc_abbreviations_path, :class => 'btn' %>
+	  </div>
+	
+<% end %>

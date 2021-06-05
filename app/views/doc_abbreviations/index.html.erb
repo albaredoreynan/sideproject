@@ -1,0 +1,136 @@
+<div class="panel">
+  <div class="panel-heading"><h3>Document Abbreviation</h3></div>
+    
+  
+  <div class="panel panel-primary">
+    <div class="panel-primary panel-heading">Document Abbreviation Lists</div>
+    <div class="row">
+      <div class="span11">
+        <% if current_user.role == 'Administrator' %> 
+          <div class="pull-right">
+            <%= link_to "Backup in EXCEL File <i class='icon-download-alt'></i>".html_safe, doc_abbreviations_path(params.merge(format: 'xls')), :class => "btn btn-success" %>
+          </div>
+          <%= link_to "Create Entry",
+              new_doc_abbreviation_path,
+              :class => 'btn btn-primary' %>
+          <br/>
+          <br/>
+        <% end %>
+        <div class="row">
+          <div class="span11">
+            <table class="table table-striped" id="doc_abbreviations">
+              <thead>
+                <tr>
+                  <th width="30%"><center><%= sortable "document_name", "Document" %></center></th>
+                  <th width="15%"><center>Abbreviation</center></th>
+                  <th width="10%"><center>Action</center></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @doc_abbreviations.each do |doc_abbreviation| %>
+                  <tr>
+                    <td><%= doc_abbreviation.document_name %></td>
+                    <td><%= doc_abbreviation.doc_abbreviation %></td>
+                    <% if current_user.role == 'Administrator' %>
+                      <td>
+                        <%= link_to 'Edit',
+                                    edit_doc_abbreviation_path(doc_abbreviation), :class => 'btn btn-mini' %>
+                        <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                                    doc_abbreviation_path(doc_abbreviation),
+                                    :method => :delete,
+                                    :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                                    :class => 'btn btn-mini btn-danger' %>
+                      </td>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+            <div class="pull-right">
+              <%= will_paginate @doc_abbreviations, :param_name => 'page', previous_label: "<i class='icon-chevron-left'></i>".html_safe, next_label: "<i class='icon-chevron-right'></i>".html_safe %>
+            </div>
+          </div>
+        </div>
+        <% if current_user.role == 'Administrator' %> 
+            <%= link_to "Create Entry",
+                        new_doc_abbreviation_path,
+                        :class => 'btn btn-primary' %>
+            <br>
+            <br>
+        <% end %>
+      </div>  
+    </div>
+  </div>
+  <br>
+  <div class="panel panel-primary">
+    <div class="panel-primary panel-heading">FNC</div>
+    <div class="row">
+      <div class="span11">
+        <table class="table table-striped" id="doc_abbreviations">
+          <thead>
+            <tr>
+              <th width="20%"></th>
+              <th width="45%"><center>FORMAT</center></th>
+              <th width="35%"><center>SAMPLE</center></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ref. No.</td>
+              <td>Year –Series -Practice Code –Client Code</td>
+              <td>2020-008-CORP-C-0001</td>
+            </tr>
+            <tr>
+              <td>File Name Internal</td>
+              <td>Abbreviation_YYYYMMDDv1_ Client Code_Initials(another subject if applicable)</td>
+              <td>PP_20210427v1_C-0001_GPQP MKAT CompanyX</td>
+            </tr>
+            <tr>
+              <td>File Name External</td>
+              <td>Abbreviation_YYYYMMDDvf_ClientCode PMFSL (another subject if applicable)</td>
+              <td>PP_20210427vf_C-0001_PMFSL CompanyX</td>
+            </tr>
+            <tr>
+              <td>Tracer:</td>
+              <td>Ref. No. + Agency + File Name</td>
+              <td>
+                2020-008-CORP-C-0001(Court/Agency)PP_YYYYMMDDv1_Client Code_Initials
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>
+                2020-008-CORP-C-0001(NLRC)PP_20210427v1_C-0001 MKAT
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>
+                2020-008-CORP-C-0001(SC)PP_20210428v2_C-0001 GPQP MKAT
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>  
+</div>
+<br>
+<br>
+<!-- 
+FNC Format / Samples
+Ref. No.  Year –Series -Practice Code –Client Code
+  2020-008-CORP-C-0001 
+  
+File Name Internal  Abbreviation_YYYYMMDDv1_ Client Code_Initials(another subject if applicable)
+  PP_20210427v1_C-0001_GPQP MKAT CompanyX
+  
+File Name External  Abbreviation_YYYYMMDDvf_ClientCode PMFSL (another subject if applicable)
+  PP_20210427vf_C-0001_PMFSL CompanyX
+  
+Tracer: Ref. No. + Agency + File Name
+  2020-008-CORP-C-0001(Court/Agency)PP_YYYYMMDDv1_Client Code_Initials
+  2020-008-CORP-C-0001(NLRC)PP_20210427v1_C-0001 MKAT
+  2020-008-CORP-C-0001(SC)PP_20210428v2_C-0001 GPQP MKAT -->

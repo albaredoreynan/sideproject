@@ -1,0 +1,158 @@
+document_name,doc_abbreviation
+Administrative Documents,Admn
+Affidavit,Aff
+Affidavit of Desistance,AffDesist
+Affidavit of Filing,AffFiling
+Affidavit of Filing and Service,AffFilServ
+Affidavit of Service,AffServ
+Affidavit of Electronic Filing,AffEfiling
+Affidavit of Loss,AffLoss
+Affidavit of Preliminary Attachment,AffPreAtt
+Affidavit of Preliminary Injunction,AffPreInj
+Agreement,Agrmnt
+Annulment of Judgment,AOJ
+Answer,Answer
+Answer Ad Cautelam,AnswerAC
+Appeal,Appeal 
+Appeal By Way of Consulta,Consulta
+Appellant's Brief,AplntBrief
+Appellee's Brief,ApleeBrief
+Appointment of Resident Agent,ResAg
+Articles of Incorporation,AOI
+Articles of Partnership,AOP
+Asset Lease Agreement ,ALA
+Asset Purchase Agreement,APA
+Authorization,Author
+By-Laws,BL
+Comment,Comm
+Complaint,Complaint
+Compliance,Compl
+Compromise Agreement / Settlement,Comp
+Contract,K
+"Contract of Employment (includes probationary, fixed-term, regular employment etc)",EmployK
+Contract of Lease,LeaseK
+Decision ,Decision
+Declaration of Actual Use,DAU
+Deed of Sale,DOAS
+Demand Letter,Demand
+Directors' Certificate ,DirCert
+Due Diligence Report,DDR
+Employee Handbook / Manual / Code of Discipline,Handbook 
+Engagement Letter / Proposal,Engagement
+Entry of Appearance,Entry 
+Executive Summary,ES
+Extrajudicial Settlment of Estate,EJS
+Formal Offer of Evidence,FOE
+General Information Sheet ,GIS
+Inter Partes Assessment,IPA
+Interrogatories,Interrog
+Joint Motion,JMotion
+Judgment ,Judgment
+Judicial Affidavit,JA
+Legal Audit Report,Audit 
+Legal Memorandum,LegMemo
+Legal Opinion,LegOpinion
+Letter (e.g. all other letters to government agencies not otherwise indicated in this list such as letter notices or notifications for closure),Let
+Letter requests (all kinds),LetReq
+Loan Agreement,LoanAgrmnt
+Manifestation,Manifestation
+Master Service Agreement,MSA
+Memorandum,Memo
+Memorandum of Appeal,AppealMemo
+Minutes (of other meetings),MoM
+Minutes of Directors' Meetings,MoMDir
+Minutes of Stockholders' Meetings,MoMSh
+Minutes of Trustees' Meetings,MoMTrustees
+Minutes of Members' Meetings,MoMMem
+Motion,Mot
+Motion for Bill of Particulars,MotBP
+Motion for Extension of Time to File Pleading ,MotEx
+Motion for First Extension of Time to File Pleading ((IP only),MotEx1
+Motion for Second Extension of Time to File Pleading,MotEx2
+Motion for Third Extension of Time to File Pleading,MotEx3
+Motion for Postponement,MotPostpone
+Motion for Reconsideration,MR
+Motion to Declare Defendant in Default,MotDefault
+Motion to Defer Proceedings,MotDefer
+Motion to Dismiss,MotDismiss
+Motion to Render Judgment Based on Compromise,MotJCompromise
+Motion to Resolve,MotResolve
+Notice,Notice
+Notice of Appeal ,AppealNotice
+Notice to Explain,NTE
+Opposition,Opp
+Order,Order
+Petition for Certiorari,PetCert
+Petition for Injunction,PetInj
+Petition for Mandamus,PetMand
+Petition for Review on Certiorari under Rule 45,PetRev
+"Petitions before the Securities and Exchange Commission (e.g. Petition for Withdrawal of License, Petition for Dissolution, Petition for Change of Resident Agent)",PetSEC
+Position Paper,PP
+Pre-Trial Brief,PTB
+Preliminary Conference Brief,PCB
+Promissory Note,PN
+Protest,Protest
+Rejoinder,Rejoinder
+Replevin,Replevin
+Reply,Reply
+Reply Brief,ReplyBr
+Request for Extension of Time to File Declaration of Actual Use,ExtDAU
+Request for Extension of Time to Submit Home Registration,ExtHR
+Request for Confirmatory Ruling before the BIR,ReqRuling
+Retirement Plan,RetPlan
+Resolution,Resolution
+Response to Office Action,RespOA
+Royalty Agreement,RoyaltyK
+Secretary's Certificate,SecCert
+Service Agreement / Contract,KServ
+Share Transfer Agreement,ShareTrans
+Sinumpaang Salaysay,SS
+Special Power of Attorney,SPA
+Status Report,StatRep
+Stock Certificate,StockCert
+Sur-Rejoinder,SurRej
+Tax Treaty Relief Application,TTRA
+Term Sheet,TermSheet
+Trademark Clearance Search,TMSearch
+Transmittal Letter,TransLtr
+Treasurer's Affidavit,AffTreas
+Verification / Certification of Non-Forum Shopping,VCert
+Verified Notice of Opposition,VNoticeOpp
+Receipt Release Waiver Quitclaim ,RRWQ
+Write Off Certification,WriteOff / CertWriteOff
+Demurrer to Evidence,Demurrer
+Certification of Non-Forum Shopping,CNFS
+Verification ,V
+Motion to Quash,MotQuash
+Verified Statement,VS
+Modes of Discovery Admission,ModesDiscAd
+Amended,Am
+Modes of Discovery Production,ModesDisProd
+Verified Statement of Material Dates,VSMatDates
+Verified Declaration of E-Filing,VDEFiling
+Petition for Declaratory Relief,PetDeclRelf
+Motion for Summary Judgment,MotSummJ
+Memorandum of Understanding/Agreement,MOU/MOA
+Summary Judgment,SummJ
+Request,Request
+Petition for Correction (?),PetCorr
+Motion to Expunge,MotExpunge 
+Motion for Partial Reconsideration,MotPRecon
+Motion for Issuance of an Alias Summons,MotAliasSummons
+Motion for Extension to file an Answer,MotExAns
+Motion for the Issuance of Writ of Execution ,MotWritEx
+Motion for the Issuance of an Alias Writ of Execution,MotAliasWrit
+Motion for the Issuance of a Writ of Possession,MotWritPoss
+Motion for the Issuance on an order directing the sheriff to execute the final certificate of sale ,MotFinCertSale
+Motion for New Trial ,MotNTrial
+Motion for Execution Pending Appeal,MotPendAppeal
+Motion to Amend After a Responsive Pleading has been filed,MotAm
+Motion to Cancel Statutory Lien,MotCancel
+Motion for an order to break in or for a writ of demotion,MotOrder
+Motion for Intervention,MotInterv
+Motion for Judgment on the Pleadings,MotJudgPl
+Omnibus Motion,OmnMot
+Motion for Leave ,MotLeave
+Motion to Take Deposition,MotDepo
+Terms of Reference ,TOR
+Draft Decision ,DraftDecision
