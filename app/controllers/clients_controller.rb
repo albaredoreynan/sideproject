@@ -1,14 +1,30 @@
 class ClientsController < ApplicationController
   helper_method :sort_column, :sort_direction
   def index
-    if params[:client].present?
-      @clients = Client.where("name ILIKE ?", "%#{params[:client]}%").paginate(:page => params[:page], :per_page => 50).order(sort_column + " " + sort_direction)
-    elsif params[:client_code].present?  
-      @clients = Client.where("cl_code_txt ILIKE ?", "%#{params[:client_code]}%").paginate(:page => params[:page], :per_page => 50).order(sort_column + " " + sort_direction)
+    if current_user.id == 39 || current_user.role == 'User'
+      if params[:client].present?
+        @clients = Client.where("cl_code_txt IS NOT NULL").where("name ILIKE ?", "%#{params[:client]}%").paginate(:page => params[:page], :per_page => 50).order(sort_column + " " + sort_direction)
+      elsif params[:client_code].present?  
+        @clients = Client.where("cl_code_txt IS NOT NULL").where("cl_code_txt ILIKE ?", "%#{params[:client_code]}%").paginate(:page => params[:page], :per_page => 50).order(sort_column + " " + sort_direction)
+      else
+        @clients = Client.where("cl_code_txt IS NOT NULL").paginate(:page => params[:page], :per_page => 50).order("cl_code_txt ASC")
+      end
     else
-      @clients = Client.paginate(:page => params[:page], :per_page => 50).order(sort_column + " " + sort_direction)
+      if params[:client].present?
+        @clients = Client.where("name ILIKE ?", "%#{params[:client]}%").paginate(:page => params[:page], :per_page => 50).order(sort_column + " " + sort_direction)
+      elsif params[:client_code].present?  
+        @clients = Client.where("cl_code_txt ILIKE ?", "%#{params[:client_code]}%").paginate(:page => params[:page], :per_page => 50).order(sort_column + " " + sort_direction)
+      else
+        @clients = Client.paginate(:page => params[:page], :per_page => 50).order("cl_code_txt ASC")
+      end
     end
-    @client_all = Client.order("name ASC")
+
+    if current_user.id == 39 || current_user.role == 'User'
+      @client_all = Client.where("cl_code_txt IS NOT NULL").order("cl_code_txt ASC")
+    else
+      @client_all = Client.order("cl_code_txt ASC")
+    end
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @clients }

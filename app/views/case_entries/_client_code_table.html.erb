@@ -12,8 +12,8 @@
 </div>
 <br/>
 <br/>              
-<div class="span10">                        
-  <table class="table table-striped" id="case_entries">
+<div class="span10" style="overflow: scroll;">                        
+  <table class="table table-striped" id="case_entries" >
     <!-- <thead>
       <tr>
         <th width="10%" class="pretty"><center><%#= sortable "entry", "Entry Date" %></center></th>
@@ -57,30 +57,34 @@
             <% @year_per_fr = load_year(case_entry, params[:date_from], params[:date_to]) %>  
             <tr>
               <td colspan="5">
-                <table class="table table-bordered" id="case_entries">
-                  <tr>
-                    <% @year_per_fr.each do |y| %>
-                      <td><strong>YEAR ( <%= y %> )</strong></td>
-                      <td><strong>TOTAL ENTRIES: <%= count_per_year(y, case_entry) %></strong></td>
-                    <% end %>
-                  </tr>
-                </table>
-                <table class="table table-bordered" id="case_entries">
-                  
-                    <% @al = AssignedLawyer.where(file_matter_id: fileref_info.id) %>
-                    <% @al.each do |al| %>
-                      <tr>
-                        <td><strong><%= al.lawyer.full_name %> (<%= al.lawyer.initials %>)</strong></td>
-                        <%  @years = load_year_per_lawyer(case_entry, params[:date_from], params[:date_to], al.lawyer.id) %>
-                        <%  @years.each do |y| %>
-                              <td><strong>YEAR ( <%= y %> )</strong></td>
-                              <td><strong>TOTAL ENTRIES: <%= extract_year(y, case_entry, al.lawyer.id) %></strong></td>
-                        <%  end %>
-                      </tr>
-                    <% end %>
-                  </tr>
+                <div style="overflow-y: scroll;">
+                  <table class="table table-bordered" id="case_entries">
+                    <tr>
+                      <% @year_per_fr.each do |y| %>
+                        <td><strong>YEAR ( <%= y %> )</strong></td>
+                        <td><strong>TOTAL ENTRIES: <%= count_per_year(y, case_entry) %></strong></td>
+                      <% end %>
+                    </tr>
+                  </table>
+                </div>
+                <div style="overflow: scroll;">
+                  <table class="table table-bordered" id="case_entries">
+                    
+                      <% @al = AssignedLawyer.where(file_matter_id: fileref_info.id) %>
+                      <% @al.each do |al| %>
+                        <tr>
+                          <td><strong><%= al.lawyer.full_name %> (<%= al.lawyer.initials %>)</strong></td>
+                          <%  @years = load_year_per_lawyer(case_entry, params[:date_from], params[:date_to], al.lawyer.id) %>
+                          <%  @years.each do |y| %>
+                                <td><strong>YEAR ( <%= y %> )</strong></td>
+                                <td><strong>TOTAL ENTRIES: <%= extract_year(y, case_entry, al.lawyer.id) %></strong></td>
+                          <%  end %>
+                        </tr>
+                      <% end %>
+                    </tr>
 
-                </table>
+                  </table>
+                </div>
               </td>
             </tr>
 

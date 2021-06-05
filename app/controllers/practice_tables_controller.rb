@@ -4,8 +4,9 @@ class PracticeTablesController < ApplicationController
     if params[:practice_table].present?
       @practice_tables = PracticeTable.where("name ILIKE ?", "#{params[:practice_table]}").paginate(:page => params[:page], :per_page => 50).order(sort_column + " " + sort_direction)
     else  
-      @practice_tables = PracticeTable.paginate(:page => params[:page], :per_page => 50).order(sort_column + " " + sort_direction)
+      @practice_tables = PracticeTable.paginate(:page => params[:page], :per_page => 50).order("practice_name ASC")
     end
+    
     @practice_table_all = PracticeTable.order("name ASC")
     respond_to do |format|
       format.html # index.html.erb
