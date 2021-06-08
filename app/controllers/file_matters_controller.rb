@@ -2,7 +2,7 @@ class FileMattersController < ApplicationController
   helper_method :sort_column, :sort_direction
   def index
     if current_user.role == 'Administrator' || current_user.role == 'Billing Clerk'
-      if params[:file_code].present? || params[:title].present? 
+      if params[:file_code].present? || params[:title].present? || params[:client_code].present?
         args = {}
         args.merge!(file_code: params[:file_code]) unless params[:file_code].blank?
         args.merge!(title: params[:title]) unless params[:title].blank?
