@@ -23,7 +23,9 @@
                 <tr>
                   <th width="30%"><center><%= sortable "practice_name", "Practice Area" %></center></th>
                   <th width="15%"><center>Code</center></th>
-                  <th width="10%"><center>Action</center></th>
+                  <% if current_user.role == 'Administrator' %> 
+                    <th width="10%"><center>Action</center></th>
+                  <% end %>
                 </tr>
               </thead>
               <tbody>

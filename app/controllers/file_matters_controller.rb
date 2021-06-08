@@ -6,6 +6,7 @@ class FileMattersController < ApplicationController
         args = {}
         args.merge!(file_code: params[:file_code]) unless params[:file_code].blank?
         args.merge!(title: params[:title]) unless params[:title].blank?
+        args.merge!(cl_code_txt: params[:client_code]) unless params[:client_code].blank?
         #@case_entries = CaseEntry.where(args).order("entry_date DESC")
         @file_matters = FileMatter.where(args).paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       else
@@ -17,12 +18,13 @@ class FileMattersController < ApplicationController
       @filerefid = AssignedLawyer.where(lawyer_id: current_user.lawyer_id).pluck(:file_matter_id)
       
       args.merge!(id: @filerefid) unless @filerefid.blank?
-      if params[:file_code].present? || params[:title].present? 
+      if params[:file_code].present? || params[:title].present? || params[:client_code].present?
         
         args.merge!(file_code: params[:file_code]) unless params[:file_code].blank?
         args.merge!(title: params[:title]) unless params[:title].blank?
+        args.merge!(:cl_code_txt => params[:client_code]) unless params[:client_code].blank?
         #@case_entries = CaseEntry.where(args).order("entry_date DESC")
-        @filerefid = AssignedLawyer.where(lawyer_id: current_user.id).pluck(:file_matter_id)
+        @filerefid = AssignedLawyer.where(lawyer_id: current_user.lawyer_id).pluck(:file_matter_id)
         args.merge!(id: @filerefid) unless @filerefid.blank?
         @file_matters = FileMatter.where(args).paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       else

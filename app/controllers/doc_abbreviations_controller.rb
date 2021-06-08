@@ -8,6 +8,9 @@ class DocAbbreviationsController < ApplicationController
     end
     
     @doc_abbreviation_all = DocAbbreviation.order("name ASC")
+
+    @file_naming = FileNaming.find(1)
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @doc_abbreviations }

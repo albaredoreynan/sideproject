@@ -1,9 +1,9 @@
 <div class="panel">
-  <div class="panel-heading"><h3>Document Abbreviation</h3></div>
+  <div class="panel-heading"><h3>FNC</h3></div>
     
   
   <div class="panel panel-primary">
-    <div class="panel-primary panel-heading">Document Abbreviation Lists</div>
+    <div class="panel-primary panel-heading">FNC Lists</div>
     <div class="row">
       <div class="span11">
         <% if current_user.role == 'Administrator' %> 
@@ -23,7 +23,9 @@
                 <tr>
                   <th width="30%"><center><%= sortable "document_name", "Document" %></center></th>
                   <th width="15%"><center>Abbreviation</center></th>
-                  <th width="10%"><center>Action</center></th>
+                  <% if current_user.role == 'Administrator' %>
+                    <th width="10%"><center>Action</center></th>
+                  <% end %>
                 </tr>
               </thead>
               <tbody>
@@ -63,9 +65,22 @@
   </div>
   <br>
   <div class="panel panel-primary">
-    <div class="panel-primary panel-heading">FNC</div>
+    <div class="panel-primary panel-heading">File Names</div>
     <div class="row">
       <div class="span11">
+        <% if current_user.role == 'Administrator' %>
+          <% if @file_naming.nil? %>         
+            <%= link_to "Create Entry",
+                new_file_naming_path,
+                :class => 'btn btn-primary' %>
+          <% else %>
+            <%= link_to "Edit Entry",
+                edit_file_naming_path(@file_naming.id),
+                :class => 'btn btn-info' %>
+          <% end %>
+          <br/>
+          <br/>
+        <% end %>
         <table class="table table-striped" id="doc_abbreviations">
           <thead>
             <tr>
@@ -76,42 +91,90 @@
           </thead>
           <tbody>
             <tr>
-              <td>Ref. No.</td>
-              <td>Year –Series -Practice Code –Client Code</td>
-              <td>2020-008-CORP-C-0001</td>
+              <td><%= @file_naming.filename_1 %></td>
+              <td><%= @file_naming.filename_format_1 %></td>
+              <td><%= @file_naming.filename_sample_1 %></td>
             </tr>
             <tr>
-              <td>File Name Internal</td>
-              <td>Abbreviation_YYYYMMDDv1_ Client Code_Initials(another subject if applicable)</td>
-              <td>PP_20210427v1_C-0001_GPQP MKAT CompanyX</td>
+              <td><%= @file_naming.filename_2 %></td>
+              <td><%= @file_naming.filename_format_2 %></td>
+              <td><%= @file_naming.filename_sample_2 %></td>
             </tr>
             <tr>
-              <td>File Name External</td>
-              <td>Abbreviation_YYYYMMDDvf_ClientCode PMFSL (another subject if applicable)</td>
-              <td>PP_20210427vf_C-0001_PMFSL CompanyX</td>
+              <td><%= @file_naming.filename_3 %></td>
+              <td><%= @file_naming.filename_format_3 %></td>
+              <td><%= @file_naming.filename_sample_3 %></td>
             </tr>
             <tr>
-              <td>Tracer:</td>
-              <td>Ref. No. + Agency + File Name</td>
-              <td>
-                2020-008-CORP-C-0001(Court/Agency)PP_YYYYMMDDv1_Client Code_Initials
-              </td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td>
-                2020-008-CORP-C-0001(NLRC)PP_20210427v1_C-0001 MKAT
-              </td>
+              <td><%= @file_naming.filename_4 %></td>
+              <td><%= @file_naming.filename_format_4 %></td>
+              <td><%= @file_naming.filename_sample_4 %></td>
             </tr>
             <tr>
               <td></td>
               <td></td>
-              <td>
-                2020-008-CORP-C-0001(SC)PP_20210428v2_C-0001 GPQP MKAT
-              </td>
+              <td><%= @file_naming.filename_sample_5 %></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td><%= @file_naming.filename_sample_6 %></td>
             </tr>
           </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-primary">
+    <div class="panel-primary panel-heading">File Matter Format(Copy/Paste})</div>
+    <div class="row">
+      <div class="span11">
+        <table class="table table-bordered" id="doc_abbreviations">
+          <tr>
+            <td width="50%"><strong>File Reference No.:</strong></td>
+            <td width="50%"></td>
+          </tr>
+          <tr>
+            <td><strong>Practice Area:</strong></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Practice Area Code:</strong></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Client:</strong></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Client Code:</strong></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Case Title / Matter:</strong></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Case Number, if applicable:</strong></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Date Opened:</strong></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Currency Billing:</strong></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Lawyers:</strong></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><strong>Lawyer Pricing Per File:</strong></td>
+            <td></td>
+          </tr>
         </table>
       </div>
     </div>

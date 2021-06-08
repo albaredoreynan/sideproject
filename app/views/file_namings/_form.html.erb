@@ -1,0 +1,40 @@
+<%= simple_form_for @file_naming, :html => { :class => 'form-horizontal' } do |f| %>
+  	<table>
+  		<tr>
+  			<td><%= f.input :filename_1, :label => 'File Name Entry 1:', :required => true %></td>
+  			<td><%= f.input :filename_format_1, :label => 'File Name Format 1:', :required => true %></td>
+  			<td><%= f.input :filename_sample_1, :label => 'File Name Sample 1:', :required => true %></td>
+  		</tr>
+  		<tr>
+  			<td><%= f.input :filename_2, :label => 'File Name Entry 2:', :required => true %></td>
+  			<td><%= f.input :filename_format_2, :label => 'File Name Format 2:', :required => true %></td>
+  			<td><%= f.input :filename_sample_2, :label => 'File Name Sample 2:', :required => true %></td>
+  		</tr>
+  		<tr>	
+  			<td><%= f.input :filename_3, :label => 'File Name Entry 3:', :required => true %></td>
+  			<td><%= f.input :filename_format_3, :label => 'File Name Format 3:', :required => true %></td>
+  			<td><%= f.input :filename_sample_3, :label => 'File Name Sample 3:', :required => true %></td>
+  		</tr>	
+  			<td><%= f.input :filename_4, :label => 'File Name Entry 4:', :required => true %></td>
+  			<td><%= f.input :filename_format_4, :label => 'File Name Format 4:', :required => true %></td>
+  			<td><%= f.input :filename_sample_4, :label => 'File Name Sample 4:', :required => true %></td>
+  		</tr>
+  		<tr>
+  			<td></td>
+  			<td></td>
+  			<td><%= f.input :filename_sample_5, :label => 'File Name Sample 5:', :required => true %></td>
+  		</tr>
+  		<tr>
+  			<td></td>
+  			<td></td>
+  			<td><%= f.input :filename_sample_6, :label => 'File Name Sample 6:', :required => true %></td>
+  		</tr>
+			<tr>
+				<td colspan=3><div class="pull left">
+	    <%= f.button :submit, 'Update', :class => 'btn btn-primary' %>
+	    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+	                doc_abbreviations_path, :class => 'btn' %>
+	  </div></td>
+			</tr>
+		</table>
+<% end %>
