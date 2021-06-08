@@ -91,7 +91,13 @@
                         </center>
                       </td>
                     <% else %>
-                      <td><center><%= current_user.lawyer.initials %></center></td>
+                      <td>
+                        <% @data = AssignedLawyer.where(file_matter_id: fm.id) %>
+                        <% @data.each  do |d| %>
+                          <span style="padding-right: 10px;"><%= d.lawyer.initials %></span>    
+                        <% end %>
+                      </td>
+                        <!-- <center><%#= current_user.lawyer.initials %></center></td> -->
                     <% end %>
                   </tr>
                 <% end %>
