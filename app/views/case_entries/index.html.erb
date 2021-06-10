@@ -69,7 +69,9 @@
               <!-- <th width="17%"><center>Client Code</center></th> -->
               <th width="21%"><center><%= sortable "case_title", "Case Title"%></center></th>
               <th width="24%"><center>Client</center></th>
-              <th width="7%"><center>Initials</center></th>
+              <% if current_user.role == 'Administrator' %>
+                <th width="7%"><center>Initials</center></th>
+              <% end %>
               <th width="7%"><center>Start Time</center></th>
               <th width="7%"><center>End Time</center></th>
               <th width="10%"><center>Action</center></th>
@@ -98,11 +100,14 @@
                     <%# end %>
                 </td>  -->   
                 <td><%#= case_entry.file_matter_case %><%= case_entry.case_title %></td>
+                
                 <% @lawyers_initial = Lawyer.where("id = ?", case_entry.lawyer_id) %>
                 <td><% @client.each do |x| %>
                       <%= x.name %>
                     <% end %></td>
-                <td><%= case_entry.lawyer.initials %></td>    
+                <% if current_user.role == 'Administrator' %>
+                  <td><%= case_entry.lawyer.initials %></td>    
+                <% end %>
                 <td><center><%= case_entry.time_spent_from %></center></td>
                 <td><center><%= case_entry.time_spent_to %></center></td>
                 
