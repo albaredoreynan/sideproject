@@ -11,7 +11,7 @@
         <tr><td colspan=5><center><h4> No data to show. </h4></center></td></tr>
       <% else %>
         <% @ca = @case_entries.uniq %>
-        
+
         <% @practices = Array.new
            @data = Array.new 
            @file_matters.reject(&:empty?).each do |fm|
@@ -87,6 +87,15 @@
         <tr><td colspan=5><strong>TOTAL CASE OPEN :</strong><%= @practices.count %></td></tr>
       <% end%>
       
-
+      <tr>
+        <td>
+          <%= @case_entries %>
+        </td>  
+      </tr>
+      <tr>
+        <td>
+          
+        </td>
+      </tr>
   </table>
 </div>

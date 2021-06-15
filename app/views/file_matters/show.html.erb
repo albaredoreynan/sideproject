@@ -10,24 +10,28 @@
     <span><%= @file_matter.file_code %></span><br/>
     
     <span><strong>Client :</strong></span>
-    <span>
-      <% @client = Client.find(@file_matter.client_id) %>
-      
-        <%=  @client.name %>
-      
-      </span><br/>
-    
-    <span><strong>Case Title :</strong></span>
+    <span><%= @file_matter.client.name %></span><br/>
+   
+    <span><strong>Case Title / Matter :</strong></span>
     <span><%= @file_matter.title %></span><br/>
     
     <span><strong>Case Number :</strong></span>
     <span><%= @file_matter.case_number %></span><br/>
     
-    <span><strong>Case Date :</strong></span>
+    <span><strong>Date Opened :</strong></span>
     <span><%= @file_matter.case_date %></span><br/>
     
-    <span><strong>Currency Use :</strong></span>
-    <span><%= @file_matter.currency_used %></span><br/>
+    <span><strong>Currency Billing :</strong></span>
+    <span><%= @file_matter.currency_used %></span><br/>  
+
+    <span><strong>Client Code :</strong></span>
+    <span><%= @file_matter.cl_code_txt %></span><br/>
+
+    <span><strong>Practice Area :</strong></span>
+    <span><%= @file_matter.practice_table.practice_name %></span><br/>
+
+    <span><strong>Practice Area Code :</strong></span>
+    <span><%= @file_matter.practice_code %></span><br/>
     
     <span><strong>Assigned Lawyers :</strong></span><br/>
     <% @assigned_lawyers = AssignedLawyer.find(:all, :conditions => { :file_matter_id => params[:id] } ) %>

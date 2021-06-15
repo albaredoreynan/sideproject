@@ -25,12 +25,12 @@
               <%= text_field_tag :ending_date, nil,  :id => "datepicker_end"%>
           </div>
           <div class="span3">
-              Client: <br/>
-              <%= text_field_tag :client %>
+              Client Code: <br/>
+              <%= select_tag :client_code, options_for_select(@clients), { "data-placeholder" => "", :multiple => false, id: 'chosen-select_cl', :include_blank => true} %>
           </div>
-          <div class="span3">
+          <div class="span6">
               Case Title: <br/>
-              <%= text_field_tag :case_title %>
+              <%= autocomplete_field_tag :case_title, nil, autocomplete_file_matter_title_file_matters_path, :required => false, style: "width: 100%;" %>
           </div>
 
           <div class="span10">
@@ -222,6 +222,7 @@
   
 </div>
   <script>
+    $("#chosen-select_cl").chosen();
     // $('#case_entries').dataTable( {
     //   "aaSorting": [[ 0, "desc" ]],
     //   "aoColumns": [

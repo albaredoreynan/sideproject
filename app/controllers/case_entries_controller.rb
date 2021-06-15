@@ -7,29 +7,32 @@ class CaseEntriesController < ApplicationController
   def index
     if current_user.role == 'Administrator' || current_user.role == 'Billing Clerk'
       # @case_entries = CaseEntry.find(:all, :order => "entry_date DESC")
-      if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id]
+      if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id] || params[:client_code] || params[:case_title]
         args = {}
         args.merge!(file_matter_id: params[:file_matter_id]) unless params[:file_matter_id].blank?
-        args.merge!(case_number: params[:case_number]) unless params[:case_number].blank?
+        args.merge!(case_title: params[:case_title]) unless params[:case_title].blank?
         args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
+        args.merge!(client_code: params[:client_code]) unless params[:client_code].blank?
         args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
         @case_entries = CaseEntry.where(args).paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       else
         @case_entries = CaseEntry.paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       end
     else
-      if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id]
+      if params[:beginning_date].present? && params[:ending_date].present? || params[:file_matter_id] || params[:client_code] || params[:case_title]
         args = {}
         args.merge!(file_matter_id: params[:file_matter_id]) unless params[:file_matter_id].blank?
-        args.merge!(case_number: params[:case_number]) unless params[:case_number].blank?
+        args.merge!(case_title: params[:case_title]) unless params[:case_title].blank?
         args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
-        args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
+        args.merge!(client_code: params[:client_code]) unless params[:client_code].blank?
+        # args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
         @case_entries = CaseEntry.where(args).paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       else
         # @case_entries = CaseEntry.find(:all, :conditions => { :lawyer_id => current_user.lawyer_id }, :order => "entry_date DESC" ).paginate(:page => params[:page], :per_page => 10)
         @case_entries = CaseEntry.where(:lawyer_id => current_user.lawyer_id).paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       end
     end
+    @clients = Client.order('cl_code_txt ASC').map{|a|[a.cl_code_txt, a.cl_code_txt]}
     @all_case_entries = CaseEntry.order("entry_date DESC")
     @lawyer = current_user.name
     respond_to do |format|
