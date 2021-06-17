@@ -215,7 +215,7 @@ module ApplicationHelper
 	#   direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
 	#   link_to title, {:sort => column, :direction => direction}, {:class => css_class}
 	# end
-
+  
 	def sortable(column, title = nil)
     title ||= column.titleize
     css_class = column == sort_column ? "current #{sort_direction}" : nil
@@ -276,5 +276,48 @@ module ApplicationHelper
   def load_year_per_lawyer(file_ref_no, beg_date, end_date, lawyer_id)
   	years = CaseEntry.select(:entry_date).where(entry_date: beg_date...end_date).where(file_matter_id: file_ref_no).where(lawyer_id: lawyer_id).order('entry_date ASC').pluck(:entry_date).map{ |dt| dt.year }.uniq
 		return years
+  end
+
+  def calculate_time_by_practice_code_per_client(practice_code, beg_date, end_date, client_code)
+  	@case = CaseEntry.where("practice_code =? AND entry_date >= ? AND entry_date <= ? AND client_code =? ", practice_code, beg_date, end_date, client_code)
+  	@total_hours = Array.new
+  	@hours = Array.new
+		@minutes = Array.new
+		if !@case.empty?	
+			@case.each do |ce|
+				@start_time = Time.strptime(ce.time_spent_from, '%I:%M %P') 
+				@end_time = Time.strptime(ce.time_spent_to, '%I:%M %P') 
+				@time_spent = @end_time - @start_time
+				@hh = Time.at(@time_spent).utc.strftime('%I')
+				if @hh == '12' 
+					@hh = '00' 
+				else 
+					@hh = @hh
+				end
+				@mm = Time.at(@time_spent).utc.strftime('%M') 
+				@value = @hh.to_s+"."+@mm.to_s
+				
+				@x = @value.to_s 
+				@xx = @x.split(".") 
+				@hours << @xx[0].to_i 
+				@minutes << @xx[1].to_i 
+				@hr_reg = @hours.inject(:+) 
+				@min_reg = @minutes.inject(:+) 
+				if @min_reg >= 60 
+					@hr_reg = (@min_reg / 60) + @hr_reg 
+					@min_reg = @min_reg % 60 
+				end 
+			end
+			if @min_reg < 10
+				@new_min = "0"+@min_reg2.to_s
+			else
+				@new_min = @min_reg2.to_s
+			end
+			
+			@total_actual_hours =  @hr_reg.to_s+"."+@new_min.to_s
+			return @total_actual_hours.to_f
+		else
+			return 0
+		end
   end
 end

@@ -481,10 +481,10 @@ class CaseEntriesController < ApplicationController
          args = {}
          args.merge!(cl_code_txt: params[:client_code]) unless params[:client_code].blank?
          # args.merge!(file_matter_id: params[:file_ref]) unless params[:file_ref].blank?
-         args.merge!(case_date: dfrom..dto) unless params[:date_from].blank?
+         # args.merge!(case_date: dfrom..dto) unless params[:date_from].blank?
          # args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
-         @case_entries = FileMatter.where(args).paginate(:page => params[:page], :per_page => 20).pluck(:file_code)
-         @file_matters = FileMatter.where(args).where(file_code: @case_entries).pluck(:practice_code)
+         @case_entries = FileMatter.where(args).where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", params[:date_from], params[:date_to]).where("practice_code <> ''").where("practice_code IS NOT NULL")
+         # @file_matters = FileMatter.where(args).where(file_code: @case_entries).pluck(:practice_code)
          # raise
       end   
 
@@ -530,7 +530,7 @@ class CaseEntriesController < ApplicationController
          # args.merge!(file_matter_id: params[:file_ref]) unless params[:file_ref].blank?
          args.merge!(entry_date: params[:date_from]..params[:date_to]) unless params[:date_from].blank?
          # args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
-         @case_entries = CaseEntry.where(args).paginate(:page => params[:page], :per_page => 20).pluck(:file_matter_id)
+         @case_entries = CaseEntry.where(args).pluck(:file_matter_id)
       # else
       #   @case_entries = CaseEntry.paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       end
