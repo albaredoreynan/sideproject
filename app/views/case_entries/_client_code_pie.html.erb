@@ -94,8 +94,24 @@
           <div id="container" style="width: 100%; height: 600px; margin: 0 auto"></div>
         </td>
         <tr><td colspan=5><strong>TOTAL TIME RENDERED :</strong>&nbsp;<%= @grand_time.inject(:+).to_f %>&nbsp;HRS</td></tr>
+        <tr>
+          <td colspan="2"><h5>Breakdown of File References Per Practices:</h5></td>
+        </tr>
+        <%  @z = @practices.group_by(&:itself).map { |k,v| [k, v.length] }.to_h %>
+        <%  @z.each do |key, value| %>
+          <tr>
+              <td width="20%"><strong><%= key %></strong></td>
+              <td width="20%"><strong>Total Hours: <%= calculate_time_by_practice_code_per_client(key, @beginning_date, @ending_date, params[:client_code]) %></strong></td>
+              
+          </tr>
+        <% end %>
       <% end%>
-      
+      <!-- @x.each do |key, value|
+             # puts "Bob's #{key} is #{value}"
+             @total_hours = calculate_time_by_practice_code_per_client(key, @beginning_date, @ending_date, params[:client_code])
+             @data << [key, @total_hours]
+             @grand_time << @total_hours
+           end -->
 
   </table>
 </div>
