@@ -7,32 +7,46 @@
   <div class="span1">&nbsp;</div>
   <div class="span9">
     <span><strong>File Reference No. :</strong></span>
-    <span><%= @file_matter.file_code %></span><br/>
-    
+    <span>
+      <% 
+        if !@file_matter.cl_code_txt.nil? || !@file_matter.cl_code_txt.blank?
+          @filerefno = @file_matter.file_code+"-"+@file_matter.cl_code_txt
+        else
+          @filerefno = @file_matter.file_code
+        end
+
+        if !@file_matter.practice_code.nil? || !@file_matter.practice_code.blank?
+          @filerefno = @filerefno+"-"+@file_matter.practice_code
+        else
+          @filerefno = @filerefno
+        end
+      %>
+      <%= @filerefno %>  
+    </span><br/>
+    <span><strong>Practice Area :</strong></span>
+    <span><%= @file_matter.practice_table.practice_name %></span><br/>
+
+    <span><strong>Practice Area Code :</strong></span>
+    <span><%= @file_matter.practice_code %></span><br/>
+
     <span><strong>Client :</strong></span>
     <span><%= @file_matter.client.name %></span><br/>
    
+    <span><strong>Client Code :</strong></span>
+    <span><%= @file_matter.cl_code_txt %></span><br/>
+
     <span><strong>Case Title / Matter :</strong></span>
     <span><%= @file_matter.title %></span><br/>
     
-    <span><strong>Case Number :</strong></span>
+    <span><strong>Case Number, if applicable: :</strong></span>
     <span><%= @file_matter.case_number %></span><br/>
     
     <span><strong>Date Opened :</strong></span>
     <span><%= @file_matter.case_date %></span><br/>
     
     <span><strong>Currency Billing :</strong></span>
-    <span><%= @file_matter.currency_used %></span><br/>  
+    <span><%= @file_matter.currency_used %></span><br/>
 
-    <span><strong>Client Code :</strong></span>
-    <span><%= @file_matter.cl_code_txt %></span><br/>
-
-    <span><strong>Practice Area :</strong></span>
-    <span><%= @file_matter.practice_table.practice_name %></span><br/>
-
-    <span><strong>Practice Area Code :</strong></span>
-    <span><%= @file_matter.practice_code %></span><br/>
-    
     <span><strong>Assigned Lawyers :</strong></span><br/>
     <% @assigned_lawyers = AssignedLawyer.find(:all, :conditions => { :file_matter_id => params[:id] } ) %>
     <% @assigned_lawyers.each do |al| %>
