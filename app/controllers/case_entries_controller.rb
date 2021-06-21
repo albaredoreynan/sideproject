@@ -25,7 +25,7 @@ class CaseEntriesController < ApplicationController
         args.merge!(case_title: params[:case_title]) unless params[:case_title].blank?
         args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
         args.merge!(client_code: params[:client_code]) unless params[:client_code].blank?
-        # args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
+        args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
         @case_entries = CaseEntry.where(args).paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       else
         # @case_entries = CaseEntry.find(:all, :conditions => { :lawyer_id => current_user.lawyer_id }, :order => "entry_date DESC" ).paginate(:page => params[:page], :per_page => 10)
@@ -524,13 +524,17 @@ class CaseEntriesController < ApplicationController
     @file_references = {}
     if current_user.role == 'Administrator' || current_user.role == 'Billing Clerk'
       # # @case_entries = CaseEntry.find(:all, :order => "entry_date DESC")
-      if params[:date_from].present? && params[:date_to].present? || params[:client_code]
+      if params[:date_from].present? && params[:date_to].present? || params[:practice_code]
+         f = Date.parse(params[:date_from])
+         t = Date.parse(params[:date_to])
+         dfrom = f.strftime("%m/%d/%y")
+         dto = t.strftime("%m/%d/%y")
          args = {}
          args.merge!(practice_code: params[:practice_code]) unless params[:practice_code].blank?
          # args.merge!(file_matter_id: params[:file_ref]) unless params[:file_ref].blank?
-         args.merge!(entry_date: params[:date_from]..params[:date_to]) unless params[:date_from].blank?
+         # args.merge!(entry_date: params[:date_from]..params[:date_to]) unless params[:date_from].blank?
          # args.merge!(lawyer_id: current_user.lawyer_id) unless current_user.lawyer_id.blank?
-         @case_entries = CaseEntry.where(args).pluck(:file_matter_id)
+         @case_entries = FileMatter.where(args).where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", params[:date_from], params[:date_to]).where("practice_code <> ''").where("practice_code IS NOT NULL")
       # else
       #   @case_entries = CaseEntry.paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       end

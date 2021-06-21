@@ -320,4 +320,15 @@ module ApplicationHelper
 			return 0
 		end
   end
+
+  def fm_case_title(file_code)
+  	@file_matter = FileMatter.find_by_file_code(file_code)
+  	return @file_matter.title
+  end
+
+  def load_case_open_per_year(practice_code, beg_date, end_date)
+		years = FileMatter.select(:case_date).where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", params[:date_from], params[:date_to]).where("practice_code <> ''").where("practice_code IS NOT NULL").where(practice_code: practice_code).order('case_date ASC').pluck(:case_date) #.map{ |dt| dt.year }.uniq
+		return years
+	end
 end
+# @case_entries = FileMatter.where(args).where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", params[:date_from], params[:date_to]).where("practice_code <> ''").where("practice_code IS NOT NULL")

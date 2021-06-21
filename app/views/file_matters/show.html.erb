@@ -50,7 +50,10 @@
     <span><strong>Assigned Lawyers :</strong></span><br/>
     <% @assigned_lawyers = AssignedLawyer.find(:all, :conditions => { :file_matter_id => params[:id] } ) %>
     <% @assigned_lawyers.each do |al| %>
-      <div style="padding-left:30px;"><span><%= al.lawyer.full_name %></span></div>
+      <div style="padding-left:30px;">
+        <span><%= al.lawyer.full_name %></span>
+        <span><%= al.file_matter_pricing %></span>
+      </div>
     <% end %>
   </div>
 </div>

@@ -1,167 +1,120 @@
 <div class="span10">
   <div class="pull-left">
-    <%#= link_to "Create Entry",
-              new_case_entry_path,
-              :class => 'btn btn-primary' %>
   </div>
-  <!-- <div class="pull-right">
-    <%##= link_to "Download as PDF <i class='icon-download-alt'></i>".html_safe, case_entries_path(params.merge(format: 'pdf')), :class => "btn btn-primary" %>
-    <%##= link_to "Backup in EXCEL File <i class='icon-download-alt'></i>".html_safe, case_entries_path(params.merge(format: 'xls')), :class => "btn btn-success" %>
-  </div> -->
-
 </div>
 <br/>
 <br/>              
 <div class="span10">                        
-  <table class="table table-striped" id="case_entries">
-    <!-- <thead>
-      <tr>
-        <th width="10%" class="pretty"><center><%#= sortable "entry", "Entry Date" %></center></th>
-        <th width="13%"><center><%#= sortable "file_matter_id", "File Ref. No."%></center></th>
-        <th width="17%"><center>Client Code</center></th>
-        <th width="21%"><center><%#= sortable "case_title", "Client"%></center></th>
-        <th width="8%"><center><%#= sortable "lawyer_id", "Initial"%></center></th>
-        <th width="10%"><center>Start Time</center></th>
-        <th width="10%"><center>End Time</center></th>
-        <th width="10%"><center>Action</center></th>
-      </tr>
-    </thead>
-    <tbody> -->
+  <table class="table table-striped" id="case_entries" >
 
       <% if @case_entries.blank? || @case_entries.nil? %>
         <tr><td colspan=5><center><h4> No data to show. </h4></center></td></tr>
       <% else %>
         <% @ca = @case_entries.uniq %>
-        <% @ca.each do |case_entry| %>
-          <tr>
-            <td colspan=5 align="left"><strong>FILE REFERENCE NO:</strong>&nbsp;<%= case_entry %>&nbsp;<strong>PRACTICE AREA CODE:</strong>&nbsp;<%= params[:practice_code] %></td>
-            <!-- <td><%#= load_year(case_entry, params[:date_from], params[:date_to]) %></td> -->
-          </tr>
-          <tr class="pretty">
-            <td width="10%"><strong>CASE OPENED</strong></td>
-            <td width="35%"><strong>CASE TITLE</strong></td>
-            <td width="35%"><strong>CLIENT</strong></td>
-            <td width="8%"><strong>CLIENT CODE</strong></td>
-            <td width="12%"><strong>INITIAL</strong></td>
-          </tr>
-          <% @fileref_info =  FileMatter.where(file_code: case_entry) %>  
-          <% @fileref_info.each do |fileref_info| %>
-            <tr>
-              <td><%= fileref_info.case_date %></td>
-              <td><%= fileref_info.title %></td>
-              <td><%= fileref_info.client.name %></td>
-              <td><%= fileref_info.cl_code_txt %></td>
-              <td>
-                <% @al = AssignedLawyer.where(file_matter_id: fileref_info.id) %>
-                <% @al.each do |al| %>
-                  <p>
-                    <%= al.lawyer.initials %>
-                    <a href="#<%=al.id%>-<%=case_entry%>" role="button" class="btn btn-success btn-mini" data-toggle="modal">SHOW GRAPH</a>
-                  </p>
-                  <div id="<%=al.id%>-<%=case_entry%>" class="modal hide fade" style="width: 50%; height: 100%; left:40%; overflow-y: hidden" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                      <h5 id="myModalLabel">FILE REFERENCE NO: <%= case_entry %> - (<%= al.lawyer.initials %>)</h5>
-                    </div>
-                    <div class="modal-body">
-                      <% @years = Array.new %>
-                      <% @data = Array.new %>
-                      <% @data_per_year = Array.new %>
-                      <% @years = load_year_per_lawyer(case_entry, params[:date_from], params[:date_to], al.lawyer.id) %>
-                      <%
-                         @years.each do |y|
-                            @data_per_year << extract_year(y, case_entry, al.lawyer.id)
-                            @data << [y.to_s, extract_year(y, case_entry, al.lawyer.id)]
-                         end 
-                      %>
-                      <script>
-                        $(function () {
-                            $('#container-<%=al.id%>-<%=case_entry%>').highcharts({
-                                chart: {
-                                    plotBackgroundColor: null,
-                                    plotBorderWidth: 1,//null,
-                                    plotShadow: false
-                                },
-                                title: {
-                                    text: 'Case Entries for Client: <%= fileref_info.client.name %>(<%= fileref_info.cl_code_txt %>)'
-                                },
-                                subtitle:{
-                                    text: 'Period Covers: <%=raw(params[:date_from])%> - <%=raw(params[:date_to])%>'
-                                },
-                                tooltip: {
-                                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                                },
-                                plotOptions: {
-                                    pie: {
-                                        allowPointSelect: true,
-                                        cursor: 'pointer',
-                                        dataLabels: {
-                                            enabled: true,
-                                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                                            style: {
-                                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                                            }
-                                        }
-                                    }
-                                },
-                                series: [{
-                                    type: 'pie',
-                                    name: 'Number of Case Entries',
-                                    data: <%= raw(@data) %>
-                                    // data:  
-                                    // [ 
-                                    //     ['Firefox',   45.0],
-                                    //     ['IE',       26.8],
-                                    //     ['Safari',    8.5],
-                                    //     ['Opera',     6.2],
-                                    //     ['Others',   0.7]
-                                    // ]
-                                }]
-                            });
-                        });
-                        </script>
-                      <div id="container-<%=al.id%>-<%=case_entry%>" style="width: auto; height: auto; margin: 0 auto"></div>
-                    </div>    
-                    <div class="modal-footer"></div> 
-                  </div>    
-                <% end%>
-              </td>
-            </tr>
-          <% end%>  
-        <% end%>
-      <% end%>
-        <%## @case_entries.each do |case_entry| %>
-          <tr class="<%##= case_entry.remove_from_billing == 'Yes' ? 'error' : '' %>">
-            <td data-title=""><center><%#= case_entry.entry_date %></center></td>
-            <td data-title=""><center><%#= case_entry.file_matter_id %></center></td>
-            <%# @client = Client.find(:all, :conditions => { :id => case_entry.client_id} ) %>
-            <td><%# @client.each do |x| %>
-                  <%#= x.cl_code_txt %>
-                <%# end %>
-            </td>    
-            <td><%##= case_entry.file_matter_case %><%#= case_entry.case_title %></td>
-            <%# @lawyers_initial = Lawyer.where("id = ?", case_entry.lawyer_id) %>
-            <td><center>
-              <%# @lawyers_initial.each do |initials| %>
-                <%#= initials.initials %>
-              <%# end %>
-            </center></td>
-            <td><center></center></td>
-            <td><center></center></td>
-            <td><center>
-              </center>
-            </td>
-          </tr>
-        <%# end %>
-      <%# end %>
+        <% 
+          results = @case_entries.map { |u| [u.practice_code, u.file_code] } 
+        %>
+        <% @practices = Array.new
+           @data = Array.new 
+           @case_entries.each do |fm|
+             @practices << fm.practice_code
+           end 
+           @x = @practices.group_by(&:itself).map { |k,v| [k, v.length] }.to_h
+        
+           # @x.each do |key, value|
+           #   # puts "Bob's #{key} is #{value}"
+           #   @data << [key, value]
+           # end
 
-    </tbody>
-  </table>
-  <div class="pull-right">
-    <%# if @case_entries.blank? || @case_entries.nil? %>
+        %>
+
+        <%  if params[:date_from].nil? || params[:date_from].empty? 
+              @beginning_date = Date.today.at_beginning_of_month
+              @ending_date = Date.today
+            else 
+              @beginning_date = params[:date_from]
+              @ending_date = params[:date_to]
+            end
+            @yyy = load_case_open_per_year(params[:practice_code], @beginning_date, @ending_date)
+            @years = Array.new
+            @yyy.each do |c|
+              myear = Date.strptime(c.to_s, '%m/%d/%y')
+              @years << myear.year 
+            end
+
+            @data_year = @years.group_by(&:itself).map { |k,v| [k, v.length] }.to_h
+            @data_year.each do |key, value|
+              @data << [key.to_s, value]
+            end
+        %>
+        <% @practice_name = PracticeTable.find_by_text_code(params[:practice_code]) %>
+        <td colspan="5">
+          <script>
+            $(function () {
+                $('#container').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: 1,//null,
+                        plotShadow: false
+                    },
+                    title: {
+                        text: 'Practice Area : <%= @practice_name.practice_name %>(<%= @practice_name.text_code %>)'
+                    },
+                    subtitle:{
+                        text: 'Period Covers: <%=raw(@beginning_date)%> - <%=raw(@ending_date)%>'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                }
+                            }
+                        }
+                    },
+                    series: [{
+                        type: 'pie',
+                        name: 'Total Percentage',
+                        data: <%= raw(@data) %>
+
+                        // [ 
+                        //     ['Firefox',   45.0],
+                        //     ['IE',       26.8],
+                        //     // ['Safari',    8.5],
+                        //     // ['Opera',     6.2],
+                        //     // ['Others',   0.7]
+                        // ]
+                    }]
+                });
+            });
+          </script>
+          <div id="container" style="width: 100%; height: 600px; margin: 0 auto"></div>
+        </td>
+        <tr><td colspan=5><strong>TOTAL ACTIVE CASE/S OPEN :</strong><%= @practices.count %></td></tr>
       
-    <%# else %>
-      <%#= will_paginate @case_entry, :param_name => 'page', previous_label: "<i class='icon-chevron-left'></i>".html_safe, next_label: "<i class='icon-chevron-right'></i>".html_safe %>
-    <%# end %>
-  </div>
+        <tr>
+          <td colspan="2"><h5>Breakdown of File References Per Practices:</h5></td>
+        </tr>
+        <%  @data_year.each do |key, value| %>
+          <tr>
+              <td width="20%"><strong><%= key %></strong></td>
+              <td width="20%"><strong>Total: <%= value %></strong></td>
+              <td width="60%">
+                <% results.each do |res, c| %>
+                  <% if key == res %>
+                     <p><%= c %>&nbsp;[<%= fm_case_title(c)%>]</p>
+                  <% end %>
+                <% end %>
+              </td>
+          </tr>
+        <% end %>
+      <% end%>
+  </table>
 </div>

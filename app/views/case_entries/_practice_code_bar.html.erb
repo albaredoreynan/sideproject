@@ -12,15 +12,15 @@
       <% else %>
         <% @ca = @case_entries.uniq %>
         <% 
-          results = @case_entries.map { |u| [u.practice_code, u.file_code] } 
-          
+          results = @case_entries.map { |u| [u.client_id, u.file_code] } 
         %>
-        <% @practices = Array.new
+        <% @clients = Array.new
            @data = Array.new 
            @case_entries.each do |fm|
-             @practices << fm.practice_code
+             @client_name = Client.find(fm.client_id) 
+             @clients << @client_name.name
            end 
-           @x = @practices.group_by(&:itself).map { |k,v| [k, v.length] }.to_h
+           @x = @clients.group_by(&:itself).map { |k,v| [k, v.length] }.to_h
         
            @x.each do |key, value|
              # puts "Bob's #{key} is #{value}"
@@ -28,7 +28,7 @@
            end
 
         %>
-
+        <%# @clients %>
         <%  if params[:date_from].nil? || params[:date_from].empty? 
               @beginning_date = Date.today.at_beginning_of_month
               @ending_date = Date.today
@@ -36,9 +36,19 @@
               @beginning_date = params[:date_from]
               @ending_date = params[:date_to]
             end
-        %>
+            # @yyy = load_case_open_per_year(params[:practice_code], @beginning_date, @ending_date)
+            # @years = Array.new
+            # @yyy.each do |c|
+            #   myear = Date.strptime(c.to_s, '%m/%d/%y')
+            #   @years << myear.year 
+            # end
 
-        <% @client_name = Client.find_by_cl_code_txt(params[:client_code]) %>
+            # @data_year = @years.group_by(&:itself).map { |k,v| [k, v.length] }.to_h
+            # @data_year.each do |key, value|
+            #   @data << [key.to_s, value]
+            # end
+        %>
+        <% @practice_name = PracticeTable.find_by_text_code(params[:practice_code]) %>
         <td colspan="5">
           <script>
             $(function () {
@@ -49,7 +59,7 @@
                         plotShadow: false
                     },
                     title: {
-                        text: 'Practice Areas for Client: <%= @client_name.name %>(<%= @client_name.cl_code_txt %>)'
+                        text: 'Practice Area Distribution per Client (<%= @practice_name.practice_name%>[<%=params[:practice_code]%>] )'
                     },
                     subtitle:{
                         text: 'Period Covers: <%=raw(@beginning_date)%> - <%=raw(@ending_date)%>'
@@ -72,7 +82,7 @@
                     },
                     series: [{
                         type: 'pie',
-                        name: 'Practice Areas',
+                        name: 'Total Percentage',
                         data: <%= raw(@data) %>
 
                         // [ 
@@ -88,24 +98,24 @@
           </script>
           <div id="container" style="width: 100%; height: 600px; margin: 0 auto"></div>
         </td>
-        <tr><td colspan=5><strong>TOTAL ACTIVE CASE/S OPEN :</strong><%= @practices.count %></td></tr>
+        <tr><td colspan=5><strong>TOTAL ACTIVE CASE/S OPEN :</strong><%= @clients.count %></td></tr>
       
         <tr>
           <td colspan="2"><h5>Breakdown of File References Per Practices:</h5></td>
         </tr>
-        <%  @x.each do |key, value| %>
+       <!--  <%#  @data_year.each do |key, value| %>
           <tr>
-              <td width="20%"><strong><%= key %></strong></td>
-              <td width="20%"><strong>Total: <%= value %></strong></td>
+              <td width="20%"><strong><%#= key %></strong></td>
+              <td width="20%"><strong>Total: <%#= value %></strong></td>
               <td width="60%">
-                <% results.each do |res, c| %>
-                  <% if key == res %>
-                     <p><%= c %>&nbsp;[<%= fm_case_title(c)%>]</p>
-                  <% end %>
-                <% end %>
+                <%# results.each do |res, c| %>
+                  <%# if key == res %>
+                     <p><%#= c %>&nbsp;[<%#= fm_case_title(c)%>]</p>
+                  <%# end %>
+                <%# end %>
               </td>
           </tr>
-        <% end %>
+        <%# end %>-->
       <% end%>
   </table>
 </div>
