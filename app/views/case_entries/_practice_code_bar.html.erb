@@ -15,17 +15,27 @@
           results = @case_entries.map { |u| [u.client_id, u.file_code] } 
         %>
         <% @clients = Array.new
-           @data = Array.new 
+           @client_names = Array.new
+           @data = Array.new
+           @data2 = Array.new 
            @case_entries.each do |fm|
              @client_name = Client.find(fm.client_id) 
-             @clients << @client_name.name
+             @clients << @client_name.cl_code_txt
+             @client_names << @client_name.name
            end 
            @x = @clients.group_by(&:itself).map { |k,v| [k, v.length] }.to_h
-        
+           @y = @client_names.group_by(&:itself).map { |k,v| [k, v.length] }.to_h
+           
            @x.each do |key, value|
              # puts "Bob's #{key} is #{value}"
              @data << [key, value]
            end
+
+           @y.each do |key, value|
+             # puts "Bob's #{key} is #{value}"
+             @data2 << key
+           end
+
 
         %>
         <%# @clients %>
@@ -82,7 +92,7 @@
                     },
                     series: [{
                         type: 'pie',
-                        name: 'Total Percentage',
+                        name: 'Total:',
                         data: <%= raw(@data) %>
 
                         // [ 
@@ -103,19 +113,39 @@
         <tr>
           <td colspan="2"><h5>Breakdown of File References Per Practices:</h5></td>
         </tr>
-       <!--  <%#  @data_year.each do |key, value| %>
-          <tr>
-              <td width="20%"><strong><%#= key %></strong></td>
-              <td width="20%"><strong>Total: <%#= value %></strong></td>
-              <td width="60%">
                 <%# results.each do |res, c| %>
                   <%# if key == res %>
-                     <p><%#= c %>&nbsp;[<%#= fm_case_title(c)%>]</p>
+                     <%#= c %>&nbsp;[<%#= fm_case_title(c)%>]
                   <%# end %>
                 <%# end %>
-              </td>
-          </tr>
-        <%# end %>-->
+        <tr>
+          <td colspan=5>
+            <table class="table table-striped">
+              <tr>
+                <td>Client Code</td>
+                <td>Client Name</td>
+                <td>Total Entry</td>
+                <td>File References</td>
+              </tr>
+              <%  @x.sort.each do |key, value| %>
+                <tr>
+                  <td><%= key %></td>
+                  <td><%= client_name(key) %></td>
+                  <td><%= value %></td>
+                  <td><% 
+                        @f = file_ref_info(key, params[:practice_code]) 
+                        @f.each do |f|
+                      %>
+                        <p><%= f.file_code %> [<%= f.title %>]</p>
+                      <%
+                        end
+                      %>
+                  </td>
+                </tr>
+              <% end %>
+            </table>
+          </td>
+        </tr>
       <% end%>
   </table>
 </div>

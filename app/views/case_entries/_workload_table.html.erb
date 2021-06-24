@@ -4,9 +4,10 @@
 </div>
 <br/>
 <br/>              
-<div class="span10">                        
+<div class="span10">dsadsadasd
+  <%= params[:lawyer_id] %>                        
   <table class="table table-striped" id="case_entries" >
-
+      
       <% if @case_entries.blank? || @case_entries.nil? %>
         <tr><td colspan=5><center><h4> No data to show. </h4></center></td></tr>
       <% else %>
@@ -98,13 +99,12 @@
               <td width="20%"><strong><%= key %></strong></td>
               <td width="20%"><strong>Total: <%= value %></strong></td>
               <td width="60%">
-                <% results.sort.each do |res, c| %>
+                <% results.each do |res, c| %>
                   <% if key == res %>
                      <p><%= c %>&nbsp;[<%= fm_case_title(c)%>]</p>
                   <% end %>
                 <% end %>
               </td>
-              <td><%= link_to "<i class='icon-th'>&nbsp;Per Year Breakdown</i>".html_safe, filter_by_client_code_path(params.merge(practice_code: key, pfr:"2", type:"line")), class: "btn btn-xs btn-danger", data: {rel: "tooltip", title: "Column", toggle: "modal"} %></td>
           </tr>
         <% end %>
       <% end%>

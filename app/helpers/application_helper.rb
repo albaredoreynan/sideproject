@@ -330,5 +330,30 @@ module ApplicationHelper
 		years = FileMatter.select(:case_date).where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", params[:date_from], params[:date_to]).where("practice_code <> ''").where("practice_code IS NOT NULL").where(practice_code: practice_code).order('case_date ASC').pluck(:case_date) #.map{ |dt| dt.year }.uniq
 		return years
 	end
+  
+  def load_case_open_per_year_per_client(client_code, practice_code, beg_date, end_date)
+  	years = FileMatter.select(:case_date).where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", params[:date_from], params[:date_to]).where("practice_code <> ''").where("practice_code IS NOT NULL").where(practice_code: practice_code).where(cl_code_txt: client_code).order('case_date ASC').pluck(:case_date) #.map{ |dt| dt.year }.uniq
+		return years
+  end
+
+	def client_name(client_code)
+		@c = Client.find_by_cl_code_txt(client_code)
+		return @c.name
+	end
+
+	def file_ref_info(client_code, practice_code)
+		@f = FileMatter.where(cl_code_txt: client_code).where(practice_code: practice_code)
+		return @f
+	end
+
+	def load_file_ref_info_year(practice_code, beg_date, end_date)
+		@f = FileMatter.where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", beg_date, end_date).where("practice_code <> ''").where("practice_code IS NOT NULL").where(practice_code: practice_code).order('case_date ASC')
+		return @f
+	end
+
+	def load_file_ref_info_year_per_client(client_code, practice_code, beg_date, end_date)
+		@f = FileMatter.where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", beg_date, end_date).where("practice_code <> ''").where("practice_code IS NOT NULL").where(practice_code: practice_code).where(cl_code_txt: client_code).order('case_date ASC')
+		return @f
+	end
 end
 # @case_entries = FileMatter.where(args).where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", params[:date_from], params[:date_to]).where("practice_code <> ''").where("practice_code IS NOT NULL")

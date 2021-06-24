@@ -1,0 +1,39 @@
+<div class="panel panel-primary">
+  	<div class="panel-primary panel-heading">Search</div>
+	  <div class="row">
+	    <div class="span11">
+		    <%= form_for filter_by_workload_path, :method => 'get' do %>
+					<table class="table" width="100%">
+					  <thead>		
+						<tr>
+							<td>Lawyer List:</td>
+							<td colspan=3>
+								<%= select_tag :lawyer_id, options_for_select(@lawyers2), { "data-placeholder" => "", :multiple => true, id: 'chosen-select2', :include_blank => true, :style => "width: 100%;"} %>
+							</td>
+						</tr>	
+						<tr>
+							<td>Date From: </td>	
+							<td>
+								<%= text_field_tag :beginning_date, nil,  :id => "datepicker_beg"%>
+							</td>
+							<td>Date To: </td>	
+							<td>
+								<%= text_field_tag :ending_date, nil,  :id => "datepicker_end"%>
+								<%= hidden_field_tag :pfr, 4 %>
+							</td>
+						</tr>
+						<tr><td colspan="4"><div class="pull-right">
+							    <%= submit_tag "Search" %>
+						</div></td></tr>
+					  </thead>		
+					</table>
+				<% end %>
+    	</div>
+  	</div>
+  </div>
+<script>
+	$("#chosen-select2").chosen();
+  $('#datepicker_beg').datepicker({format: 'yyyy-mm-dd'});
+  $('#datepicker_end').datepicker({format: 'yyyy-mm-dd'});
+</script>
+  

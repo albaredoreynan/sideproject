@@ -102,19 +102,37 @@
         <tr>
           <td colspan="2"><h5>Breakdown of File References Per Practices:</h5></td>
         </tr>
-        <%  @data_year.each do |key, value| %>
-          <tr>
-              <td width="20%"><strong><%= key %></strong></td>
-              <td width="20%"><strong>Total: <%= value %></strong></td>
-              <td width="60%">
-                <% results.each do |res, c| %>
-                  <% if key == res %>
-                     <p><%= c %>&nbsp;[<%= fm_case_title(c)%>]</p>
-                  <% end %>
-                <% end %>
-              </td>
-          </tr>
-        <% end %>
+        <tr>
+          <td colspan=5>
+            <table class="table table-striped">
+              <tr>
+                <td>Year Opened</td>
+                <td>Total Entry</td>
+                <td>File Reference Info</td>
+              </tr>
+              <%  @data_year.sort.each do |key, value| %>
+                <tr>
+                  <td><%= key %></td>
+                  <td><%= value %></td>
+                  <td align="left"><% 
+                          dt = DateTime.new(key)
+                          boy = dt.beginning_of_year
+                          eoy = dt.end_of_year
+                          @f = load_file_ref_info_year(params[:practice_code], boy, eoy) 
+                          @f.each do |f|
+                      %>
+                          <span style="padding-left:20px;"><%= f.cl_code_txt %></span>
+                          <span style="padding-left:20px;"><%= f.client.name %></span>
+                          <span style="padding-left:20px;"><%= f.file_code %> [<%= f.title %>]</span><br>
+                      <%
+                          end
+                      %>
+                  </td>
+                </tr>
+              <% end %>
+            </table>
+          </td>
+        </tr>
       <% end%>
   </table>
 </div>

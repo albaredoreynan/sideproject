@@ -23,8 +23,14 @@
     <% cl4 = '' %>
   <% end %>
 
+  <% if params[:pfr] == '5' %>
+    <% cl5 = 'active' %>
+  <% else %>
+    <% cl5 = '' %>
+  <% end %>
+
   <li class="<%= cl %>" >
-    <%= link_to "Filter By Workload", case_entries_path(pfr:"1"), style:"font-weight: bold;" %>
+    <%= link_to "List Case Entries", case_entries_path(pfr:"1"), style:"font-weight: bold;" %>
   </li>
   <li class="<%= cl2 %>" >
     <%= link_to "Filter By Client Code", filter_by_client_code_path(pfr:"2"), style:"font-weight: bold;" %>
@@ -33,6 +39,9 @@
     <%= link_to "Filter By Practice Code", filter_by_practice_code_path(pfr:"3"), style:"font-weight: bold;" %>
   </li>
   <li class="<%= cl4 %>" >
-    <%= link_to "Filter By Period", filter_by_period_path(pfr:"4"), style:"font-weight: bold;" %>
+    <%= link_to "Filter By Workload", filter_by_workload_path(pfr:"4"), style:"font-weight: bold;" %>
+  </li>
+  <li class="<%= cl5 %>" >
+    <%= link_to "Filter By Period", filter_by_period_path(pfr:"5"), style:"font-weight: bold;" %>
   </li>
 </ul>
