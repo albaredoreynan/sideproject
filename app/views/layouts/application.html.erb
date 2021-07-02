@@ -64,12 +64,12 @@
                 <li>  
                   <%= link_to "Calls", calls_path %>
                 </li>
-                <!-- <li>  
-                  <%#= link_to "Prints", printouts_path %>
-                </li> -->
                 <li>  
-                  <%= link_to "Practice Areas", practice_tables_path %>
+                  <%= link_to "Prints", printouts_path %>
                 </li>
+                <!-- <li>  
+                  <%#= link_to "Practice Areas", practice_tables_path %>
+                </li> -->
               <% elsif current_user.role == 'Front Desk' %>
                 <li>  
                   <%= link_to "Schedules", schedules_path %>
