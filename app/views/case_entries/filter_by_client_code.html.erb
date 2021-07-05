@@ -25,6 +25,8 @@
               <%= render "client_code_pie" %>
             <% elsif params[:type] == 'line' %>
               <%= render "client_code_line" %>
+            <% elsif params[:type] == 'hours' %>
+              <%= render "client_code_hours" %>  
             <% else %>  
               <%= render "client_code_table" %>
             <% end %>

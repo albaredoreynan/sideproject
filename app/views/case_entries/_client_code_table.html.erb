@@ -104,7 +104,10 @@
                   <% end %>
                 <% end %>
               </td>
-              <td><%= link_to "<i class='icon-th'>&nbsp;Per Year Breakdown</i>".html_safe, filter_by_client_code_path(params.merge(practice_code: key, pfr:"2", type:"line")), class: "btn btn-xs btn-danger", data: {rel: "tooltip", title: "Column", toggle: "modal"} %></td>
+              <td>
+                <%= link_to "<i class='icon-th'>&nbsp;Per Year Breakdown</i>".html_safe, filter_by_client_code_path(params.merge(practice_code: key, pfr:"2", type:"line")), class: "btn btn-xs btn-danger", data: {rel: "tooltip", title: "Column", toggle: "modal"} %>
+                <%= link_to "<i class='icon-th'>&nbsp;Per Hour(Lawyer)</i>".html_safe, filter_by_client_code_path(params.merge(practice_code: key, pfr:"2", type:"hours")), class: "btn btn-xs btn-default", data: {rel: "tooltip", title: "Column", toggle: "modal"} %>
+              </td>
           </tr>
         <% end %>
       <% end%>
