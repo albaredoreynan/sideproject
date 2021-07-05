@@ -56,8 +56,8 @@
   		</div>
   		<div class="span4">
         <div class="span2">
-          <%= f.label :client_id, "Client:", style:"font-weight: bold;" %>
-          <%= f.text_field :client_name, :readonly => true %>
+          <%= f.label :client_id, "Client:", style:"font-weight: bold;", :required => true %>
+          <%= f.text_field :client_name, :readonly => true, :required => true %>
           <%#= f.collection_select(:client_id, @clients, :id, :name,  { :id => 'client_id', :required => true, :prompt => "Select From List", :readonly => true } ) %>
 
 

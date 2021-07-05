@@ -17,6 +17,7 @@
         <% @practices = Array.new
            @data = Array.new 
            @data2 = Array.new 
+           @clients = Array.new
            @case_entries.each do |fm|
              @practices << fm.practice_code
            end 
@@ -28,6 +29,13 @@
              @data2 << value
            end
 
+           @case_entries.each do |fm|
+             @clients << fm.client_id
+           end 
+
+           @x = @practices.group_by(&:itself).map { |k,v| [k, v.length] }.to_h
+           
+
         %>
 
         <%  if params[:beginning_date].nil? || params[:beginning_date].empty? 
@@ -37,6 +45,19 @@
               @beginning_date = params[:beginning_date]
               @ending_date = params[:ending_date]
             end
+
+            @myclients = Array.new
+
+            @clients.uniq.each do |client|
+              
+              # puts "Bob's #{key} is #{value}"
+              cname = Client.find(client)
+              @myclients << cname.cl_code_txt
+              @data2 << total_number_of_case_entry_per_year(client, @lawyers_id, @beginning_date, @ending_date)
+              
+            end
+
+
         %>
 
         <% @lawyer_name = Lawyer.find(@lawyers_id) %>
@@ -55,7 +76,7 @@
                     },
                     xAxis: {
                         // categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
-                        categories: <%= raw(@data) %>,
+                        categories: <%= raw(@myclients) %>,
                         title: {
                             text: null
                         }

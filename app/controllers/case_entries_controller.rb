@@ -542,8 +542,10 @@ class CaseEntriesController < ApplicationController
         dto = t.strftime("%m/%d/%y")
         @lid = params[:lawyer_id]
         @assigned = AssignedLawyer.where(lawyer_id: @lid).pluck(:file_matter_id)
-        raise
-        @case_entries = FileMatter.where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", params[:date_from], params[:date_to]).where("practice_code <> ''").where("practice_code IS NOT NULL")
+        @file_ref = FileMatter.where(id: @assigned).pluck(:file_code)
+
+        @case_entries = FileMatter.where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", params[:beginning_date], params[:ending_date]).where("practice_code <> ''").where("practice_code IS NOT NULL").where(id: @assigned)
+        
       # else
       #   @case_entries = CaseEntry.paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
       end   

@@ -1,0 +1,129 @@
+<div class="span10">
+  <div class="pull-left">
+  </div>
+</div>
+<br/>
+<br/>              
+<div class="span10">
+  <% @lawyers_id = params[:lawyer_id] %>                        
+  <table class="table table-striped" id="case_entries" >
+      <% if @case_entries.blank? || @case_entries.nil? %>
+        <tr><td colspan=5><center><h4> No data to show. </h4></center></td></tr>
+      <% else %>
+        <% @ca = @case_entries.uniq %>
+        <% 
+          results = @case_entries.map { |u| [u.practice_code, u.file_code] } 
+        %>
+        <% @practices = Array.new
+           @data = Array.new 
+           @data2 = Array.new 
+           @case_entries.each do |fm|
+             @practices << fm.practice_code
+           end 
+           @x = @practices.group_by(&:itself).map { |k,v| [k, v.length] }.to_h
+        
+           @x.each do |key, value|
+             # puts "Bob's #{key} is #{value}"
+             @data << key
+             @data2 << value
+           end
+
+        %>
+
+        <%  
+
+            if params[:beginning_date].nil? || params[:beginning_date].empty? 
+              @beginning_date = Date.today.at_beginning_of_month
+              @ending_date = Date.today
+            else 
+              @beginning_date = params[:beginning_date]
+              @ending_date = params[:ending_date]
+            end
+
+            @yyy = load_case_open_per_year_per_lawyer(@lawyers_id, @beginning_date, @ending_date)
+            @years = Array.new
+            @yyy.each do |c|
+              myear = Date.strptime(c.to_s, '%m/%d/%y')
+              @years << myear.year
+            end
+            @lawdata = Array.new
+            @totalhours = Array.new
+            @data_year = @years.uniq
+            @data_year.each do |x|
+              @cc = calculate_lawyer_hours_per_year(x, @lawyers_id)
+              @lawdata << [x.to_s, @cc]
+              @totalhours << @cc
+            end
+        %>
+
+        <% @lawyer_name = Lawyer.find(@lawyers_id) %>
+        <td colspan="5">
+          <script>
+            $(function () {
+                $('#container').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: 1,//null,
+                        plotShadow: false
+                    },
+                    title: {
+                        text: 'Hours Per Year - <%= raw(@lawyer_name.first.full_name)%>'
+                    },
+                    subtitle:{
+                        text: 'Period Covers: <%=raw(@beginning_date)%> - <%=raw(@ending_date)%>'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'blue'
+                                }
+                            }
+                        }
+                    },
+                    series: [{
+                        type: 'pie',
+                        name: 'Total Hours',
+                        data: <%= raw(@lawdata) %>
+
+                        // [ 
+                        //     ['Firefox',   45.0],
+                        //     ['IE',       26.8],
+                        //     // ['Safari',    8.5],
+                        //     // ['Opera',     6.2],
+                        //     // ['Others',   0.7]
+                        // ]
+                    }]
+                });
+            });
+          </script>
+          <div id="container" style="width: 100%; height: 600px; margin: 0 auto"></div>
+        </td>
+        <tr><td colspan=5><strong>TOTAL HOURS ACCUMULATED :</strong><%= @totalhours.inject(:+) %></td></tr>
+      
+        <tr>
+          <td colspan="2"><!-- <h5>Breakdown of File References Per Practices:</h5> --></td>
+        </tr>
+        <%#  @x.each do |key, value| %>
+          <!-- <tr>
+              <td width="20%"><strong><%#= key %></strong></td>
+              <td width="20%"><strong>Total: <%#= value %></strong></td>
+              <td width="60%">
+                <%# results.each do |res, c| %>
+                  <%# if key == res %>
+                     <p><%#= c %>&nbsp;[<%#= fm_case_title(c)%>]</p>
+                  <%# end %>
+                <%# end %>
+              </td>
+          </tr> -->
+        <%# end %>
+      <% end%>
+  </table>
+</div>
