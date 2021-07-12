@@ -2,15 +2,15 @@ class DocAbbreviationsController < ApplicationController
 	helper_method :sort_column, :sort_direction
   def index
     if params[:doc_abbreviation].present?
-      @doc_abbreviations = DocAbbreviation.where("name ILIKE ?", "#{params[:doc_abbreviation]}").paginate(:page => params[:page], :per_page => 50).order(sort_column + " " + sort_direction)
+      @doc_abbreviations = DocAbbreviation.where("document_name ILIKE ?", "#{params[:doc_abbreviation]}").paginate(:page => params[:page], :per_page => 50).order(sort_column + " " + sort_direction)
     else  
-      @doc_abbreviations = DocAbbreviation.paginate(:page => params[:page], :per_page => 50).order("document_name ASC")
+      @doc_abbreviations = DocAbbreviation.paginate(:page => params[:page], :per_page => 50).order(sort_column + " " + sort_direction)
     end
     
-    @doc_abbreviation_all = DocAbbreviation.order("name ASC")
+    # @doc_abbreviation_all = DocAbbreviation.order("document_name ASC")
 
     @file_naming = FileNaming.find(1)
-
+    @da = DocAbbreviation.order('document_name ASC').map{|a|[a.document_name, a.document_name]}
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @doc_abbreviations }

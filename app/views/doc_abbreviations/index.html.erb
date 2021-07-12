@@ -18,6 +18,26 @@
         <% end %>
         <div class="row">
           <div class="span11">
+
+
+            <div class="panel panel-primary">
+              <div class="panel-primary panel-heading">Search</div>
+              <div class="row">
+                <div class="span11">
+                  <%= form_for doc_abbreviations_path, :method => 'get' do %>
+                    <div class="span6">
+                        Keywords:                
+                        <%= select_tag :doc_abbreviation, options_for_select(@da), { "data-placeholder" => "", :multiple => false, id: 'chosen-select_ab', :include_blank => true, style:"width: 420px;"} %>
+                    </div>
+                    <div class="span2">
+                      <%= submit_tag "Search", class: 'btn btn-mini btn-info' %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <br>
+
             <table class="table table-striped" id="doc_abbreviations">
               <thead>
                 <tr>
@@ -188,18 +208,7 @@
 </div>
 <br>
 <br>
-<!-- 
-FNC Format / Samples
-Ref. No.  Year –Series -Practice Code –Client Code
-  2020-008-CORP-C-0001 
+<script>
+  $("#chosen-select_ab").chosen();
+</script>
   
-File Name Internal  Abbreviation_YYYYMMDDv1_ Client Code_Initials(another subject if applicable)
-  PP_20210427v1_C-0001_GPQP MKAT CompanyX
-  
-File Name External  Abbreviation_YYYYMMDDvf_ClientCode PMFSL (another subject if applicable)
-  PP_20210427vf_C-0001_PMFSL CompanyX
-  
-Tracer: Ref. No. + Agency + File Name
-  2020-008-CORP-C-0001(Court/Agency)PP_YYYYMMDDv1_Client Code_Initials
-  2020-008-CORP-C-0001(NLRC)PP_20210427v1_C-0001 MKAT
-  2020-008-CORP-C-0001(SC)PP_20210428v2_C-0001 GPQP MKAT -->
