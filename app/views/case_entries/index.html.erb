@@ -105,10 +105,13 @@
                     <%# end %>
                 </td>  -->   
                 <td><%#= case_entry.file_matter_case %><%= case_entry.case_title %></td>
-                
-                <% @lawyers_initial = Lawyer.where("id = ?", case_entry.lawyer_id) %>
-                <td>
+                <% @client = Client.find(:all, :conditions => { :id => case_entry.client_id} ) %>
+                <td><% @client.each do |x| %>
+                      <%= x.name %>
+                    <% end %>
                 </td>
+                <% @lawyers_initial = Lawyer.where("id = ?", case_entry.lawyer_id) %>
+                
                 <% if current_user.role == 'Administrator' %>
                   <td><%= case_entry.lawyer.initials %></td>    
                 <% end %>
