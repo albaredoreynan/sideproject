@@ -553,6 +553,27 @@ class CaseEntriesController < ApplicationController
     end
   end
 
+  def filter_by_compared_workload
+    @lawyers2 = Lawyer.where(is_active: 'Yes').map{|a|[a.full_name, a.id]}
+    if current_user.role == 'Administrator' || current_user.role == 'Billing Clerk'
+      if params[:beginning_date].present? && params[:ending_date].present? || params[:lawyer_id]
+        f = Date.parse(params[:beginning_date])
+        t = Date.parse(params[:ending_date])
+        dfrom = f.strftime("%m/%d/%y")
+        dto = t.strftime("%m/%d/%y")
+        @lid = params[:lawyer_id]
+        @assigned = AssignedLawyer.where(lawyer_id: @lid).pluck(:file_matter_id)
+        @file_ref = FileMatter.where(id: @assigned).pluck(:file_code)
+
+        @case_entries = FileMatter.where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", params[:beginning_date], params[:ending_date]).where("practice_code <> ''").where("practice_code IS NOT NULL").where(id: @assigned)
+        
+      # else
+      #   @case_entries = CaseEntry.paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
+      end   
+    else
+    end
+  end
+
   private
   
   def sort_column

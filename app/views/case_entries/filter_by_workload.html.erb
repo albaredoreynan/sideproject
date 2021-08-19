@@ -23,8 +23,8 @@
               <%= render "workload_total_hours" %>
             <% elsif params[:type] == 'clients' %>
               <%= render "workload_clients" %>
-            <%# elsif params[:type] == 'line' %>
-              <%#= render "client_code_line" %>
+            <% elsif params[:type] == 'hours_per_pc' %>
+              <%= render "workload_hours_per_practices" %>
             <% else %>  
               <%= render "workload_table" %>
             <% end %>

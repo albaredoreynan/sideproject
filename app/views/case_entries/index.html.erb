@@ -94,7 +94,12 @@
                 <% end %>
 
                 <td data-title=""><center><%= @filerefno %><%#= case_entry.file_matter_id %></center></td>
-                <% @client = Client.find(:all, :conditions => { :id => case_entry.client_id} ) %>
+                
+                <% 
+                     
+
+                %>
+
                 <!-- <td><%# @client.each do |x| %>
                       <%#= x.cl_code_txt %>
                     <%# end %>
@@ -102,9 +107,8 @@
                 <td><%#= case_entry.file_matter_case %><%= case_entry.case_title %></td>
                 
                 <% @lawyers_initial = Lawyer.where("id = ?", case_entry.lawyer_id) %>
-                <td><% @client.each do |x| %>
-                      <%= x.name %>
-                    <% end %></td>
+                <td>
+                </td>
                 <% if current_user.role == 'Administrator' %>
                   <td><%= case_entry.lawyer.initials %></td>    
                 <% end %>
@@ -124,15 +128,15 @@
                         <div class="form-inputs">
                           <div class="span6">
                             <%= hidden_field_tag :id, case_entry.id %>
-                            <% @client_name = Client.find(case_entry.client_id) %>
+                            <%# @client_name = Client.find(case_entry.client_id) %>
                             <% @file_matter = FileMatter.where(:file_code => case_entry.file_matter_id).first %>
 
                             <p><b>File Reference No. :</b>
                               <%= f.autocomplete_field :file_matter_id, autocomplete_file_matter_file_code_case_entries_path, :required => true, :class => "case_entry_file_matter_id", :id => "#{case_entry.id}" %>
                             </p>
-                            <p><b>Client :</b>&nbsp;<%= f.text_field :client_name, value: @client_name.name, :readonly => true, :id => "client_name_#{case_entry.id}" %></p>
-                              <%= f.hidden_field :client_id, :id => "client_id_#{case_entry.id}" %>
-                            <p><b>Client Code :</b>&nbsp;<%= f.text_field :client_code, value: @file_matter.cl_code_txt, :readonly => true, :id => "client_code_#{case_entry.id}" %></p>
+                            <p><b>Client :</b>&nbsp;<%#= f.text_field :client_name, value: @client_name.name, :readonly => true, :id => "client_name_#{case_entry.id}" %></p>
+                              <%#= f.hidden_field :client_id, :id => "client_id_#{case_entry.id}" %>
+                            <p><b>Client Code :</b>&nbsp;<%#= f.text_field :client_code, value: @file_matter.cl_code_txt, :readonly => true, :id => "client_code_#{case_entry.id}" %></p>
                             <p><b>Practice Area Code :</b>&nbsp;<%= f.text_field :practice_code, value: @file_matter.practice_code, :readonly => true, :id => "practice_code_#{case_entry.id}" %></p>
                             
                             <p><b>Case Title / Matter :</b>&nbsp;<%= f.text_field :case_title, :readonly => true, :id => "case_title_#{case_entry.id}" %></p>

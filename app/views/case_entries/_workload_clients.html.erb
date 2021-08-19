@@ -47,13 +47,16 @@
             end
 
             @myclients = Array.new
+            @client_data = Array.new
 
             @clients.uniq.each do |client|
               
               # puts "Bob's #{key} is #{value}"
               cname = Client.find(client)
-              @myclients << cname.cl_code_txt
-              @data2 << total_number_of_case_entry_per_year(client, @lawyers_id, @beginning_date, @ending_date)
+              if !cname.cl_code_txt.nil?
+                @myclients << cname.cl_code_txt
+              end
+              @client_data << total_number_of_case_entry_per_year(client, @lawyers_id, @beginning_date, @ending_date)
               
             end
 
@@ -118,7 +121,7 @@
                     series: [{
                         name: 'Total File Reference Handled',
                         // data: [107, 31, 835, 203, 2, 50, 33, 23, 34, 12]
-                        data: <%= raw(@data2) %>
+                        data: <%= raw(@client_data) %>
                     }
                     // }, 
 

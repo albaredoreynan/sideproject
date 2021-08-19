@@ -97,4 +97,5 @@ Case2::Application.routes.draw do
   match 'filter_by_client_code', :to => 'case_entries#filter_by_client_code'
   match 'filter_by_practice_code', :to => 'case_entries#filter_by_practice_code'
   match 'filter_by_period', :to => 'case_entries#filter_by_period'
+  match 'filter_by_compared_workload', :to => 'case_entries#filter_by_compared_workload'
 end

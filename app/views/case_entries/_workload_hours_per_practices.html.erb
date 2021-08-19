@@ -1,0 +1,117 @@
+<div class="span10">
+  <div class="pull-left">
+  </div>
+</div>
+<br/>
+<br/>              
+<div class="span10">                        
+  <table class="table table-striped" id="case_entries" >
+
+      <% if @case_entries.blank? || @case_entries.nil? %>
+        <tr><td colspan=5><center><h4> No data to show. </h4></center></td></tr>
+      <% else %>
+        <% @ca = @case_entries.uniq %>
+        <% 
+          results = @case_entries.map { |u| [u.practice_code, u.file_code] } 
+          
+        %>
+
+        <%  if params[:date_from].nil? || params[:date_from].empty? 
+              @beginning_date = Date.today.at_beginning_of_month
+              @ending_date = Date.today
+            else 
+              @beginning_date = params[:date_from]
+              @ending_date = params[:date_to]
+            end
+        %>
+
+        <% @practices = Array.new
+           @data = Array.new 
+           @grand_time = Array.new
+           @case_entries.each do |fm|
+             @practices << fm.practice_code
+           end 
+           @x = @practices.group_by(&:itself).map { |k,v| [k, v.length] }.to_h
+        
+           @x.each do |key, value|
+             # puts "Bob's #{key} is #{value}"
+             @total_hours = calculate_time_by_practice_code_per_client(key, @beginning_date, @ending_date, params[:client_code])
+             @data << [key, @total_hours]
+             @grand_time << @total_hours
+           end
+        %>
+
+        
+
+        <% @client_name = Client.find_by_cl_code_txt(params[:client_code]) %>
+        <td colspan="5">
+          <script>
+            $(function () {
+                $('#container').highcharts({
+                    chart: {
+                        plotBackgroundColor: null,
+                        plotBorderWidth: 1,//null,
+                        plotShadow: false
+                    },
+                    title: {
+                        text: 'Practice Areas for Client: <%= @client_name.name %>(<%= @client_name.cl_code_txt %>)'
+                    },
+                    subtitle:{
+                        text: 'Period Covers: <%=raw(@beginning_date)%> - <%=raw(@ending_date)%>'
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                    },
+                    plotOptions: {
+                        pie: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: true,
+                                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                style: {
+                                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'blue'
+                                }
+                            }
+                        }
+                    },
+                    series: [{
+                        type: 'pie',
+                        name: 'Practice Areas',
+                        data: <%= raw(@data) %>
+
+                        // [ 
+                        //     ['Firefox',   45.0],
+                        //     ['IE',       26.8],
+                        //     // ['Safari',    8.5],
+                        //     // ['Opera',     6.2],
+                        //     // ['Others',   0.7]
+                        // ]
+                    }]
+                });
+            });
+          </script>
+          <div id="container" style="width: 100%; height: 600px; margin: 0 auto"></div>
+        </td>
+        <tr><td colspan=5><strong>TOTAL TIME RENDERED :</strong>&nbsp;<%= @grand_time.inject(:+).to_f %>&nbsp;HRS</td></tr>
+        <tr>
+          <td colspan="2"><h5>Breakdown of File References Per Practices:</h5></td>
+        </tr>
+        <%  @z = @practices.group_by(&:itself).map { |k,v| [k, v.length] }.to_h %>
+        <%  @z.each do |key, value| %>
+          <tr>
+              <td width="20%"><strong><%= key %></strong></td>
+              <td width="20%"><strong>Total Hours: <%= calculate_time_by_practice_code_per_client(key, @beginning_date, @ending_date, params[:client_code]) %></strong></td>
+              
+          </tr>
+        <% end %>
+      <% end%>
+      <!-- @x.each do |key, value|
+             # puts "Bob's #{key} is #{value}"
+             @total_hours = calculate_time_by_practice_code_per_client(key, @beginning_date, @ending_date, params[:client_code])
+             @data << [key, @total_hours]
+             @grand_time << @total_hours
+           end -->
+
+  </table>
+</div>
