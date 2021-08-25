@@ -10,19 +10,17 @@
       <% if @case_entries.blank? || @case_entries.nil? %>
         <tr><td colspan=5><center><h4> No data to show. </h4></center></td></tr>
       <% else %>
-        <% @ca = @case_entries.uniq %>
+                 
         <% 
-          results = @case_entries.map { |u| [u.practice_code, u.file_code] } 
-          
-        %>
+          @case_entries = nil
 
-        <%  if params[:date_from].nil? || params[:date_from].empty? 
-              @beginning_date = Date.today.at_beginning_of_month
-              @ending_date = Date.today
-            else 
-              @beginning_date = params[:date_from]
-              @ending_date = params[:date_to]
-            end
+          dt = DateTime.new(params[:data_year].to_i)
+          boy = dt.beginning_of_year
+          eoy = dt.end_of_year
+          @case_entries = FileMatter.where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", boy, eoy).where("practice_code <> ''").where("practice_code IS NOT NULL").where(id: @assigned)
+        %>
+        <% 
+          #  results = @case_entries.map { |u| [u.practice_code, u.file_code] } 
         %>
 
         <% @practices = Array.new
@@ -35,15 +33,14 @@
         
            @x.each do |key, value|
              # puts "Bob's #{key} is #{value}"
-             @total_hours = calculate_time_by_practice_code_per_client(key, @beginning_date, @ending_date, params[:client_code])
+             @total_hours = calculate_time_by_practice_code_per_lawyer(key, boy, eoy, params[:lawyer_id])
              @data << [key, @total_hours]
              @grand_time << @total_hours
            end
         %>
 
         
-
-        <% @client_name = Client.find_by_cl_code_txt(params[:client_code]) %>
+        <% @lawyer_name = Lawyer.find(params[:lawyer_id]) %>
         <td colspan="5">
           <script>
             $(function () {
@@ -54,10 +51,10 @@
                         plotShadow: false
                     },
                     title: {
-                        text: 'Practice Areas for Client: <%= @client_name.name %>(<%= @client_name.cl_code_txt %>)'
+                        text: '<%= raw(@lawyer_name.full_name)%>'
                     },
                     subtitle:{
-                        text: 'Period Covers: <%=raw(@beginning_date)%> - <%=raw(@ending_date)%>'
+                        text: 'Year: <%=raw(params[:data_year])%>'
                     },
                     tooltip: {
                         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -101,7 +98,7 @@
         <%  @z.each do |key, value| %>
           <tr>
               <td width="20%"><strong><%= key %></strong></td>
-              <td width="20%"><strong>Total Hours: <%= calculate_time_by_practice_code_per_client(key, @beginning_date, @ending_date, params[:client_code]) %></strong></td>
+              <td width="20%"><strong>Total Hours: <%= calculate_time_by_practice_code_per_lawyer(key, boy, eoy, params[:lawyer_id]) %></strong></td>
               
           </tr>
         <% end %>

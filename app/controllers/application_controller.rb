@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
     elsif user.role == 'Front Desk'
       schedules_path
     else
-      graphs_path(:pfr => 1)
+      case_entries_path(:pfr => 1)
     end	
   end
 

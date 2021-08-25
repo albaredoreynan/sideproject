@@ -109,6 +109,7 @@ class CaseEntriesController < ApplicationController
               :case_title => params[:case_entry][:case_title],
               :file_matter_case => params[:case_entry][:file_matter_case],
               :lawyer_id => al.lawyer_id,
+              :client_name => params[:case_entry][:client_name],
               :client_code => params[:case_entry][:client_code],
               :practice_code => params[:case_entry][:practice_code],
               :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
@@ -148,11 +149,13 @@ class CaseEntriesController < ApplicationController
                 :case_title => params[:case_entry][:case_title],
                 :file_matter_case => params[:case_entry][:file_matter_case],
                 :lawyer_id => al.lawyer_id,
+                :client_name => params[:case_entry][:client_name],
                 :client_code => params[:case_entry][:client_code],
                 :practice_code => params[:case_entry][:practice_code],
                 :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
                 :user_id => usr.id
               )
+
               @case_entry.save
             end
           else
@@ -167,11 +170,13 @@ class CaseEntriesController < ApplicationController
                   :case_title => params[:case_entry][:case_title],
                   :file_matter_case => params[:case_entry][:file_matter_case],
                   :lawyer_id => current_user.lawyer_id,
+                  :client_name => params[:case_entry][:client_name],
                   :client_code => params[:case_entry][:client_code],
                   :practice_code => params[:case_entry][:practice_code],
                   :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
                   :user_id => current_user.id
                 )
+
                 @case_entry.save
             end
           end
@@ -187,6 +192,7 @@ class CaseEntriesController < ApplicationController
           :case_title => params[:case_entry][:case_title],
           :file_matter_case => params[:case_entry][:file_matter_case],
           :lawyer_id => current_user.lawyer_id,
+          :client_name => params[:case_entry][:client_name],
           :client_code => params[:case_entry][:client_code],
           :practice_code => params[:case_entry][:practice_code],
           :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
@@ -218,7 +224,6 @@ class CaseEntriesController < ApplicationController
   # PUT /case_entries/1.json
   def update
     @case_entry = CaseEntry.find(params[:id])
-
     if params[:commit] == 'Submit & Add New Entry'
       if params[:case_entry_lawyer_id].present?
         @assigned_lawyers = AssignedLawyer.find(:all, :conditions => { :file_matter_id => params[:filematter_id] } )
@@ -237,6 +242,7 @@ class CaseEntriesController < ApplicationController
                 :case_title => params[:case_entry][:case_title],
                 :file_matter_case => params[:case_entry][:file_matter_case],
                 :lawyer_id => al.lawyer_id,
+                :client_name => params[:case_entry][:client_name],
                 :client_code => params[:case_entry][:client_code],
                 :practice_code => params[:case_entry][:practice_code],
                 :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
@@ -256,6 +262,7 @@ class CaseEntriesController < ApplicationController
                   :case_title => params[:case_entry][:case_title],
                   :file_matter_case => params[:case_entry][:file_matter_case],
                   :lawyer_id => current_user.lawyer_id,
+                  :client_name => params[:case_entry][:client_name],
                   :client_code => params[:case_entry][:client_code],
                   :practice_code => params[:case_entry][:practice_code],
                   :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
@@ -276,6 +283,7 @@ class CaseEntriesController < ApplicationController
           :case_title => params[:case_entry][:case_title],
           :file_matter_case => params[:case_entry][:file_matter_case],
           :lawyer_id => current_user.lawyer_id,
+          :client_name => params[:case_entry][:client_name],
           :client_code => params[:case_entry][:client_code],
           :practice_code => params[:case_entry][:practice_code],
           :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
@@ -283,6 +291,24 @@ class CaseEntriesController < ApplicationController
         )
         @case_entry.save      
       end
+    elsif params[:commit] == 'Submit Entry'
+      @case_entry = CaseEntry.new(
+       :file_matter_id => params[:case_entry][:file_matter_id],
+        :entry_date => params[:case_entry][:entry_date],
+        :time_spent_from => params[:case_entry][:time_spent_from],
+        :time_spent_to => params[:case_entry][:time_spent_to],
+        :work_particulars => params[:case_entry][:work_particulars],
+        :client_id => params[:case_entry][:client_id],
+        :case_title => params[:case_entry][:case_title],
+        :file_matter_case => params[:case_entry][:file_matter_case],
+        :lawyer_id => current_user.lawyer_id,
+        :client_name => params[:case_entry][:client_name],
+        :client_code => params[:case_entry][:client_code],
+        :practice_code => params[:case_entry][:practice_code],
+        :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
+        :user_id => current_user.id
+      )
+      @case_entry.save
     else
 
     end
@@ -290,6 +316,8 @@ class CaseEntriesController < ApplicationController
     respond_to do |format|
       if params[:commit] == 'Submit & Add New Entry'
         format.html { redirect_to new_case_entry_path(:last_id => @case_entry), notice: "Entries for Case #{params[:case_entry][:case_title]} has been created." }
+      elsif params[:commit] == 'Submit Entry'
+        format.html { redirect_to case_entries_path, notice: 'Case entry was successfully created.' }
       else
         if @case_entry.update_attributes(params[:case_entry])
           format.html { redirect_to case_entries_path, notice: 'Case entry was successfully updated.' }
@@ -555,23 +583,24 @@ class CaseEntriesController < ApplicationController
 
   def filter_by_compared_workload
     @lawyers2 = Lawyer.where(is_active: 'Yes').map{|a|[a.full_name, a.id]}
-    if current_user.role == 'Administrator' || current_user.role == 'Billing Clerk'
-      if params[:beginning_date].present? && params[:ending_date].present? || params[:lawyer_id]
-        f = Date.parse(params[:beginning_date])
-        t = Date.parse(params[:ending_date])
-        dfrom = f.strftime("%m/%d/%y")
-        dto = t.strftime("%m/%d/%y")
-        @lid = params[:lawyer_id]
-        @assigned = AssignedLawyer.where(lawyer_id: @lid).pluck(:file_matter_id)
-        @file_ref = FileMatter.where(id: @assigned).pluck(:file_code)
+    # if current_user.role == 'Administrator' || current_user.role == 'Billing Clerk'
+    #   if params[:beginning_date].present? && params[:ending_date].present? || params[:lawyer_id]
+    #     f = Date.parse(params[:beginning_date])
+    #     t = Date.parse(params[:ending_date])
+    #     dfrom = f.strftime("%m/%d/%y")
+    #     dto = t.strftime("%m/%d/%y")
+    #     @lid = params[:lawyer_id]
+    #     raise
+    #     @assigned = AssignedLawyer.where(lawyer_id: @lid).pluck(:file_matter_id)
+    #     @file_ref = FileMatter.where(id: @assigned).pluck(:file_code)
 
-        @case_entries = FileMatter.where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", params[:beginning_date], params[:ending_date]).where("practice_code <> ''").where("practice_code IS NOT NULL").where(id: @assigned)
+    #     @case_entries = FileMatter.where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", params[:beginning_date], params[:ending_date]).where("practice_code <> ''").where("practice_code IS NOT NULL").where(id: @assigned)
         
-      # else
-      #   @case_entries = CaseEntry.paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
-      end   
-    else
-    end
+    #   # else
+    #   #   @case_entries = CaseEntry.paginate(:page => params[:page], :per_page => 20).order(sort_column + " " + sort_direction)
+    #   end   
+    # else
+    # end
   end
 
   private

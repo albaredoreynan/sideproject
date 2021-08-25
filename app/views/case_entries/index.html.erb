@@ -111,7 +111,8 @@
                     <% end %>
                 </td>
                 <% @lawyers_initial = Lawyer.where("id = ?", case_entry.lawyer_id) %>
-                
+                <td>
+                </td>
                 <% if current_user.role == 'Administrator' %>
                   <td><%= case_entry.lawyer.initials %></td>    
                 <% end %>

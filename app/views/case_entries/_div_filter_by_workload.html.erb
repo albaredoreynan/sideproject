@@ -8,7 +8,7 @@
 						<tr>
 							<td>Lawyer List:</td>
 							<td colspan=3>
-								<%= select_tag :lawyer_id, options_for_select(@lawyers2), { "data-placeholder" => "", :multiple => true, id: 'chosen-select2', :include_blank => true, :style => "width: 100%;"} %>
+								<%= select_tag :lawyer_id, options_for_select(@lawyers2), { "data-placeholder" => "", :multiple => false, id: 'chosen-select2', :include_blank => true, :style => "width: 100%;"} %>
 							</td>
 						</tr>	
 						<tr>
