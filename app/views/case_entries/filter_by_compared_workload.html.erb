@@ -13,13 +13,14 @@
       <div class="span11">
         <div class="row">
           <div class="pull-right" style="padding-bottom: 20px;">
-            <%#= link_to "<i class='icon-th'>&nbsp;View Per Practices</i>".html_safe, filter_by_compared_workload_path(params.merge(pfr:"4", type:"table")), class: "btn btn-xs btn-info", data: {rel: "tooltip", title: "Table", toggle: "modal"}, disabled: true %>
+            <%= link_to "<i class='icon-th'>&nbsp;Compare Number of Hours</i>".html_safe, filter_by_compared_workload_path(params.merge(pfr:"6", type:"table")), class: "btn btn-xs btn-info", data: {rel: "tooltip", title: "Table", toggle: "modal"} %>
+            <%= link_to "<i class='icon-th'>&nbsp;Compare Active Cases</i>".html_safe, filter_by_compared_workload_path(params.merge(pfr:"6", type:"active_case")), class: "btn btn-xs btn-info", data: {rel: "tooltip", title: "Table", toggle: "modal"} %>
             <%#= link_to "<i class='icon-th'>&nbsp;View Per Total Hours Rendered</i>".html_safe, filter_by_compared_workload_path(params.merge(pfr:"4", type:"hours")), class: "btn btn-xs btn-info", data: {rel: "tooltip", title: "Table", toggle: "modal"}, disabled: true %>
             <%#= link_to "<i class='icon-th'>&nbsp;View Per Clients</i>".html_safe, filter_by_compared_workload_path(params.merge(pfr:"4", type:"clients")), class: "btn btn-xs btn-info", data: {rel: "tooltip", title: "Table", toggle: "modal"}, disabled: true %>
           </div>
           <div class="span11 well">
-            <% if params[:type] == 'hours' %>
-              <%= render "compared_workload_total_hours" %>
+            <% if params[:type] == 'active_case' %>
+              <%= render "compared_workload_active_cases" %>
             <% elsif params[:type] == 'clients' %>
               <%= render "compared_workload_clients" %>
             <%# elsif params[:type] == 'line' %>

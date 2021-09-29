@@ -510,5 +510,11 @@ module ApplicationHelper
   end
 
 
+  def compared_load_case_open_per_year_per_lawyer(lawyer_id, beginning_date, ending_date)
+  	@assigned = AssignedLawyer.where(lawyer_id: lawyer_id).pluck(:file_matter_id)
+  	years = FileMatter.select(:case_date).where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", beginning_date, ending_date).where(id: @assigned).order('case_date ASC') #.pluck(:case_date) #.map{ |dt| dt.year }.uniq
+		return years.count
+  end
+
 end
 # @case_entries = FileMatter.where(args).where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", params[:date_from], params[:date_to]).where("practice_code <> ''").where("practice_code IS NOT NULL")
