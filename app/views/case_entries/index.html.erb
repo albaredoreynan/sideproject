@@ -32,7 +32,10 @@
               Case Title: <br/>
               <%= autocomplete_field_tag :case_title, nil, autocomplete_file_matter_title_file_matters_path, :required => false, style: "width: 100%;" %>
           </div>
-
+          <div class="span6">
+              Client Name: <br/>
+              <%= autocomplete_field_tag :client_name, nil, ac_client_calls_path, :required => false, style: "width: 100%;" %>
+          </div>
           <div class="span10">
             <div class="pull-right">
                   <%= submit_tag "Search" %>
