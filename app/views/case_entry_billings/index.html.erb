@@ -1,0 +1,140 @@
+<div class="panel">
+  <div class="panel-heading">
+  	<h3>Billing</h3>
+	</div>
+  <div class="panel panel-primary">
+  	<div class="panel-primary panel-heading">Search</div>
+	  <div class="row">
+	    <div class="span11">
+		    <%= form_for case_entries_search_path, :method => 'get' do %>
+			<table class="table" width="100%">
+			  <thead>		
+				<tr>
+					<td>
+						Client Name : <br/>
+						<%= autocomplete_field_tag :client_id, nil, autocomplete_file_matter_file_code_case_entries_path, :required => false %>
+					</td>	
+					<td>
+						Cover Period(Start): <br/>
+						<%= text_field_tag :beginning_date, nil,  :id => "datepicker_beg"%>
+					</td>
+					<td>
+						Cover Period(End): <br/>
+						<%= text_field_tag :ending_date, nil,  :id => "datepicker_end"%>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Billing Date: <br/>
+						<%= text_field_tag :billing_date, nil,  :id => "datepicker_bill"%>
+					</td>	
+					<td>
+						Invoice Number: <br/>
+						<%= text_field_tag :invoice_number %>
+					</td>
+					<td>
+						OR #:<br/>
+						<%= text_field_tag :or_number %>
+					</td>
+				</tr>
+				<tr><td colspan="4"><div class="pull-right">
+					    <%= submit_tag "Search" %>
+				</div></td></tr>
+			  </thead>		
+			</table>
+		<% end %>
+    	</div>
+  	</div>
+  </div>
+  <div class="panel panel-primary">
+    <div class="row">
+      <div class="span11">
+        <div class="row">
+          <div class="span11">
+            <table class="table table-striped" id="case_entries">
+            <% if @case_entry_billing.nil? || @case_entry_billing.empty? %>
+            		<tr>
+		           		<td width="100%"><strong>No record to show...<strong></td>
+		           	</tr>
+           	<% else %>
+            	<% @case_entry_billing.each do |ceb| %>
+            		<% client = Client.find(ceb.client_id) %>
+		           	<tr>
+		           		<td width="10%"><strong>Client Name :<strong></td>
+		           		<td width="90%"><strong><%= client.name %><strong></td>
+		           	</tr>
+		          	
+		           	<tr>
+		           		<td colspan=2>
+		           			<table class="table table-striped" id="case_entries">
+		           				<thead>
+						            <tr>
+						              <th width="17%"><center>File Ref. No.</center></th>
+						              <th width="10%"><center>Cover Period (Start)</center></th>
+						              <th width="10%"><center>Cover Period (End)</center></th>
+						              <th width="10%"><center>Billing Date</center></th>
+						              <th width="10%"><center>Invoice #</center></th>
+						              <th width="15%"><center>OR #</center></th>
+						              <th width="10%"><center>Status</center></th>
+						              <th width="18%"><center>Action</center></th>
+						            </tr>
+						          </thead>
+						          <tbody>
+						          	<% @case_entry_billing2 = CaseEntryBilling.where(client_id: ceb.client_id) %>
+						          	<% @case_entry_billing2.each do |ceb2| %>
+							          	<tr>
+							          		<td ><%= ceb2.file_reference_code%></td>
+							          		<td ><%= ceb2.cover_period_start.strftime("%Y-%m-%d")%></td>
+							          		<td ><%= ceb2.cover_period_end.strftime("%Y-%m-%d")%></td>
+							          		<td ><%= ceb2.billing_date.strftime("%Y-%m-%d")%></td>
+							          		<td ><%= ceb2.invoice_number%></td>
+							          		<td ><%= ceb2.or_number%></td>
+							          		<% if current_user.role == 'User' %>
+							          			<td colspan="2"><span class="label label-default"><%= ceb2.biliing_status %></span></center></td>
+							          		<% else %>
+								          		<td ><span class="label label-default"><%= ceb2.biliing_status %></span></center></td>
+								          		<td >
+								          			<a href="/account/users/88/edit" class="btn btn-mini btn-info">Edit</a>&nbsp;
+							          				<a href="/account/users/88/edit" class="btn btn-mini btn-danger">Delete</a>&nbsp;
+							          				<a href="/account/users/88/edit" class="btn btn-mini btn-success">View Data</a> 
+								          		</td>
+							          		<% end %>
+							          	</tr>
+						          	<% end %>
+						          </tbody>
+						        </table>
+						      </td>
+						    </tr>  
+					    <% end %>
+					  <% end %>
+		        </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!--
+	Add invoice number
+-->
+
+
+
+<script>
+	$(function() {
+  		$('#datepicker_beg').datepicker({format: 'yyyy-mm-dd'});
+  		$('#datepicker_end').datepicker({format: 'yyyy-mm-dd'});
+  		$('#datepicker123').datepicker({format: 'yyyy-mm-dd'});
+  		$('#case_entry_time_spent_from').ptTimeSelect();
+  		$('#case_entry_time_spent_to').ptTimeSelect();
+  	});
+</script>
+
+<!-- notification for build na
+reminder for review of timesheet
+partner approved the billing
+ -->
+
+
+											 

@@ -53,6 +53,7 @@ Case2::Application.routes.draw do
   resources :practice_tables 
   resources :doc_abbreviations
   resources :file_namings
+  resources :case_entry_billings
   
   root :to => 'case_entries#new'
   
@@ -91,6 +92,7 @@ Case2::Application.routes.draw do
   match 'search_by_client', :to => 'printouts#search_by_client'
   match 'weekly_view', :to => 'schedules#weekly_view'
   match 'daily_view', :to => 'schedules#daily_view'
+  
 
   # recent modification for filtering data in case entries
   match 'filter_by_workload', :to => 'case_entries#filter_by_workload'
@@ -98,4 +100,8 @@ Case2::Application.routes.draw do
   match 'filter_by_practice_code', :to => 'case_entries#filter_by_practice_code'
   match 'filter_by_period', :to => 'case_entries#filter_by_period'
   match 'filter_by_compared_workload', :to => 'case_entries#filter_by_compared_workload'
+
+  # for timesheet additional tab and function
+  match 'search_billed_entry', :to  => 'case_entries#search_billed_entry'
+  match 'mark_as_billed', :to  => 'case_entries#mark_as_billed'
 end

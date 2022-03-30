@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20210608000306) do
+ActiveRecord::Schema.define(:version => 20220316025344) do
 
   create_table "assigned_lawyers", :force => true do |t|
     t.integer  "lawyer_id"
@@ -52,6 +52,23 @@ ActiveRecord::Schema.define(:version => 20210608000306) do
     t.string   "remove_from_billing",            :default => "No"
     t.string   "practice_code"
     t.string   "client_code"
+    t.string   "mark_as_billed",                 :default => "f"
+  end
+
+  create_table "case_entry_billings", :force => true do |t|
+    t.string   "or_number"
+    t.string   "invoice_number"
+    t.string   "file_reference_code"
+    t.integer  "file_matter_id"
+    t.integer  "client_id"
+    t.datetime "cover_period_start"
+    t.datetime "cover_period_end"
+    t.datetime "billing_date"
+    t.string   "biliing_status"
+    t.string   "submitted_to_lawyers"
+    t.string   "submitted_to_bill_admin"
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
   end
 
   create_table "clients", :force => true do |t|

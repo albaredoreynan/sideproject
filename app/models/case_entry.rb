@@ -4,7 +4,7 @@ class CaseEntry < ActiveRecord::Base
   								:time_spent_to, :work_particulars, :case_title, 
   								:user_id, :create_multiple_lawyer_entries, 
   								:client_name, :remove_from_billing,
-  								:client_code, :practice_code
+  								:client_code, :practice_code, :mark_as_billed
 
   has_many :clients
   has_many :file_matters

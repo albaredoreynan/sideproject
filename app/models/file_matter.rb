@@ -3,6 +3,7 @@ class FileMatter < ActiveRecord::Base
                   :cl_code_num, :cl_code_txt, :practice_table_id, :practice_code
   belongs_to :client
   belongs_to :practice_table
+  belongs_to :case_entry_billing
   has_many :assigned_lawyers, :dependent => :destroy
   accepts_nested_attributes_for :assigned_lawyers, :reject_if => :all_blank, :allow_destroy => true
 end

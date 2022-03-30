@@ -42,6 +42,9 @@
                   <%= link_to "Practice Areas", practice_tables_path %>
                 </li>
                 <li><%= link_to "FNC", doc_abbreviations_path %></li>
+                <li>  
+                  <%= link_to "Billing", case_entry_billings_path %>
+                </li>
               <% elsif current_user.role == 'Encoder-Call' %>
                 <li>  
                   <%= link_to "Calls", new_call_path %>
@@ -58,15 +61,18 @@
                 <li>  
                   <%= link_to "Timesheet", search_entry_path(:pfr => 1) %>
                 </li>
+                <li>  
+                  <%= link_to "Billing", case_entry_billings_path %>
+                </li>
                 <!-- <li>  
                   <%#= link_to "Users", account_users_path %>
                 </li> -->
-                <li>  
-                  <%= link_to "Calls", calls_path %>
+                <!-- <li>  
+                  <%#= link_to "Calls", calls_path %>
                 </li>
                 <li>  
-                  <%= link_to "Prints", printouts_path %>
-                </li>
+                  <%#= link_to "Prints", printouts_path %>
+                </li> -->
                 <!-- <li>  
                   <%#= link_to "Practice Areas", practice_tables_path %>
                 </li> -->
@@ -83,6 +89,10 @@
                 <li><%= link_to "Clients", clients_path %></li>
                 <li><%= link_to "Practice Areas", practice_tables_path %></li>
                 <li><%= link_to "FNC", doc_abbreviations_path %></li>
+                <%# if current_user.lawyer.position == "Partner" %>
+                <% if current_user.id == 39 %>
+                  <li><%= link_to "Billing", case_entry_billings_path %></li>
+                <% end %>
                     
               <% end %>  
             </ul>

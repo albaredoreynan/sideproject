@@ -393,12 +393,12 @@ class CaseEntriesController < ApplicationController
         args.merge!(file_matter_case: params[:case_number]) unless params[:case_number].blank?
         args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
         # args.merge!(:remove_from_billing => 'No')
+        # args.merge!(:mark_as_billed => 't')
         if params[:file_matter_id].blank? && params[:case_number].blank? && params[:beginning_date].blank? && params[:ending_date].blank?
           @case_listings = nil
         else
           @case_listings = CaseEntry.where(args)
         end
-        
         @file_matter_info = FileMatter.where(args2)
         @start_date = params[:beginning_date]
         @end_date = params[:ending_date]
@@ -442,7 +442,7 @@ class CaseEntriesController < ApplicationController
         
         args = {}
         args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
-        
+        args.merge!(mark_as_billed: params[:beginning_date]..params[:ending_date])
         
         if params[:file_matter_id].blank? && params[:case_number].blank? && params[:beginning_date].blank? && params[:ending_date].blank?
           @case_listings = nil
@@ -604,6 +604,57 @@ class CaseEntriesController < ApplicationController
     # else
     # end
   end
+
+  def search_billed_entry
+    
+  end
+
+  def mark_as_billed
+    args = {}
+    args.merge!(file_matter_id: params[:file_matter_id]) unless params[:file_matter_id].blank?
+    # args.merge!(file_matter_case: params[:case_number]) unless params[:case_number].blank?
+    args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
+    # args.merge!(:remove_from_billing => 'No')
+    if params[:file_matter_id].blank? && params[:beginning_date].blank? && params[:ending_date].blank?
+      @case_listings = nil
+    else
+      @case_listings = CaseEntry.where(args)
+    end
+    @case_listings.update_all(mark_as_billed: true)
+
+    redirect_to new_case_entry_billing_path(params.merge(pfr: 3))
+    # # create the entry here for
+    # @billing_entry = CaseEntry.new(
+    #   :file_reference_code => params[:file_matter_id],
+    #   :cover_period_start => params[:case_entry][:entry_date],
+    #   :cover_period_end => params[:case_entry][:time_spent_from],
+    #   :time_spent_to => params[:case_entry][:time_spent_to],
+    #   :work_particulars => params[:case_entry][:work_particulars],
+    #   :client_id => params[:case_entry][:client_id],
+    #   :case_title => params[:case_entry][:case_title],
+    #   :file_matter_case => params[:case_entry][:file_matter_case],
+    #   :lawyer_id => al.lawyer_id,
+    #   :client_name => params[:case_entry][:client_name],
+    #   :client_code => params[:case_entry][:client_code],
+    #   :practice_code => params[:case_entry][:practice_code],
+    #   :create_multiple_lawyer_entries => params[:case_entry][:create_multiple_lawyer_entries],
+    #   :user_id => usr.id
+    # )
+    # @billing_entry.save 
+    # t.string   "or_number"
+    # t.string   "invoice_number"
+    # t.string   "file_reference_code"
+    # t.integer  "file_matter_id"
+    # t.integer  "client_id"
+    # t.datetime "cover_period_start"
+    # t.datetime "cover_period_end"
+    # t.datetime "billing_date"
+    # t.string   "biliing_status"
+    # t.string   "submitted_to_lawyers"
+    # t.string   "submitted_to_bill_admin"
+    # # redirects search_billed_entry?pfr=3
+  end
+    
 
   private
   

@@ -15,11 +15,20 @@
 	  	<% cl2 = '' %>
 	  <% end %>
 
+	  <% if params[:pfr] == '3' %>
+	  	<% cl3 = 'active' %>
+	  <% else %>
+	  	<% cl3 = '' %>
+	  <% end %>
+
 	  <li class="<%= cl %>" >
 	    <%= link_to "Per File Reference", search_entry_path(pfr:"1") %>
 	  </li>
 	  <li class="<%= cl2 %>" >
 	  	<%= link_to "Per Date Covered", search_entry_multi_path(pfr:"2") %>
+	  </li>
+	  <li class="<%= cl3 %>" >
+	  	<%= link_to "Billed Client", search_billed_entry_path(pfr:"3") %>
 	  </li>
 	</ul>
   <div class="panel panel-primary">
@@ -79,6 +88,7 @@
 														<%= link_to "Download as PDF <i class='icon-download-alt'></i>".html_safe, search_entry_multi_path(:pfr => '1', :beginning_date => params[:beginning_date], :ending_date => params[:ending_date], :file_matter_id => list.file_matter_id, format: 'pdf'), :class => "btn btn-primary btn-mini", target: "_blank" %>	
 														<%= link_to 'View All Contents',
                                   search_entry_path(:pfr => '1', :beginning_date => params[:beginning_date], :ending_date => params[:ending_date], :file_matter_id => list.file_matter_id, :commit => "Search"), :class => 'btn btn-mini'%>
+														<%= link_to "Mark As Billed".html_safe, search_entry_path(params.merge(format: 'xls')), :class => "btn btn-mini btn-warning" %>
 													</div>
 												</td>
 											</tr>
