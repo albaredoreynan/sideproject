@@ -15,20 +15,11 @@
 	  	<% cl2 = '' %>
 	  <% end %>
 
-	  <% if params[:pfr] == '3' %>
-	  	<% cl3 = 'active' %>
-	  <% else %>
-	  	<% cl3 = '' %>
-	  <% end %>
-
 	  <li class="<%= cl %>" >
 	    <%= link_to "Per File Reference", search_entry_path(pfr:"1") %>
 	  </li>
 	  <li class="<%= cl2 %>" >
 	  	<%= link_to "Per Date Covered", search_entry_multi_path(pfr:"2") %>
-	  </li>
-	  <li class="<%= cl3 %>" >
-	  	<%= link_to "Billed Client", search_billed_entry_path(pfr:"3") %>
 	  </li>
 	</ul>
   <div class="panel panel-primary">

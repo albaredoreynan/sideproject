@@ -442,7 +442,7 @@ class CaseEntriesController < ApplicationController
         
         args = {}
         args.merge!(entry_date: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
-        args.merge!(mark_as_billed: params[:beginning_date]..params[:ending_date])
+        #args.merge!(mark_as_billed: params[:beginning_date]..params[:ending_date])
         
         if params[:file_matter_id].blank? && params[:case_number].blank? && params[:beginning_date].blank? && params[:ending_date].blank?
           @case_listings = nil
