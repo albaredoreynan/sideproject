@@ -57,6 +57,7 @@
 		           		<td width="100%"><strong>No record to show...<strong></td>
 		           	</tr>
            	<% else %>
+           		<% @case_entry_billing = CaseEntryBilling.select('client_id').uniq %>
             	<% @case_entry_billing.each do |ceb| %>
             		<% client = Client.find(ceb.client_id) %>
 		           	<tr>
@@ -83,7 +84,8 @@
 						          	<% @case_entry_billing2 = CaseEntryBilling.where(client_id: ceb.client_id) %>
 						          	<% @case_entry_billing2.each do |ceb2| %>
 							          	<tr>
-							          		<td ><%= ceb2.file_reference_code%></td>
+							          		<% file_ref_code = find_file_ref(ceb2.file_matter_id) %>
+							          		<td ><%= file_ref_code %></td>
 							          		<td ><%= ceb2.cover_period_start.strftime("%Y-%m-%d")%></td>
 							          		<td ><%= ceb2.cover_period_end.strftime("%Y-%m-%d")%></td>
 							          		<td ><%= ceb2.billing_date.strftime("%Y-%m-%d")%></td>

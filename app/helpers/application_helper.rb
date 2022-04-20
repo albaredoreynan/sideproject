@@ -516,5 +516,22 @@ module ApplicationHelper
 		return years.count
   end
 
+  def find_file_ref(file_matter_id)
+  	@c = FileMatter.find(file_matter_id)
+  	if !@c.cl_code_txt.nil? || !@c.cl_code_txt.blank?
+      @filerefno = @c.file_code+"-"+@c.cl_code_txt
+    else
+      @filerefno = @c.file_code
+    end
+
+    if !@c.practice_code.nil? || !@c.practice_code.blank?
+      @filerefno = @filerefno+"-"+@c.practice_code
+    else
+      @filerefno = @filerefno
+    end
+
+    return @filerefno
+  end	
+
 end
 # @case_entries = FileMatter.where(args).where("TO_DATE(case_date, 'MM/DD/YY')  BETWEEN ? AND ?", params[:date_from], params[:date_to]).where("practice_code <> ''").where("practice_code IS NOT NULL")
