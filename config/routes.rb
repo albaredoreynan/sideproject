@@ -104,4 +104,6 @@ Case2::Application.routes.draw do
   # for timesheet additional tab and function
   match 'search_billed_entry', :to  => 'case_entries#search_billed_entry'
   match 'mark_as_billed', :to  => 'case_entries#mark_as_billed'
+
+  match 'view_billing_generated', :to => 'case_entry_billings#view_billing_generated'
 end

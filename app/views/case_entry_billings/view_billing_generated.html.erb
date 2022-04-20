@@ -1,0 +1,397 @@
+<div class="panel">
+  <div class="panel-heading">
+  	<h3>Timesheet</h3>
+	</div>
+  <div class="panel panel-primary">
+    <div class="row">
+      <div class="span11">
+        <div class="row">
+          <div class="span11">
+            <% if !@case_listings.nil? %>
+							<div class="pull-right" width="100%">
+					  		<%= link_to "Download as PDF <i class='icon-download-alt'></i>".html_safe, search_entry_path(params.merge(format: 'pdf')), :class => "btn btn-primary", target: "_blank" %> 	
+					  		<%= link_to "Download as EXCEL <i class='icon-download-alt'></i>".html_safe, search_entry_path(params.merge(format: 'xls')), :class => "btn btn-primary" %>
+					    	<br/>
+					    </div>
+
+							<div class="clearfix"></div>
+							<table class="table table-condensed" width="90%" >
+								<tr>
+									<td colspan="2">
+										<center>
+											<h3>Timesheet</h3>
+											For the period <%= @start_date.to_time.strftime('%B %d, %Y') %> up to <%= @end_date.to_time.strftime('%B %d, %Y') %>
+										</center>
+										<br/>
+									</td>
+								</tr>
+							</table>
+							<% @file_matter_info.each do |fmi| %>
+							
+							<table class="table table-condensed" width="90%" >
+										<tr>
+									<td width="10%">MATTER :</td>
+									<td width="80%">
+										<%= fmi.title %><br/>
+										<%= fmi.case_number %><br/>
+										<!-- need to modify the new filematter here -->
+										<!-- :cl_code_txt, :practice_table_id, :practice_code -->
+										<% if fmi.cl_code_txt.nil? || fmi.cl_code_txt.blank? %>
+											<% @filerefno = fmi.file_code %>
+										<% else %>
+										  <% @filerefno = fmi.file_code+"-"+fmi.cl_code_txt %> 
+											<% if !fmi.practice_code.nil? || !fmi.practice_code.blank?%>
+												<% @filerefno = @filerefno+"-"+fmi.practice_code %>
+											<% end %>
+										<% end %>
+										<%= @filerefno %>
+									</td>
+								</tr>
+								<tr>
+									<td width="10%">CLIENT :</td>
+									<% @client_name = Client.find(fmi.client_id)%>
+									<td width="80%"><%= @client_name.name %></td>
+								</tr>
+								<% @assigned_lawyers = AssignedLawyer.find(:all, :conditions => { :file_matter_id => fmi.id } ) %>
+								<% @assigned_lawyers.each do |al| %>
+									<% @total_hours = Array.new %>
+																
+									<% if params[:file_matter_id].blank? && params[:case_number].blank? %>
+										<% @case_entries = CaseEntry.find(:all, :conditions => { :mark_as_billed => true, :remove_from_billing => 'No', :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }, :order => "entry_date DESC"  )%>
+									<% elsif !params[:file_matter_id].blank? && params[:case_number].blank? %>
+										<% @case_entries = CaseEntry.find(:all, :conditions => { :mark_as_billed => true, :remove_from_billing => 'No', :file_matter_id => params[:file_matter_id], :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }, :order => "entry_date DESC"  )%>
+									<% elsif params[:file_matter_id].blank? && !params[:case_number].blank? %>
+										<% @case_entries = CaseEntry.find(:all, :conditions => { :mark_as_billed => true, :remove_from_billing => 'No', :file_matter_case => params[:case_number], :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }, :order => "entry_date DESC"  )%>
+									<% else%>
+										<% @case_entries = CaseEntry.find(:all, :conditions => { :mark_as_billed => true, :remove_from_billing => 'No', :file_matter_id => params[:file_matter_id], :file_matter_case => params[:case_number], :lawyer_id => al.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }, :order => "entry_date DESC"  )%>
+									<% end%>
+									<% if !@case_entries.empty? %>
+									<tr>
+										<td colspan="2">
+											<table class="table table-condensed" width="100%">
+												<tr>
+													<td width="10%">ATTORNEY :</td>
+													<td ><strong><%= al.lawyer.full_name %></strong>, <italic><%= al.lawyer.position %></italic></td>
+												</tr>
+												<tr><td colspan="2">&nbsp;</td></tr>
+												<tr>
+													<td colspan="2">
+														<table class="table table-condensed" width="80%">
+															
+																<tr class="success">
+																	<th width="15%" style="text-align:left;padding-left:10px">DATE</th>
+																	<th width="60%"><center>WORK DESCRIPTIONS / PARTICULARS</center></th>
+																	<th width="10%" style="text-align:right;padding-right:10px"><center>TIME SPENT</center></th>
+																	<th width="15%" >Action</th>
+																</tr>
+																	<% @hours = Array.new %>
+																	<% @minutes = Array.new %>
+																	<% @case_entries.each do |ce| %>
+																		<tr class="info">
+																			<td width="15%" style="text-align:left;padding-left:10px"><%= ce.entry_date %></td>
+																			<td width="60%"><%= ce.work_particulars %></td>
+																			<% @start_time = Time.strptime(ce.time_spent_from, '%I:%M %P') %>
+																			<% @end_time = Time.strptime(ce.time_spent_to, '%I:%M %P') %>
+																			<% @time_spent = @end_time - @start_time %>
+																			<% @hh = Time.at(@time_spent).utc.strftime('%I') %>
+																			<% if @hh == '12' %>
+																				<% @hh = '00' %>
+																			<% else %>
+																				<% @hh = @hh %>
+																			<% end%>
+																			<% @mm = Time.at(@time_spent).utc.strftime('%M') %>
+																			<% @value = @hh+"."+@mm %>
+																			<%# @total_hours << @value.to_f %>
+																			<% @x = @value.to_s %>
+																			<% @xx = @x.split(".") %>
+																			<% @hours << @xx[0].to_i %>
+																			<% @minutes << @xx[1].to_i %>
+																			<% @hr_reg = @hours.inject(:+) %>
+																			<% @min_reg = @minutes.inject(:+) %>
+																			<% if @min_reg >= 60 %>
+																				<% @hr_reg = (@min_reg / 60) + @hr_reg %>
+																				<% @min_reg = @min_reg % 60 %>
+																			<% end %>
+																			<td width="10%" style="text-align:right;padding-right:10px"><%= @value %></td>
+																			<td width="15%">
+																				<div id="<%= ce.id %>" class="modal hide fade" style="width: 65%; height: auto; left:40%; overflow-y: hidden" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+																				  <div class="modal-header">
+																				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+																				    <h3 id="myModalLabel">Quick Edit</h3>
+																				  </div>
+																				  <% @case_entry = CaseEntry.find(ce.id) %>
+																				  <%= simple_form_for(@case_entry, :url => modify_case_entry_path(@case_entry), :html => { :method => :post }) do |f| %>	
+																					  <div class="modal-body">
+																					  	<div class="form-inputs">
+																					  		<!-- <div class="span6">
+																					  			<%= hidden_field_tag :id, ce.id %>
+																					  			<p><b>File Reference No. :</b>&nbsp;<%= @case_entry.file_matter_id %></p>
+																					  			<p><b>Client :</b>&nbsp;<%= Client.find(@case_entry.client_id).name %></p>
+																					  			<p><b>Case Title :</b>&nbsp;<%= @case_entry.case_title %></p>
+																					  			<p><b>Case No. :</b>&nbsp;<%= @case_entry.file_matter_case %></p>
+																					  			<p><b>Assigned Lawyer :</b>&nbsp;<%= @case_entry.lawyer.full_name %></p>
+																					  		</div> -->
+																					  		<div class="span6">
+										                            <%= hidden_field_tag :id, ce.id %>
+										                            <p><b>File Reference No. :</b>
+										                              <%= f.autocomplete_field :file_matter_id, autocomplete_file_matter_file_code_case_entries_path, :required => true, :class => "case_entry_file_matter_id", :id => "#{ce.id}" %>
+										                            </p>
+										                            <p><b>Client :</b>&nbsp;<%= f.text_field :client_name, :readonly => true, :id => "client_name_#{ce.id}" %></p>
+										                              <%= f.hidden_field :client_id, :id => "client_id_#{ce.id}" %>
+										                            <p><b>Case Title :</b>&nbsp;<%= f.text_field :case_title, :readonly => true, :id => "case_title_#{ce.id}" %></p>
+										                            <p><b>Case No. :</b>&nbsp;<%= f.text_field :file_matter_case, :readonly => true, :id => "file_matter_case_#{ce.id}" %></p>
+										                            <p><b>Assigned Lawyer :</b>&nbsp;
+										                                <% if @case_entry.lawyer_id.nil? %>
+										                                  <%= "No info provided" %>
+										                                <% else %>
+										                                  <%= @case_entry.lawyer.full_name %>
+										                                <% end %>
+										                            </p>
+										                          </div>
+																					  		<div class="span2">
+																									<%= f.label :entry_date, "Date:" %>
+																									<%= f.text_field :entry_date, :id => 'datepicker123', :class => "entry_date", :required => true %>	
+																								</div>
+																								<div class="span3">
+																									<div class="input-append" style="padding-left: 10px;">
+																										<%= f.label :time_spent_from, "Start Time:" %>
+																										<%= f.text_field :time_spent_from, :class => "input-small", :required => true %>
+																										<!-- <span class="add-on"><i class="icon-time"></i></span> -->
+																									</div>
+
+																									<div class="input-append" style="padding-left: 30px;">
+																										<%= f.label :time_spent_to, "End Time:" %>
+																										<%= f.text_field :time_spent_to, :class => "input-small", :required => true %>
+																										<!-- <span class="add-on"><i class="icon-time"></i></span> -->
+																									</div>
+																								</div>
+																								<div class="span6">
+																									<%= f.label :work_particulars, "Work Particulars:"%>	
+																									<%= f.text_area :work_particulars, :rows => 8, :cols => 30, :class => "text_area" %>
+																									<%= hidden_field_tag :file_matter_id, params[:file_matter_id]%>
+																									<%= hidden_field_tag :beginning_date, params[:beginning_date]%>
+																									<%= hidden_field_tag :ending_date, params[:ending_date]%>
+																									<%= hidden_field_tag :pfr, params[:pfr] %>
+																								</div>
+																								<div class="span6">
+											                            <div class="input-append">
+											                              <%= f.label :remove_from_billing, "Exclude from Billing:"%> 
+											                              <%= f.text_field :remove_from_billing %>
+											                            </div>
+											                          </div>
+																					  	</div>
+																					  </div>
+																					  <div class="modal-footer">
+																					    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+																					    <%= link_to t('.destroy', :default => t("helpers.links.destroy")), case_entry_path(ce), :method => :delete, :class => 'btn btn-danger' %>
+																					    <%= f.button :submit, "Update Changes", :class => "btn btn-primary" %>
+																					  </div>
+																					<% end %>  
+																				</div>	
+
+																				<%= link_to "Exclude".html_safe, exclude_billing_path(params.merge(:edit_ent => 'Yes', :cei => ce.id)), title:"Exclude", class: 'btn btn-info btn-mini', :data => { :confirm => 'This entry will be excluded from the billing list. You can include it by going to the case entry list and edit the entry.' } %>
+																				<a href="#<%= ce.id %>" role="button" class="btn btn-success btn-mini" data-toggle="modal">Edit</a>
+																				<%= link_to t('.destroy', :default => t("helpers.links.destroy")), case_entry_path(ce), :method => :delete, :class => 'btn btn-danger btn-mini' %>
+																				<%#= link_to "Edit".html_safe, exclude_billing_path(params.merge(:edit_ent => 'Yes', :cei => ce.id)), class: 'btn btn-success btn-mini' %>
+																			</td>
+																		</tr>
+																	<% end %>
+																	<tr class="success">
+																		<td colspan="2" class="text-right"><strong>TOTAL HOURS SPENT : </strong></td>
+																		<td width="10%" style="text-align:right;padding-right:10px"><strong>
+																				<% if @min_reg < 10 %>
+																					<% @new_min = "0"+@min_reg.to_s %>
+																				<% else %>
+																					<% @new_min = @min_reg.to_s %>
+																				<% end %>	
+
+																				<%= @total_hours = @hr_reg.to_s+"."+@new_min %>
+																				<%# number_with_precision(@total_hours.to_f, :precision => 2, :delimiter => ',') %>
+																			</strong></td>
+																		<td></td>
+																	</tr>
+																
+														</table>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+									<% else %>
+
+									<% end %>
+								<% end %>
+								<tr><td colspan="2">&nbsp;</td></tr>
+								<tr>
+									<td colspan="2">
+										<table class="table table-borderless table-condensed" width="80%">
+											<tr>
+												<td colspan="4"><center><h4>SUMMARY OF HOURS AND TIME CHARGES</h4></center></td>
+											</tr>
+											<tr>
+												<th width="40%" style="text-align:left;padding-left:10px">LAWYER</th>
+												<th width="10%"><center>HOURS</center></th>
+												<th width="20%"><center>RATE PER HOUR</center></th>
+												<th width="10%" style="text-align:right;padding-right:10px">TOTAL CHARGES</th>
+											</tr>
+											<% @totals_all = Array.new %>
+											<% @assigned_lawyers_list = AssignedLawyer.find(:all, :conditions => { :file_matter_id => fmi.id } ) %>
+											<% @assigned_lawyers_list.each do |laws| %>
+												<% @total_hours2 = Array.new %>
+												<% @hours2 = Array.new %>
+												<% @minutes2 = Array.new %>
+												<%# @case_entries2 = CaseEntry.find(:all, :conditions => { :file_matter_id => params[:file_matter_id], :file_matter_case => params[:case_number], :lawyer_id => laws.lawyer_id, :entry_date => params[:beginning_date]..params[:ending_date] }  )%>
+												<% if params[:file_matter_id].blank? && params[:case_number].blank? %>
+													<% @case_entries2 = CaseEntry.find(:all, :conditions => { :mark_as_billed => true, :remove_from_billing => 'No', :lawyer_id => laws.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
+												<% elsif !params[:file_matter_id].blank? && params[:case_number].blank? %>
+													<% @case_entries2 = CaseEntry.find(:all, :conditions => { :mark_as_billed => true, :remove_from_billing => 'No', :file_matter_id => params[:file_matter_id], :lawyer_id => laws.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
+												<% elsif params[:file_matter_id].blank? && !params[:case_number].blank? %>
+													<% @case_entries2 = CaseEntry.find(:all, :conditions => { :mark_as_billed => true, :remove_from_billing => 'No', :file_matter_case => params[:case_number], :lawyer_id => laws.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
+												<% else%>
+													<% @case_entries2 = CaseEntry.find(:all, :conditions => { :mark_as_billed => true, :remove_from_billing => 'No', :file_matter_id => params[:file_matter_id], :file_matter_case => params[:case_number], :lawyer_id => laws.lawyer_id, :entry_date => params[:beginning_date] .. params[:ending_date] }  )%>
+												<% end%>
+												
+												<% if !@case_entries2.empty? %>	
+													<% @case_entries2.each do |ce| %>
+														<% @start_time2 = Time.strptime(ce.time_spent_from, '%I:%M %P') %>
+														<% @end_time2 = Time.strptime(ce.time_spent_to, '%I:%M %P') %>
+														<% @time_spent2 = @end_time2 - @start_time2 %>
+														<%# @value2 = Time.at(@time_spent2).utc.strftime('%I.%M') %>
+														<%# @total_hours2 << @value2.to_f %>
+														<% @hh2 = Time.at(@time_spent2).utc.strftime('%I') %>
+														<% if @hh2 == '12' %>
+															<% @hh2 = '00' %>
+														<% else %>
+															<% @hh2 = @hh2 %>
+														<% end%>
+														<% @mm2 = Time.at(@time_spent2).utc.strftime('%M') %>
+														<% @value2 = @hh2+"."+@mm2 %>
+														<%# @total_hours2 << @value2.to_f %>
+														<% @x2 = @value2.to_s %>
+														<% @xx2 = @x2.split(".") %>
+														<% @hours2 << @xx2[0].to_i %>
+														<% @minutes2 << @xx2[1].to_i %>
+														<% @hr_reg2 = @hours2.inject(:+) %>
+														<% @min_reg2 = @minutes2.inject(:+) %>
+														<% if @min_reg2 >= 60 %>
+															<% @hr_reg2 = (@min_reg2 / 60) + @hr_reg2 %>
+															<% @min_reg2 = @min_reg2 % 60 %>
+														<% end %>
+													<% end %>
+													<tr class="info">
+													  <td width="40%" style="text-align:left;padding-left:10px"><%=  laws.lawyer.full_name %></td>
+													  <%# @total_actual_hours = @total_hours2.inject(:+) %>
+
+													    <% if @min_reg2 < 10 %>
+															<% @new_min2 = "0"+@min_reg2.to_s %>
+														<% else %>
+															<% @new_min2 = @min_reg2.to_s %>
+														<% end %>
+													  <% @total_actual_hours =  @hr_reg2.to_s+"."+@new_min2 %>
+													  <% @multiplier_hours =  ( @min_reg2.to_f / 60 ).round(2) %>
+													  <% @total_multi = @hr_reg2 + @multiplier_hours %>
+													  <td width="10%" ><center><%=  number_with_precision(@total_actual_hours.to_f, :precision => 2, :delimiter => ',') %></center></td>
+													  <% if fmi.fixed_rate == true %>
+													    <% if fmi.currency_used == 'Dollar'%>
+													  	  <% @rates = laws.file_matter_pricing %>
+														  <% @units = "USD " %>
+                                                        <% else %>
+														  <% @rates = laws.file_matter_pricing %>
+														  <% @units = "PHP " %>
+                                                        <% end %>
+													  <% else %>
+														  <% if fmi.currency_used == 'Dollar'%>
+														  	<% @rates = laws.lawyer.dollar_rate %>
+														  	<% @units = "USD " %>
+														  <% else %>
+														  	<% @rates = laws.lawyer.rate %>
+														  	<% @units = "PHP " %>
+														  <% end %>
+														<% end %>
+
+													  <td width="20%"><center>
+													  	<%# if laws.amount.nil? || laws.amount == 0 %>
+													  		<%#=  number_to_currency( @rates, :unit => @units ) %>
+													  	<%# else %>
+													  		<%#=  number_to_currency( laws.amount, :unit => @units ) %>
+													  	<%# end %>
+													  	<%=  number_to_currency( @rates, :unit => @units ) %>
+													  </center></td>
+													  <td width="10%" style="text-align:right;padding-right:10px" >
+													  	<%# if laws.amount.nil? || laws.amount == 0 %>
+													  		<%  @total_hours_final = @total_multi * @rates.to_f %>
+													  		<%=  number_to_currency( @total_hours_final, :unit => @units) %>
+													  	<%# else %>
+													  		<%#  @total_hours_final = @total_multi * laws.amount.to_f %>
+													  		<%#=  number_to_currency( @total_hours_final, :unit => @units) %>
+													  	<%# end %>
+													  	
+													  </td>
+													</tr>
+													<% @totals_all << @total_hours_final.to_f %>
+												<% else %>
+
+												<% end %>
+											<% end %>
+											<% if @totals_all.blank? %>
+												<% @totals_all = 0.0 %>
+											<% else %>
+												<% @totals_all = number_to_currency( @totals_all.inject(:+).to_f, :unit => @units ) %>
+											<% end %>							
+											<tr class="success">
+												<td colspan="3" width="60%" class="text-right"><strong>CHARGES :</strong></td>
+												<td style="text-align:right;padding-right:10px"><strong><%= @totals_all %></strong></td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+
+							<% end %>
+						<% else %>
+							<h5>This will be populated once the search field found a data.</h5>
+						<% end %>		
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+	$(function() {
+  		$('#datepicker_beg').datepicker({format: 'yyyy-mm-dd'});
+  		$('#datepicker_end').datepicker({format: 'yyyy-mm-dd'});
+  		$('#datepicker_billed').datepicker({format: 'yyyy-mm-dd'});
+  		$('#datepicker123').datepicker({format: 'yyyy-mm-dd'});
+  		$('#case_entry_time_spent_from').ptTimeSelect();
+  		$('#case_entry_time_spent_to').ptTimeSelect();
+  	});
+
+	$(document).ready(function(){
+      $('.case_entry_file_matter_id').blur(function(){
+        var case_entry_value = $(this).val()
+        var case_entry_id = $(this).attr('id')
+        $.ajax({
+          url: "<%= update_case_entry_path %>",
+          data: {
+            file_matter_id : case_entry_value,
+            case_entry_id  : case_entry_id
+          },
+          dataType: "script"
+          // success: function(data){
+          //   console.log(data);
+          // }
+        });
+      });
+    });
+</script>
+										
+										
+											  
+
+											
+											 
