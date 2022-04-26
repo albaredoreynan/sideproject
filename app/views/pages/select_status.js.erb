@@ -19,7 +19,7 @@ $('#selection-box').html(
         '<% else %>'+
           '<% @filerefno = @filerefno %>'+
         '<% end %>'+
-		  '<td><%= @filerefno %></td><td><%= fmi.title %></td>'+
+		  '<td><%= @filerefno %><%= hidden_field_tag :file_code, fmi.file_code, :id => "file_code" %></td><td><%= fmi.title %></td>'+
 		  '<% @client = Client.where(id: fmi.client_id)  %>'+
 		  '<td><% @client.each do |x| %><%= x.name %><% end %></td>'+
 		  '<% @stats = AssignedLawyer.where(:file_matter_id => fmi.id).where(:lawyer_id => current_user.lawyer_id)%>'+
@@ -33,3 +33,13 @@ $('#selection-box').html(
 		  '</tr><% end %>'+
 	'</table>'
 );
+$('.choose').click(function(){
+  var file_code = $(this).val()
+  $.ajax({
+    url: "<%= update_search_form_path %>",
+    data: {
+      case_entry_file_matter_case : file_code
+    },
+    dataType: "script"
+  });
+});
