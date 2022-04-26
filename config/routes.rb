@@ -70,6 +70,9 @@ Case2::Application.routes.draw do
   get 'pages/pick_filematter', :as => 'pick_filematter'
   get 'pages/add_practice_code', :as => 'add_practice_code'
   get 'pages/select_file_matters', :as => 'select_file_matters'
+  get 'pages/select_status', :as => 'select_status'
+  get 'pages/update_status_assinged', :as => 'update_status_assinged'
+  
 
   # search
   # match '/all_employees_list', :to => 'labor_hours#all_employees_list'
@@ -106,4 +109,5 @@ Case2::Application.routes.draw do
   match 'mark_as_billed', :to  => 'case_entries#mark_as_billed'
 
   match 'view_billing_generated', :to => 'case_entry_billings#view_billing_generated'
+  match 'assigned_lawyer_filematters', :to => 'pages#assigned_lawyer_filematters'
 end

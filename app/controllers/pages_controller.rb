@@ -177,4 +177,28 @@ class PagesController < ApplicationController
      @datas = CaseEntry.select(:file_matter_id).where(client_code: params[:client_code]).pluck(:file_matter_id)
      @file_references = @datas.uniq
   end
+
+  def select_status
+    @status = params[:select_status]
+    if @status == 'All'
+      @file_matter = AssignedLawyer.where("lawyer_id =?", current_user.lawyer_id)
+    else
+      @file_matter = AssignedLawyer.where("lawyer_id =? AND status =? ", current_user.lawyer_id, @status)
+    end
+    @file_matter_id = @file_matter.pluck(:file_matter_id)
+    @file_matter_info = FileMatter.where(:id => @file_matter_id ).order('file_code DESC')
+  end
+
+  def assigned_lawyer_filematters
+    @file_matter = AssignedLawyer.where("lawyer_id =?", current_user.lawyer_id)
+    @file_matter_id = @file_matter.pluck(:file_matter_id)
+    @file_matter_info = FileMatter.where(:id => @file_matter_id ).order('file_code DESC')
+  end
+
+  def update_status_assinged
+    @assigned_lawyer = AssignedLawyer.find(params[:id])
+    @assigned_lawyer.status = params[:status]
+    @assigned_lawyer.save
+    redirect_to assigned_lawyer_filematters_path
+  end
 end

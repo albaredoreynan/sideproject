@@ -1,0 +1,35 @@
+$('#selection-box').html(
+	'<table class="table table-striped" id="filematters" width="100%">'+
+		'<thead>'+
+		  '<tr>'+
+		    '<th width="20%"><center>File Reference No.</center></th>'+
+		    '<th width="20%"><center>Case Title</center></th>'+
+		    '<th width="30%"><center>Client</center></th>'+
+		    '<th width="20%"><center>Status</center></th>'+
+		    '<th width="10%"><center></center></th>'+
+		  '</tr>'+
+		  '<% @file_matter_info.each do |fmi| %><tr>'+
+		  	'<% if !fmi.cl_code_txt.nil? || !fmi.cl_code_txt.blank? %>'+
+          '<% @filerefno = fmi.file_code+"-"+fmi.cl_code_txt %>'+
+        '<% else %>'+
+          '<% @filerefno = fmi.file_code %>'+
+        '<% end %>'+
+				'<% if !fmi.practice_code.nil? || !fmi.practice_code.blank? %>'+
+          '<% @filerefno = @filerefno+"-"+fmi.practice_code %>'+
+        '<% else %>'+
+          '<% @filerefno = @filerefno %>'+
+        '<% end %>'+
+		  '<td><%= @filerefno %></td><td><%= fmi.title %></td>'+
+		  '<% @client = Client.where(id: fmi.client_id)  %>'+
+		  '<td><% @client.each do |x| %><%= x.name %><% end %></td>'+
+		  '<% @stats = AssignedLawyer.where(:file_matter_id => fmi.id).where(:lawyer_id => current_user.lawyer_id)%>'+
+      '<% if @stats.last.status == "Active" %>'+
+	      '<%@label = "label label-success" %>'+
+	    '<% else %>'+
+	      '<%@label = "label label-warning" %>'+
+	    '<% end %>'+
+      '<td><center><span class="<%=@label%>"><%= @stats.last.status %></span></center></td>'+
+      '<td><button class="btn btn-sm btn-info choose" data-dismiss="modal" id="choose" value="<%= fmi.file_code %>"><i class="icon-plus"></i>Select </button></td>'+
+		  '</tr><% end %>'+
+	'</table>'
+);
