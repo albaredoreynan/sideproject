@@ -20,8 +20,8 @@
             <th width="20%"><center>File Reference No.</center></th>
             <th width="20%"><center>Case Title</center></th>
             <th width="30%"><center>Client</center></th>
+            <th width="10%"><center>Action</center></th>
             <th width="20%"><center>Status</center></th>
-            <th width="10%"><center></center></th>
           </tr>
           <%# @file_matter = CaseEntry.select('DISTINCT(file_matter_id), created_at').where("lawyer_id =? ", current_user.lawyer_id).order("file_matter_id DESC","created_at DESC") %>
           <% @file_matter = AssignedLawyer.where("lawyer_id =? AND status =? ", current_user.lawyer_id, "Active") %>
@@ -52,6 +52,12 @@
                   <%= x.name %>
                 <% end %>
               </td>
+              <td>
+                <button class="btn btn-xs btn-info choose" data-dismiss="modal" id="choose" value="<%= fmi.file_code %>">
+                  <i class="icon-plus"></i>
+                  Select
+                </button>
+              </td>
               <% @stats = AssignedLawyer.where(:file_matter_id => fmi.id).where(:lawyer_id => current_user.lawyer_id)%>
               <% if @stats.last.status == 'Active' %>
                 <%@label = "label label-success" %>
@@ -59,12 +65,7 @@
                 <%@label = "label label-warning" %>
               <% end %>
               <td><center><span class="<%=@label%>"><%= @stats.last.status %></span></center></td>
-              <td>
-                <button class="btn btn-sm btn-info choose" data-dismiss="modal" id="choose" value="<%= fmi.file_code %>">
-                  <i class="icon-plus"></i>
-                  Select
-                </button>
-              </td>
+              
             </tr>
           <% end %>
         </thead> 
