@@ -1,11 +1,10 @@
 <div class="panel panel-primary">
-  <div class="panel-primary panel-heading">List of Filematters</div>
+  <div class="panel-primary panel-heading">List of Reference Numbers</div>
   <div class="row">
     <div class="span6">
       <strong>View By Status :</strong>
       <select id="select-status">
         <option>Active</option>
-        <option>Inactive</option>
         <option>All</option>
       </select>
     </div>
@@ -18,8 +17,8 @@
         <thead>
           <tr>
             <th width="20%"><center>File Reference No.</center></th>
-            <th width="20%"><center>Case Title</center></th>
             <th width="30%"><center>Client</center></th>
+            <th width="20%"><center>Case Title</center></th>
             <th width="10%"><center>Action</center></th>
             <th width="20%"><center>Status</center></th>
           </tr>
@@ -44,7 +43,7 @@
                 end
               %>
               <td><%= @filerefno %><%= hidden_field_tag :file_code, fmi.file_code, :id => "file_code" %></td>
-              <td><%= fmi.title %></td>
+              
               
               <% @client = Client.where(id: fmi.client_id)  %>
               <td>
@@ -52,6 +51,7 @@
                   <%= x.name %>
                 <% end %>
               </td>
+              <td><%= fmi.title %></td>
               <td>
                 <button class="btn btn-xs btn-info choose" data-dismiss="modal" id="choose" value="<%= fmi.file_code %>">
                   <i class="icon-plus"></i>

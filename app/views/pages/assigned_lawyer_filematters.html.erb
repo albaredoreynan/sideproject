@@ -10,8 +10,8 @@
 	    <thead>
 	      <tr>
 	        <th width="25%"><center>File Reference No.</center></th>
-	        <th width="20%"><center>Case Title</center></th>
 	        <th width="30%"><center>Client</center></th>
+	        <th width="20%"><center>Case Title</center></th>
 	        <th width="10%"><center>Status</center></th>
 	        <th width="15%"><center>Action</center></th>
 	      </tr>
@@ -36,14 +36,13 @@
 	            end
 	          %>
 	          <td><%= @filerefno %></td>
-	          <td><%= fmi.title %></td>
-	          
 	          <% @client = Client.where(id: fmi.client_id)  %>
 	          <td>
 	            <% @client.each do |x| %>
 	              <%= x.name %>
 	            <% end %>
 	          </td>
+	          <td><%= fmi.title %></td>
 	          <% @stats = AssignedLawyer.where(:file_matter_id => fmi.id).where(:lawyer_id => current_user.lawyer_id)%>
 	          <% if @stats.last.status == 'Active' %>
 	            <%@label = "label label-success" %>
