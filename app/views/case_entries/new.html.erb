@@ -13,7 +13,9 @@
     		<div id="search_reference" class="modal hide fade" style="width: 85%; height: auto; left:30%; overflow-y: hidden" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel">Search Reference Entries</h3>
+            <h2 id="myModalLabel">
+              <%= link_to "View List of All Reference Number", assigned_lawyer_filematters_path(), class: "btn btn-danger" %>
+            </h2>
           </div>
         	<div class="modal-body">
         		<%= render "search_filematters" %>
