@@ -6,14 +6,16 @@
   	<div class="panel-primary panel-heading">Search</div>
 	  <div class="row">
 	    <div class="span11">
-		    <%= form_for case_entries_search_path, :method => 'get' do %>
+		    <%= form_for case_entry_billings_path, :method => 'get' do %>
 			<table class="table" width="100%">
 			  <thead>		
 				<tr>
-					<td>
+					<td colspan=2 >
 						Client Name : <br/>
-						<%= autocomplete_field_tag :client_id, nil, autocomplete_file_matter_file_code_case_entries_path, :required => false %>
-					</td>	
+						<%= autocomplete_field_tag :client, nil, ac_client_gr_graphs_path, :style => "width: 100%;" %>
+					</td>
+				</tr>
+				<tr>
 					<td>
 						Cover Period(Start): <br/>
 						<%= text_field_tag :beginning_date, nil,  :id => "datepicker_beg"%>
@@ -25,17 +27,21 @@
 				</tr>
 				<tr>
 					<td>
-						Billing Date: <br/>
-						<%= text_field_tag :billing_date, nil,  :id => "datepicker_bill"%>
-					</td>	
+						Billing Date From: <br/>
+						<%= text_field_tag :billing_date_start, nil,  :id => "datepicker_bill_start"%>
+					</td>
 					<td>
+						Billing Date To: <br/>
+						<%= text_field_tag :billing_date_end, nil,  :id => "datepicker_bill_end"%>
+					</td>	
+					<!-- <td>
 						Invoice Number: <br/>
-						<%= text_field_tag :invoice_number %>
+						<%#= text_field_tag :invoice_number %>
 					</td>
 					<td>
 						OR #:<br/>
-						<%= text_field_tag :or_number %>
-					</td>
+						<%#= text_field_tag :or_number %>
+					</td> -->
 				</tr>
 				<tr><td colspan="4"><div class="pull-right">
 					    <%= submit_tag "Search" %>
@@ -57,9 +63,16 @@
 		           		<td width="100%"><strong>No record to show...<strong></td>
 		           	</tr>
            	<% else %>
-           		<% @case_entry_billing = CaseEntryBilling.select('client_id').uniq %>
-            	<% @case_entry_billing.each do |ceb| %>
-            		<% client = Client.find(ceb.client_id) %>
+
+           		<% 
+           			# if params[:beginning_date].blank? || params[:ending_date].blank?
+           			# 	@clients = CaseEntryBilling.select(:client_id).uniq
+           			# else
+           			# 	@clients = @case_entry_billing.pluck(:client_id).uniq 
+           			# end	
+           		%>
+            	<% @clients.each do |ceb| %>
+            		<% client = Client.find(ceb) %>
 		           	<tr>
 		           		<td width="10%"><strong>Client Name :<strong></td>
 		           		<td width="90%"><strong><%= client.name %><strong></td>
@@ -81,7 +94,13 @@
 						            </tr>
 						          </thead>
 						          <tbody>
-						          	<% @case_entry_billing2 = CaseEntryBilling.where(client_id: ceb.client_id) %>
+						          	<% 
+						          	if params[:beginning_date].blank? || params[:ending_date].blank?
+				           				@case_entry_billing2 = CaseEntryBilling.where(client_id: ceb).order("file_reference_code DESC, cover_period_start DESC")
+				           			else
+				           				@case_entry_billing2 = @case_entry_billing.where(client_id: ceb).order("file_reference_code DESC, cover_period_start DESC")
+				           			end	
+						           %>
 						          	<% @case_entry_billing2.each do |ceb2| %>
 							          	<tr>
 							          		<% file_ref_code = find_file_ref(ceb2.file_matter_id) %>
@@ -137,7 +156,8 @@
 	$(function() {
   		$('#datepicker_beg').datepicker({format: 'yyyy-mm-dd'});
   		$('#datepicker_end').datepicker({format: 'yyyy-mm-dd'});
-  		$('#datepicker123').datepicker({format: 'yyyy-mm-dd'});
+  		$('#datepicker_bill_start').datepicker({format: 'yyyy-mm-dd'});
+  		$('#datepicker_bill_end').datepicker({format: 'yyyy-mm-dd'});
   		$('#case_entry_time_spent_from').ptTimeSelect();
   		$('#case_entry_time_spent_to').ptTimeSelect();
   	});

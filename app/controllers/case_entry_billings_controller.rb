@@ -1,6 +1,19 @@
 class CaseEntryBillingsController < ApplicationController
 	def index
-   @case_entry_billing = CaseEntryBilling.all
+    args = {}
+    # args.merge!(file_matter_id: params[:file_matter_id]) unless params[:file_matter_id].blank?
+    # args.merge!(file_matter_case: params[:case_number]) unless params[:case_number].blank?
+    args.merge!(cover_period_start: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
+    args.merge!(cover_period_end: params[:beginning_date]..params[:ending_date]) unless params[:beginning_date].blank?
+    args.merge!(billing_date: params[:billing_date_start]..params[:billing_date_end]) unless params[:billing_date_start].blank?
+    # args.merge!(:remove_from_billing => 'No')
+    if params[:beginning_date].blank? || params[:ending_date].blank?
+      @case_entry_billing = CaseEntryBilling.all
+      @clients = CaseEntryBilling.pluck(:client_id).uniq
+    else
+      @case_entry_billing = CaseEntryBilling.where(args)
+      @clients = @case_entry_billing.pluck(:client_id).uniq
+    end
   end
 
   def show
